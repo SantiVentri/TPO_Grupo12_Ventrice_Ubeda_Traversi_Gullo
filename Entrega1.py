@@ -4,7 +4,7 @@ Título:
 Fecha: 8/10/2025
 Autores: Santino Ventrice, Valentina Ubeda, Santino Traversi y Rocco Gullo
 
-Descripción:
+Descripción: tp de algoritmia 
 
 Pendientes:
 -----------------------------------------------------------------------------------------------
