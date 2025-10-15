@@ -130,6 +130,88 @@ def main():
         }
     }
 
+    vehiculos = {
+        "AE456GH": {
+            "activo": True,
+            "modelo": "Mercedes-Benz Sprinter",
+            "añoCompra": 2022,
+            "cantidadKm": 85200,
+            "costoKm": 85.5,
+            "infracciones": {
+                "infraccion1": "Exceso de velocidad"
+            }
+        },
+        "AC456FG": {
+            "activo": True,
+            "modelo": "Renault Master",
+            "añoCompra": 2021,
+            "cantidadKm": 112350,
+            "costoKm": 91.0,
+            "infracciones": {
+                "infraccion1": "Mal estacionamiento",
+                "infraccion2": "Cruce en rojo"
+            }
+        },
+        "AD789HI": {
+            "activo": False,
+            "modelo": "Ford Transit",
+            "añoCompra": 2019,
+            "cantidadKm": 185000,
+            "costoKm": 98.2,
+            "infracciones": {}
+        },
+        "AE101JK": {
+            "activo": True,
+            "modelo": "Iveco Daily",
+            "añoCompra": 2020,
+            "cantidadKm": 145100,
+            "costoKm": 105.5,
+            "infracciones": {
+                "infraccion1": "Exceso de velocidad"
+            }
+        },
+        "AF212LM": {
+            "activo": False,
+            "modelo": "Citroën Jumper",
+            "añoCompra": 2018,
+            "cantidadKm": 210000,
+            "costoKm": 88.8,
+            "infracciones": {
+                "infraccion1": "Falta de VTV",
+                "infraccion2": "Uso de celular al conducir"
+            }
+        },
+        "AA345NO": {
+            "activo": True,
+            "modelo": "Peugeot Boxer",
+            "añoCompra": 2023,
+            "cantidadKm": 45300,
+            "costoKm": 93.3,
+            "infracciones": {}
+        },
+        "AB678PQ": {
+            "activo": True,
+            "modelo": "Hyundai H100",
+            "añoCompra": 2021,
+            "cantidadKm": 95000,
+            "costoKm": 83.0,
+            "infracciones": {
+                "infraccion1": "Giro en U prohibido"
+            }
+        },
+        "AC901RS": {
+            "activo": False,
+            "modelo": "Kia K2500",
+            "añoCompra": 2019,
+            "cantidadKm": 195400,
+            "costoKm": 99.1,
+            "infracciones": {
+                "infraccion1": "Exceso de velocidad",
+                "infraccion2": "Mal estacionamiento",
+                "infraccion3": "Circular sin luces"
+            }
+        }
+    }
 
     #-------------------------------------------------
     # Bloque de menú
