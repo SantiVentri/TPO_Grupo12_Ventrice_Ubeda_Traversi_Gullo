@@ -31,7 +31,105 @@ def main():
     #-------------------------------------------------
     # Inicialización de variables
     #----------------------------------------------------------------------------------------------
-    ...
+    choferes = {
+        12507: {
+            "activo": True,
+            "nombre": "Carlos",
+            "apellido": "Pérez",
+            "telefono": 1134567890,
+            "cantidadKm": 25400,
+            "turnos": {
+                "turno1": "Mañana - Lunes",
+                "turno2": "Mañana - Miércoles",
+                "turno3": "Mañana - Viernes"
+            }
+        },
+        33051: {
+            "activo": True,
+            "nombre": "María",
+            "apellido": "Gómez",
+            "telefono": 1123456789,
+            "cantidadKm": 18750,
+            "turnos": {
+                "turno1": "Tarde - Martes",
+                "turno2": "Tarde - Jueves",
+                "turno3": "Tarde - Sábado"
+            }
+        },
+        27713: {
+            "activo": True,
+            "nombre": "Jorge",
+            "apellido": "López",
+            "telefono": 1145678901,
+            "cantidadKm": 31000,
+            "turnos": {
+                "turno1": "Noche - Lunes",
+                "turno2": "Noche - Miércoles",
+                "turno3": "Noche - Viernes"
+            }
+        },
+        44128: {
+            "activo": False,
+            "nombre": "Ana",
+            "apellido": "Martínez",
+            "telefono": 1167890123,
+            "cantidadKm": 9800,
+            "turnos": {
+                "turno1": "Tarde - Martes",
+                "turno2": "Tarde - Jueves",
+                "turno3": "Tarde - Sábado"
+            }
+        },
+        56982: {
+            "activo": True,
+            "nombre": "Luis",
+            "apellido": "Rodríguez",
+            "telefono": 1178901234,
+            "cantidadKm": 42000,
+            "turnos": {
+                "turno1": "Mañana - Lunes",
+                "turno2": "Mañana - Martes",
+                "turno3": "Mañana - Jueves"
+            }
+        },
+        61895: {
+            "activo": True,
+            "nombre": "Sofía",
+            "apellido": "Fernández",
+            "telefono": 1189012345,
+            "cantidadKm": 22100,
+            "turnos": {
+                "turno1": "Noche - Martes",
+                "turno2": "Noche - Jueves",
+                "turno3": "Noche - Sábado"
+            }
+        },
+        78136: {
+            "activo": False,
+            "nombre": "Diego",
+            "apellido": "Ruiz",
+            "telefono": 1190123456,
+            "cantidadKm": 15000,
+            "turnos": {
+                "turno1": "Tarde - Lunes",
+                "turno2": "Tarde - Miércoles",
+                "turno3": "Tarde - Viernes"
+            }
+        },
+        81306: {
+            "activo": True,
+            "nombre": "Elena",
+            "apellido": "Silva",
+            "telefono": 1101234567,
+            "cantidadKm": 30500,
+            "turnos": {
+                "turno1": "Mañana - Martes",
+                "turno2": "Mañana - Jueves",
+                "turno3": "Mañana - Sábado"
+            }
+        }
+    }
+
 
     #-------------------------------------------------
     # Bloque de menú
