@@ -213,6 +213,73 @@ def main():
         }
     }
 
+    rutas = {
+        "RN001": {
+            "idLegajo": "12507",      # Carlos Pérez
+            "idPatente": "AA345NO",   # Peugeot Boxer
+            "totalKm": 180,
+            "costoRuta": 16794.0,
+            "horaSalida": "2025-10-14 06:45",
+            "horaLlegada": "2025-10-14 09:15"
+        },
+        "RN002": {
+            "idLegajo": "33051",      # María Gómez
+            "idPatente": "AC456FG",   # Renault Master
+            "totalKm": 220,
+            "costoRuta": 20020.0,
+            "horaSalida": "2025-10-14 14:00",
+            "horaLlegada": "2025-10-14 18:30"
+        },
+        "RN003": {
+            "idLegajo": "27713",      # Jorge López
+            "idPatente": "AE101JK",   # Iveco Daily
+            "totalKm": 310,
+            "costoRuta": 32705.0,
+            "horaSalida": "2025-10-13 22:30",
+            "horaLlegada": "2025-10-14 03:45"  # Cruce de medianoche
+        },
+        "RN004": {
+            "idLegajo": "81306",      # Elena Silva
+            "idPatente": "AE456GH",   # Mercedes-Benz Sprinter
+            "totalKm": 160,
+            "costoRuta": 13680.0,
+            "horaSalida": "2025-10-12 08:00",
+            "horaLlegada": "2025-10-12 10:40"
+        },
+        "RN005": {
+            "idLegajo": "61895",      # Sofía Fernández
+            "idPatente": "AB678PQ",   # Hyundai H100
+            "totalKm": 195,
+            "costoRuta": 16185.0,
+            "horaSalida": "2025-10-12 19:00",
+            "horaLlegada": "2025-10-12 23:10"
+        },
+        "RN006": {
+            "idLegajo": "56982",      # Luis Rodríguez
+            "idPatente": "AA345NO",   # Peugeot Boxer
+            "totalKm": 240,
+            "costoRuta": 22392.0,
+            "horaSalida": "2025-10-11 07:15",
+            "horaLlegada": "2025-10-11 11:45"
+        },
+        "RN007": {
+            "idLegajo": "27713",      # Jorge López
+            "idPatente": "AE101JK",   # Iveco Daily
+            "totalKm": 275,
+            "costoRuta": 29012.5,
+            "horaSalida": "2025-10-10 21:30",
+            "horaLlegada": "2025-10-11 02:20"  # Cruce de medianoche
+        },
+        "RN008": {
+            "idLegajo": "33051",      # María Gómez
+            "idPatente": "AC456FG",   # Renault Master
+            "totalKm": 190,
+            "costoRuta": 17290.0,
+            "horaSalida": "2025-10-09 15:00",
+            "horaLlegada": "2025-10-09 19:00"
+        }
+    }
+
     #-------------------------------------------------
     # Bloque de menú
     #----------------------------------------------------------------------------------------------
