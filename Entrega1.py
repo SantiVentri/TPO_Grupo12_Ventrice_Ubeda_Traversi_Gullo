@@ -36,7 +36,7 @@ def main():
             "activo": True,
             "nombre": "Carlos",
             "apellido": "Pérez",
-            "telefono": 1134567890,
+            "telefono": 34567890,
             "cantidadKm": 25400,
             "turnos": {
                 "turno1": "Mañana - Lunes",
@@ -48,7 +48,7 @@ def main():
             "activo": True,
             "nombre": "María",
             "apellido": "Gómez",
-            "telefono": 1123456789,
+            "telefono": 23456789,
             "cantidadKm": 18750,
             "turnos": {
                 "turno1": "Tarde - Martes",
@@ -60,7 +60,7 @@ def main():
             "activo": True,
             "nombre": "Jorge",
             "apellido": "López",
-            "telefono": 1145678901,
+            "telefono": 45678901,
             "cantidadKm": 31000,
             "turnos": {
                 "turno1": "Noche - Lunes",
@@ -72,7 +72,7 @@ def main():
             "activo": False,
             "nombre": "Ana",
             "apellido": "Martínez",
-            "telefono": 1167890123,
+            "telefono": 67890123,
             "cantidadKm": 9800,
             "turnos": {
                 "turno1": "Tarde - Martes",
@@ -84,7 +84,7 @@ def main():
             "activo": True,
             "nombre": "Luis",
             "apellido": "Rodríguez",
-            "telefono": 1178901234,
+            "telefono": 78901234,
             "cantidadKm": 42000,
             "turnos": {
                 "turno1": "Mañana - Lunes",
@@ -96,7 +96,7 @@ def main():
             "activo": True,
             "nombre": "Sofía",
             "apellido": "Fernández",
-            "telefono": 1189012345,
+            "telefono": 89012345,
             "cantidadKm": 22100,
             "turnos": {
                 "turno1": "Noche - Martes",
@@ -108,7 +108,7 @@ def main():
             "activo": False,
             "nombre": "Diego",
             "apellido": "Ruiz",
-            "telefono": 1190123456,
+            "telefono": 90123456,
             "cantidadKm": 15000,
             "turnos": {
                 "turno1": "Tarde - Lunes",
@@ -120,7 +120,7 @@ def main():
             "activo": True,
             "nombre": "Elena",
             "apellido": "Silva",
-            "telefono": 1101234567,
+            "telefono": 31234567,
             "cantidadKm": 30500,
             "turnos": {
                 "turno1": "Mañana - Martes",
