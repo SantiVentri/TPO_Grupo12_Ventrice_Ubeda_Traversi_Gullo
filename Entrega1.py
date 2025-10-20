@@ -377,20 +377,107 @@ def main():
                         input("Opción inválida. Presione ENTER para volver a seleccionar.")
                 print()
 
+
                 if opcionSubmenu == "0": # Opción salir del submenú
                     break # No sale del programa, sino que vuelve al menú anterior
                 
                 elif opcionSubmenu == "1":   # Opción 1 del submenú
-                    ...
+                        print("---------AGREGAR VEHICULO----------")
+                        patente = input("Ingrese la patente del vehículo (ej. AE456GH): ").upper()
+                        if patente in vehiculos:
+                            print("Ya existe un vehículo con esa patente.")
+                        else: 
+                            modelo = input("Ingrese el modelo del vehiculo: ")
+                        
+                        añoCompra = input("Ingrese año de compra: ")
+                        while not añoCompra.isdigit():#Validar año de compra 
+                            print("Error: el año debe ser numérico.")
+                            añoCompra = input("Ingrese año de compra: ")
+                        añoCompra = int(añoCompra)
+
+                        cantidadKm = input("Ingrese cantidad de km actuales: ")
+                        while not cantidadKm.replace(".", "", 1).isdigit(): #validar cantidad de Km
+                            print("Error: el valor debe ser numérico.")
+                            cantidadKm = input("Ingrese cantidad de km actuales: ")
+                        cantidadKm = float(cantidadKm)
+
+                        costoKm = input("Ingrese costo por km: ")
+                        while not costoKm.replace(".", "", 1).isdigit(): #validamos el costo por kilometro 
+                            print("Error: el valor debe ser numérico.")
+                            costoKm = input("Ingrese costo por km: ")
+                        costoKm = float(costoKm)
+
+                        vehiculos[patente] = {
+                            "activo": True,  # SIEMPRE TRUE al cargar
+                            "modelo": modelo,
+                            "añoCompra": añoCompra,
+                            "cantidadKm": cantidadKm,
+                            "costoKm": costoKm,
+                            "infracciones": {}  # VACÍO AL INICIO
+                        }
+
+                        print("Se ingreso el vehiculo correctamente! ")
+
                     
                 elif opcionSubmenu == "2":   # Opción 2 del submenú
-                    ...
+                    print("----------MODIFICAR VEHICULOS----------")
+                    patente = input("Ingrese la patente del vehiculo a modificar: ").upper()
+
+                    if patente not in vehiculos:
+                        print("Error la patente no se encuentra registrada") 
+                    else: 
+                        vehiculo = vehiculos[patente]
+                        print("Datos actuales del vehiculo: ")
+                        for campo, valor in vehiculo.items():
+                         if campo != "infracciones":
+                            print(f"  {campo}: {valor}")
+                        
+                        print("¿Que datos deseas modificar?")
+                        print("1.Modelo")
+                        print("2. Año de compra")
+                        print("3. Kilometraje")
+                        print("4. Costo por Km")
+                        opcionMod = input("Seleccione una opcion: ")
+                        if opcionMod == "1":
+                            vehiculo["modelo"] = input("Nuevo modelo: ")
+                        elif opcionMod == "2":
+                            vehiculo["añoCompra"]= int(input("Nuevo año de compra: "))
+                        elif opcionMod == "3":
+                            vehiculo[cantidadKm]= float(input("Nueva cantidad de Km: "))
+                        elif opcionMod == "4": 
+                            vehiculo[costoKm]= float(input("Nuevo costo de Km: "))
+                        else:
+                            print("Opcion invalida.")
+                        print("Vehiculo modificado correctamente!") 
+
                 
                 elif opcionSubmenu == "3":   # Opción 3 del submenú
-                    ...
-                
+                    print("----------ELIMINAR VEHICULO---------")
+                    patente = input("Ingrese la pantente del vehiculo a eliminar: ").upper()
+
+                    if patente not in vehiculos:
+                        print("No existe un vehiculo con esa patente.")
+                    else: 
+                        confirm = input(f"¿Estas seguro que deseas eliminar el vehiculo {patente} (si/no): ?").upper()
+                        if confirm == "SI":
+                            del vehiculos[patente]
+                            print("Vehiculo eliminado con exito!")
+                        else:        
+                            print("Operacion cancelada.")
+
                 elif opcionSubmenu == "4":   # Opción 4 del submenú
-                    ...
+                    print("----------LISTA DE VEHICULOS----------")
+                    if len(vehiculos) == 0:
+                        print("No hay vehiculos cargados.")
+                    else: 
+                        for patente, datos in vehiculos.items():
+                             print(f"\nPatente: {patente}")
+                             print(f"  Activo     : {datos['activo']}")
+                             print(f"  Modelo     : {datos['modelo']}")
+                             print(f"  Año compra : {datos['añoCompra']}")
+                             print(f"  Km totales : {datos['cantidadKm']}")
+                             print(f"  Costo x Km : {datos['costoKm']}")
+                             print(f"  Infracciones: {len(datos['infracciones'])} registradas")
 
                 input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
                 print("\n\n")
