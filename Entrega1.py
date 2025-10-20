@@ -447,14 +447,39 @@ def main():
                     ...
                 
                 elif opcionSubmenu == "3":   # Opción 3 del submenú
-                    ...
+                    print("----------------------------------------")
+                    print("MENÚ DE CHOFERES > Eliminado de choferes")
+                    print("----------------------------------------\n")
+
+                    while True:
+                        # Se pide el número de legajo a eliminar
+                        legajo = input("Ingrese el legajo del chofer a eliminar (o '0' para salir): ")
+
+                        # Si el número ingresado es 0, se sale del bucle
+                        if legajo == "0":
+                            break
+                        # Validar legajo
+                        elif not legajo.isdigit() or int(legajo) not in choferes:
+                            print("Legajo inválido. Intente nuevamente.")
+                        else:
+                            legajo = int(legajo) # Convertir a entero
+                            chofer = choferes[legajo] # Obtener datos del chofer
+
+                            # Mensaje de confirmación
+                            confirmar = input(f"¿Está seguro que desea eliminar al chofer {chofer['nombre']} {chofer['apellido']} (LU{legajo})? (s/n): ").lower()
+                            
+                            # Si el usuario confirma la acción, se elimina el chofer. Sino, se cancela la operación
+                            if confirmar == "s" or confirmar == "si":
+                                del choferes[legajo]
+                                print(f"Chofer LU{legajo} eliminado exitosamente.\n")
+                            else:
+                                print("Eliminación cancelada.\n")
                 
                 elif opcionSubmenu == "4":   # Opción 4 del submenú
                     ...
 
                 input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
                 print("\n\n")
-
 
         elif opcionMenuPrincipal == "2":   # Opción 2 del menú principal
             while True:
