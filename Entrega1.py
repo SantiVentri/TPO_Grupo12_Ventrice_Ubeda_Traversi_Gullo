@@ -15,7 +15,7 @@ Pendientes:
 #----------------------------------------------------------------------------------------------
 # MÓDULOS
 #----------------------------------------------------------------------------------------------
-...
+import random
 
 
 #----------------------------------------------------------------------------------------------
@@ -338,8 +338,111 @@ def main():
                     break # No sale del programa, sino que vuelve al menú anterior
                 
                 elif opcionSubmenu == "1":   # Opción 1 del submenú
-                    ...
-                    
+                    print("------------------------------------")
+                    print("MENÚ DE CHOFERES > Ingresar choferes")
+                    print("------------------------------------\n")
+
+                    while True:
+                        # Crear legajo
+                        while True:
+                            legajo = random.randint(10000, 99999)
+                            if legajo not in choferes:
+                                break
+                        
+                        # Solicitar nombre
+                        nombre = ""
+                        while not nombre:
+                            nombre = input("Ingrese el primer nombre del chofer: ")
+
+                            if nombre.strip() == "":
+                                print("El nombre no puede estar vacío. Intente nuevamente.")
+                                nombre = ""
+                            else:
+                                for char in nombre:
+                                    if not char.isalpha():
+                                        print("El nombre solo puede contener letras. Intente nuevamente.")
+                                        nombre = ""
+
+                        # Solicitar apellido
+                        apellido = ""
+                        while not apellido:
+                            apellido = input("Ingrese el primer apellido del chofer: ")
+
+                            if nombre.strip() == "":
+                                print("El apellido no puede estar vacío. Intente nuevamente.")
+                                apellido = ""
+                            else:
+                                for char in nombre:
+                                    if not char.isalpha() and char != " ":
+                                        print("El apellido solo puede contener letras y espacios. Intente nuevamente.")
+                                        apellido = ""
+
+                        # Solicitar teléfono
+                        telefono = ""
+                        while not telefono:
+                            telefono = input("Ingrese el teléfono del chofer: +54 11 ")
+
+                            if len(telefono) != 8:
+                                print("El teléfono debe tener 8 dígitos. Intente nuevamente.")
+                                telefono = ""
+                            elif not telefono.isdigit():
+                                print("El teléfono solo puede contener números. Intente nuevamente.")
+                                telefono = ""
+
+                        # Solicitar cantidad de km recorridos
+                        while True:
+                            cantidadKm = input("Ingrese la cantidad de km recorridos por el chofer (Presione Enter para 0): ")
+
+                            if cantidadKm == "":
+                                cantidadKm = 0
+                                break
+                            elif not cantidadKm.isdigit() or int(cantidadKm) < 0:
+                                print("La cantidad de km solo puede contener números. Intente nuevamente.")
+                            else:
+                                break
+
+                        # Agregar turnos
+                        turnos = {}
+                        for i in range(3):
+                            # Ingresar nuevo día
+                            diaTurno = input("Ingrese el nuevo día (Lunes, Martes, etc.): ")
+                            while diaTurno not in ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]:
+                                print("Día inválido. Intente nuevamente.")
+                                diaTurno = input("Ingrese el nuevo día (Lunes, Martes, etc.): ")
+
+                            # Ingresar nuevo horario
+                            horarioTurno = input("Ingrese el nuevo horario (Mañana, Tarde o Noche): ")
+                            while horarioTurno not in ["Mañana", "Tarde", "Noche"]:
+                                print("Horario inválido. Intente nuevamente.")
+                                horarioTurno = input("Ingrese el nuevo horario (Mañana, Tarde o Noche): ")
+
+                            nuevoTurno = f"{horarioTurno} - {diaTurno}"
+
+                            # Confirmar turno
+                            confirmarTurno = input(f"¿Confirma el turno {nuevoTurno}? (s/n): ").lower()
+                            if confirmarTurno == "s" or confirmarTurno == "si":
+                                turnos[f"turno{i+1}"] = nuevoTurno
+                            else:
+                                print("Turno no confirmado. Intente nuevamente.")
+                                i -= 1  # Se resta 1 al índice para repetir el mismo turno
+
+                        # Guardar chofer
+                        choferes[legajo] = {
+                            "activo": True,
+                            "nombre": nombre,
+                            "apellido": apellido,
+                            "telefono": telefono,
+                            "cantidadKm": int(cantidadKm),
+                            "turnos": turnos
+                        }
+
+                        print(f"\nSe agregó al chofer {nombre} {apellido}, LU{legajo} exitosamente.\n")
+
+                        # Preguntar si desea agregar otro chofer
+                        agregarOtro = input("¿Desea agregar otro chofer? (s/n): ").lower()
+                        if agregarOtro != "s" and agregarOtro != "si":
+                            break
+                        
                 elif opcionSubmenu == "2":   # Opción 2 del submenú
                     ...
                 
