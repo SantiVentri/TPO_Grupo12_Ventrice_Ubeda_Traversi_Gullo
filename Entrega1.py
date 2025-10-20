@@ -476,7 +476,47 @@ def main():
                                 print("Eliminación cancelada.\n")
                 
                 elif opcionSubmenu == "4":   # Opción 4 del submenú
-                    ...
+                    print("--------------------------------------")
+                    print("MENÚ DE CHOFERES > Listado de choferes")
+                    print("--------------------------------------\n")
+
+                    # Imprimir los títulos de la tabla
+                    print("-" * 135)
+                    print(f"|{'Legajo':^8}|{'Nombre':^25}|{'Teléfono':^17}|{'Km Recorridos':^15}|{'Activo':^8}|{'Turnos':^55}|")
+                    print("-" * 135)
+
+                    # Imprimir filas de datos
+                    for legajo, datos in choferes.items():
+                        nombre_completo = datos['nombre'] + " " + datos['apellido']
+                        
+                        # Procesar celda de turnos
+                        celdaTurnos = ""
+                        if len(datos['turnos']) == 0:
+                            celdaTurnos = "Sin turnos"
+                        else:
+                            for turno in datos['turnos'].values():
+                                if celdaTurnos == "":
+                                    celdaTurnos = turno
+                                else:
+                                    celdaTurnos += ", " + turno
+
+                        # Procesar celda de activo
+                        if datos['activo']:
+                            activo_str = "Sí"
+                        else:
+                            activo_str = "No"
+                        
+                        # Imprimir fila
+                        print("|" +
+                            str(legajo).center(8) + "| " +                              # Celda legajo
+                            nombre_completo.ljust(24) + "| " +                          # Celda nombre completo
+                            str("+54 11 " + str(datos['telefono'])).ljust(8) + " | " +  # Celda teléfono
+                            str(datos['cantidadKm']).ljust(14) + "| " +                 # Celda km recorridos
+                            activo_str.ljust(7) + "| " +                                # Celda activo
+                            (celdaTurnos).ljust(54) + "|")                              # Celda turnos
+                    
+                    # Cerrar tabla
+                    print("-" * 135)
 
                 input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
                 print("\n\n")
