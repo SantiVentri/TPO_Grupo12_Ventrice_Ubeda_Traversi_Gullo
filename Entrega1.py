@@ -444,12 +444,175 @@ def main():
                             break
                         
                 elif opcionSubmenu == "2":   # Opción 2 del submenú
-                    ...
+                    print("----------------------------------------")
+                    print("MENÚ DE CHOFERES > Modificar de choferes")
+                    print("----------------------------------------\n")
+
+                    while True:
+                        # Preguntar legajo de chofer a modificar
+                        legajo = input("Ingrese el legajo del chofer a modificar (o '0' para salir): ")
+
+                        # Si el número ingresado es 0, se sale del bucle
+                        if legajo == "0":
+                            print("Saliendo de la modificación de choferes.\n")
+                            break
+                        elif not legajo.isdigit() or int(legajo) not in choferes:
+                            print("Legajo inválido. Intente nuevamente.")
+                            break
+
+                        # Seleccionar dato a modificar
+                        print("\nDatos actuales del chofer:")
+                        print(f"1. Nombre: {choferes[int(legajo)]['nombre']}")
+                        print(f"2. Apellido: {choferes[int(legajo)]['apellido']}")
+                        print(f"3. Teléfono: +54 11 {choferes[int(legajo)]['telefono']}")
+                        print(f"4. Cantidad de km: {choferes[int(legajo)]['cantidadKm']}")
+                        print(f"5. Ver turnos")
+                        print(f"6. Estado activo: {'Sí' if choferes[int(legajo)]['activo'] else 'No'}")
+                        print("\n¿Qué dato desea modificar?")
+                        
+                        opcion = input("Ingrese el número de la opción (1-6): ")
+                        
+                        if opcion == "1":
+                            # Ingresar nuevo nombre
+                            nombre = ""
+                            while not nombre:
+                                nombre = input("Ingrese el primer nombre del chofer: ")
+
+                                if nombre.strip() == "":
+                                    print("El nombre no puede estar vacío. Intente nuevamente.")
+                                    nombre = ""
+                                else:
+                                    for char in nombre:
+                                        if not char.isalpha():
+                                            print("El nombre solo puede contener letras. Intente nuevamente.")
+                                            nombre = ""
+
+                            # Guardar nuevo nombre
+                            choferes[int(legajo)]['nombre'] = nombre
+
+                            print("\nDato modificado exitosamente.")
+                            
+                        elif opcion == "2":
+                            # Ingresar nuevo apellido
+                            apellido = ""
+                            while not apellido:
+                                apellido = input("Ingrese el primer apellido del chofer: ")
+
+                                if nombre.strip() == "":
+                                    print("El apellido no puede estar vacío. Intente nuevamente.")
+                                    apellido = ""
+                                else:
+                                    for char in nombre:
+                                        if not char.isalpha() and char != " ":
+                                            print("El apellido solo puede contener letras y espacios. Intente nuevamente.")
+                                            apellido = ""
+
+                            # Guardar nuevo apellido
+                            choferes[int(legajo)]['apellido'] = apellido
+
+                            print("\nDato modificado exitosamente.")
+
+                        elif opcion == "3":
+                            # Solicitar teléfono
+                            telefono = ""
+                            while not telefono:
+                                telefono = input("Ingrese el teléfono del chofer: +54 11 ")
+
+                                if len(telefono) != 8:
+                                    print("El teléfono debe tener 8 dígitos. Intente nuevamente.")
+                                    telefono = ""
+                                elif not telefono.isdigit():
+                                    print("El teléfono solo puede contener números. Intente nuevamente.")
+                                    telefono = ""
+
+                            # Guardar nuevo teléfono
+                            choferes[int(legajo)]['telefono'] = telefono
+
+                            print("\nDato modificado exitosamente.")
+
+                        elif opcion == "4":
+                            # Ingresar nueva cantidad de km recorridos
+                            while True:
+                                cantidadKm = input("Ingrese la cantidad de km recorridos por el chofer (Presione Enter para 0): ")
+
+                                if cantidadKm == "":
+                                    cantidadKm = 0
+                                    break
+                                elif not cantidadKm.isdigit() or int(cantidadKm) < 0:
+                                    print("La cantidad de km solo puede contener números. Intente nuevamente.")
+                                else:
+                                    break
+
+                            # Guardar nueva cantidad de km
+                            choferes[int(legajo)]['cantidadKm'] = int(cantidadKm)
+
+                            print("\nDato modificado exitosamente.")
+                                    
+                        elif opcion == "5":
+                            # Ver turnos
+                            print("\nTurnos actuales del chofer:")
+                            for i in range(1, 4):
+                                if f"turno{i}" in choferes[int(legajo)]['turnos']:
+                                    print(f"{i}. {choferes[int(legajo)]['turnos'][f'turno{i}']}")
+                                else:
+                                    print(f"{i}. Sin turno asignado")
+
+                            # Seleccionar turno a modificar
+                            turnoModificar = input("\nIngrese el número del turno a modificar (1-3) o '0' para salir: ")
+
+                            if turnoModificar == "0":
+                                print("Saliendo de la modificación de turnos.\n")
+                                break
+                            elif turnoModificar not in ["1", "2", "3"]:
+                                print("Opción inválida. Intente nuevamente.")
+                            else:
+                                # Ingresar nuevo día
+                                diaNuevoTurno = input("Ingrese el nuevo día (Lunes, Martes, etc.) o '-' para dejar vacío: ")
+                                if diaNuevoTurno == "-":
+                                    # Si se ingresa "-", eliminar el turno
+                                    del choferes[int(legajo)]['turnos'][f"turno{turnoModificar}"]
+                                    print("\nTurno eliminado exitosamente.")
+                                else:
+                                    while diaNuevoTurno not in ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]:
+                                        print("Día inválido. Intente nuevamente.")
+                                        diaNuevoTurno = input("Ingrese el nuevo día (Lunes, Martes, etc.) o '-' para dejar vacío: ")
+                                        if diaNuevoTurno == "-":
+                                            break
+
+                                    if diaNuevoTurno != "-":
+                                        # Ingresar nuevo horario
+                                        horarioNuevoTurno = input("Ingrese el nuevo horario (Mañana, Tarde o Noche): ")
+                                        while horarioNuevoTurno not in ["Mañana", "Tarde", "Noche"]:
+                                            print("Horario inválido. Intente nuevamente.")
+                                            horarioNuevoTurno = input("Ingrese el nuevo horario (Mañana, Tarde o Noche): ")
+
+                                        nuevoTurno = f"{horarioNuevoTurno} - {diaNuevoTurno}"
+                                        choferes[int(legajo)]['turnos'][f"turno{turnoModificar}"] = nuevoTurno
+                                        print("\nDato modificado exitosamente.")
+                            
+                        elif opcion == "6":
+                            # Modificar estado
+                            estado = input("¿Desea que el chofer esté activo? (s/n): ").lower()
+                            if estado == "s" or estado == "si":
+                                choferes[int(legajo)]['activo'] = True
+                            elif estado == "n" or estado == "no":
+                                choferes[int(legajo)]['activo'] = False
+
+                            print("\nDato modificado exitosamente.")
+                            
+                        else:
+                            print("Opción inválida.")
+                            break
+                            
+                        # Preguntar si desea modificar otro chofer
+                        modificarOtro = input("¿Desea modificar otro chofer? (s/n): ").lower()
+                        if modificarOtro != "s" and modificarOtro != "si":
+                            break
                 
                 elif opcionSubmenu == "3":   # Opción 3 del submenú
-                    print("----------------------------------------")
-                    print("MENÚ DE CHOFERES > Eliminado de choferes")
-                    print("----------------------------------------\n")
+                    print("------------------------------------")
+                    print("MENÚ DE CHOFERES > Eliminar choferes")
+                    print("------------------------------------\n")
 
                     while True:
                         # Se pide el número de legajo a eliminar
@@ -729,7 +892,6 @@ def main():
         if opcionSubmenu != "0": # Pausa entre opciones. No la realiza si se vuelve de un submenú
             input("\nPresione ENTER para volver al menú.")
             print("\n\n")
-
 
 # Punto de entrada al programa
 main()
