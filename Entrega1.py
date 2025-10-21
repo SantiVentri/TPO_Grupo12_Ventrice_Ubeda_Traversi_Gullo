@@ -39,9 +39,9 @@ def main():
             "telefono": 34567890,
             "cantidadKm": 25400,
             "turnos": {
-                "turno1": "Mañana - Lunes",
-                "turno2": "Mañana - Miércoles",
-                "turno3": "Mañana - Viernes"
+                "turno1": "Lunes - Mañana",
+                "turno2": "Miércoles - Mañana",
+                "turno3": "Viernes - Mañana"
             }
         },
         33051: {
@@ -51,9 +51,9 @@ def main():
             "telefono": 23456789,
             "cantidadKm": 18750,
             "turnos": {
-                "turno1": "Tarde - Martes",
-                "turno2": "Tarde - Jueves",
-                "turno3": "Tarde - Sábado"
+                "turno1": "Martes - Tarde",
+                "turno2": "Jueves - Tarde",
+                "turno3": "Sábado - Tarde"
             }
         },
         27713: {
@@ -63,9 +63,9 @@ def main():
             "telefono": 45678901,
             "cantidadKm": 31000,
             "turnos": {
-                "turno1": "Noche - Lunes",
-                "turno2": "Noche - Miércoles",
-                "turno3": "Noche - Viernes"
+                "turno1": "Lunes - Noche",
+                "turno2": "Miércoles - Noche",
+                "turno3": "Viernes - Noche"
             }
         },
         44128: {
@@ -75,9 +75,9 @@ def main():
             "telefono": 67890123,
             "cantidadKm": 9800,
             "turnos": {
-                "turno1": "Tarde - Martes",
-                "turno2": "Tarde - Jueves",
-                "turno3": "Tarde - Sábado"
+                "turno1": "Martes - Tarde",
+                "turno2": "Jueves - Tarde",
+                "turno3": "Sábado - Tarde"
             }
         },
         56982: {
@@ -87,9 +87,9 @@ def main():
             "telefono": 78901234,
             "cantidadKm": 42000,
             "turnos": {
-                "turno1": "Mañana - Lunes",
-                "turno2": "Mañana - Martes",
-                "turno3": "Mañana - Jueves"
+                "turno1": "Lunes - Mañana",
+                "turno2": "Martes - Mañana",
+                "turno3": "Jueves - Mañana"
             }
         },
         61895: {
@@ -99,9 +99,9 @@ def main():
             "telefono": 89012345,
             "cantidadKm": 22100,
             "turnos": {
-                "turno1": "Noche - Martes",
-                "turno2": "Noche - Jueves",
-                "turno3": "Noche - Sábado"
+                "turno1": "Martes - Noche",
+                "turno2": "Jueves - Noche",
+                "turno3": "Sábado - Noche"
             }
         },
         78136: {
@@ -111,9 +111,9 @@ def main():
             "telefono": 90123456,
             "cantidadKm": 15000,
             "turnos": {
-                "turno1": "Tarde - Lunes",
-                "turno2": "Tarde - Miércoles",
-                "turno3": "Tarde - Viernes"
+                "turno1": "Lunes - Tarde",
+                "turno2": "Miércoles - Tarde",
+                "turno3": "Viernes - Tarde"
             }
         },
         81306: {
@@ -123,9 +123,9 @@ def main():
             "telefono": 31234567,
             "cantidadKm": 30500,
             "turnos": {
-                "turno1": "Mañana - Martes",
-                "turno2": "Mañana - Jueves",
-                "turno3": "Mañana - Sábado"
+                "turno1": "Martes - Mañana",
+                "turno2": "Jueves - Mañana",
+                "turno3": "Sábado - Mañana"
             }
         }
     }
