@@ -21,8 +21,7 @@ import random
 #----------------------------------------------------------------------------------------------
 # FUNCIONES
 #----------------------------------------------------------------------------------------------
-...
-
+from funciones.def_choferes import *
 
 #----------------------------------------------------------------------------------------------
 # CUERPO PRINCIPAL
@@ -344,62 +343,39 @@ def main():
 
                     while True:
                         # Crear legajo
-                        while True:
-                            legajo = random.randint(10000, 99999)
-                            if legajo not in choferes:
-                                break
+                        legajo = crearLegajo(choferes)
                         
                         # Solicitar nombre
-                        nombre = ""
-                        while not nombre:
+                        nombreValido = False
+                        while not nombreValido:
                             nombre = input("Ingrese el primer nombre del chofer: ")
-
-                            if nombre.strip() == "":
-                                print("El nombre no puede estar vacío. Intente nuevamente.")
-                                nombre = ""
-                            else:
-                                for char in nombre:
-                                    if not char.isalpha():
-                                        print("El nombre solo puede contener letras. Intente nuevamente.")
-                                        nombre = ""
+                            nombreValido, mensajeError = validarNombre(nombre)
+                            if not nombreValido:
+                                print(mensajeError + " Intente nuevamente.")
 
                         # Solicitar apellido
-                        apellido = ""
-                        while not apellido:
-                            apellido = input("Ingrese el primer apellido del chofer: ")
-
-                            if nombre.strip() == "":
-                                print("El apellido no puede estar vacío. Intente nuevamente.")
-                                apellido = ""
-                            else:
-                                for char in nombre:
-                                    if not char.isalpha() and char != " ":
-                                        print("El apellido solo puede contener letras y espacios. Intente nuevamente.")
-                                        apellido = ""
+                        apellidoValido = False
+                        while not apellidoValido:
+                            apellido = input("Ingrese el apellido del chofer: ")
+                            apellidoValido, mensajeError = validarApellido(apellido)
+                            if not apellidoValido:
+                                print(mensajeError + " Intente nuevamente.")
 
                         # Solicitar teléfono
-                        telefono = ""
-                        while not telefono:
-                            telefono = input("Ingrese el teléfono del chofer: +54 11 ")
-
-                            if len(telefono) != 8:
-                                print("El teléfono debe tener 8 dígitos. Intente nuevamente.")
-                                telefono = ""
-                            elif not telefono.isdigit():
-                                print("El teléfono solo puede contener números. Intente nuevamente.")
-                                telefono = ""
+                        telValido = False
+                        while not telValido:
+                            telefono = input("Ingrese el teléfono del chofer: ")
+                            telValido, mensajeError = validarTelefono(telefono)
+                            if not telValido:
+                                print(mensajeError + " Intente nuevamente.")
 
                         # Solicitar cantidad de km recorridos
-                        while True:
-                            cantidadKm = input("Ingrese la cantidad de km recorridos por el chofer (Presione Enter para 0): ")
-
-                            if cantidadKm == "":
-                                cantidadKm = 0
-                                break
-                            elif not cantidadKm.isdigit() or int(cantidadKm) < 0:
-                                print("La cantidad de km solo puede contener números. Intente nuevamente.")
-                            else:
-                                break
+                        kmValidos = False
+                        while not kmValidos:
+                            kmValidos = input("Ingrese la cantidad de km recorridos por el chofer (Presione Enter para 0): ")
+                            kmValidos, mensajeError = validarKm(kmValidos)
+                            if not kmValidos:
+                                print(mensajeError + " Intente nuevamente.")
 
                         # Agregar turnos
                         turnos = {}
