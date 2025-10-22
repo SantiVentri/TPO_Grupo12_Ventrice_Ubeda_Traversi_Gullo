@@ -43,6 +43,19 @@ def main():
                 "turno3": "Viernes - Mañana"
             }
         },
+              
+        12994: {
+         "activo": True,
+        "nombre": "Rocco",
+        "apellido": "Morillo",
+        "telefono": 26335567,
+        "cantidadKm": 34500,
+        "turnos": {
+            "turno1": "Mañana - Martes",
+            "turno2": "Tarde - Jueves",
+            "turno3": "Mañana - Viernes"
+        }
+    },
         33051: {
             "activo": True,
             "nombre": "María",
@@ -126,12 +139,24 @@ def main():
                 "turno2": "Jueves - Mañana",
                 "turno3": "Sábado - Mañana"
             }
+        },
+        96767: {
+            "activo": True,
+            "nombre": "Harry",
+            "apellido": "Farias",
+            "telefono": 3436678,
+            "cantidadKm": 30500,
+            "turnos": {
+                "turno1": "Martes - Tarde",
+                "turno2": "Lunes - Mañana",
+                "turno3": "Sábado - Tarde"
+            }
         }
     }
 
     vehiculos = {
         "AE456GH": {
-            "activo": True,
+            "activo": False,
             "modelo": "Mercedes-Benz Sprinter",
             "añoCompra": 2022,
             "cantidadKm": 85200,
@@ -209,7 +234,29 @@ def main():
                 "infraccion2": "Mal estacionamiento",
                 "infraccion3": "Circular sin luces"
             }
-        }
+        },
+        "AD654TU": {
+            "activo": True,
+            "modelo": "Volkswagen Crafter",
+            "añoCompra": 2020,
+            "cantidadKm": 134800,
+            "costoKm": 94.7,
+            "infracciones": {
+                "infraccion1": "Exceso de velocidad"
+                
+             }
+        },
+         "AE432VX": {
+        "activo": False,
+        "modelo": "Fiat Ducato",
+        "añoCompra": 2018,
+        "cantidadKm": 207300,
+        "costoKm": 87.9,
+        "infracciones": {
+            "infraccion1": "Circula sin luces"
+            
+    }
+}
     }
 
     rutas = {
@@ -276,7 +323,23 @@ def main():
             "costoRuta": 17290.0,
             "horaSalida": "2025-10-09 15:00",
             "horaLlegada": "2025-10-09 19:00"
-        }
+        },
+        "RN009": {
+            "idLegajo": "81306",          # Chofer: Elena Silva
+            "idPatente": "D654TU",       # Vehículo: Volkswagen Crafter
+            "totalKm": 250,
+            "costoRuta": 26375.0,
+            "horaSalida": "2025-10-11 08:30",
+            "horaLlegada": "2025-10-11 13:15"
+        },
+        "RN010": {
+            "idLegajo": "96767",          # Chofer: Harry Farias
+            "idPatente": "AE432VX",       # Vehículo: Fiat Ducato
+            "totalKm": 145,
+            "costoRuta": 13528.5,
+            "horaSalida": "2025-10-12 06:45",
+            "horaLlegada": "2025-10-12 10:00"
+}
     }
 
     #-------------------------------------------------
