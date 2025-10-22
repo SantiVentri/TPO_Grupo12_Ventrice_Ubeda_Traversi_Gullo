@@ -450,18 +450,12 @@ def main():
                         
                         if opcion == "1":
                             # Ingresar nuevo nombre
-                            nombre = ""
-                            while not nombre:
-                                nombre = input("Ingrese el primer nombre del chofer: ")
-
-                                if nombre.strip() == "":
-                                    print("El nombre no puede estar vacío. Intente nuevamente.")
-                                    nombre = ""
-                                else:
-                                    for char in nombre:
-                                        if not char.isalpha():
-                                            print("El nombre solo puede contener letras. Intente nuevamente.")
-                                            nombre = ""
+                            nombreValido = False
+                            while not nombreValido:
+                                apellido = input("Ingrese el primer nombre del chofer: ")
+                                nombreValido, mensajeError = validarNombre(apellido)
+                                if not nombreValido:
+                                    print(mensajeError + " Intente nuevamente.")
 
                             # Guardar nuevo nombre
                             choferes[int(legajo)]['nombre'] = nombre
@@ -470,18 +464,12 @@ def main():
                             
                         elif opcion == "2":
                             # Ingresar nuevo apellido
-                            apellido = ""
-                            while not apellido:
-                                apellido = input("Ingrese el primer apellido del chofer: ")
-
-                                if nombre.strip() == "":
-                                    print("El apellido no puede estar vacío. Intente nuevamente.")
-                                    apellido = ""
-                                else:
-                                    for char in nombre:
-                                        if not char.isalpha() and char != " ":
-                                            print("El apellido solo puede contener letras y espacios. Intente nuevamente.")
-                                            apellido = ""
+                            apellidoValido = False
+                            while not apellidoValido:
+                                apellido = input("Ingrese el apellido del chofer: ")
+                                apellidoValido, mensajeError = validarApellido(apellido)
+                                if not apellidoValido:
+                                    print(mensajeError + " Intente nuevamente.")
 
                             # Guardar nuevo apellido
                             choferes[int(legajo)]['apellido'] = apellido
@@ -490,16 +478,12 @@ def main():
 
                         elif opcion == "3":
                             # Solicitar teléfono
-                            telefono = ""
-                            while not telefono:
-                                telefono = input("Ingrese el teléfono del chofer: +54 11 ")
-
-                                if len(telefono) != 8:
-                                    print("El teléfono debe tener 8 dígitos. Intente nuevamente.")
-                                    telefono = ""
-                                elif not telefono.isdigit():
-                                    print("El teléfono solo puede contener números. Intente nuevamente.")
-                                    telefono = ""
+                            telValido = False
+                            while not telValido:
+                                telefono = input("Ingrese el teléfono del chofer: ")
+                                telValido, mensajeError = validarTelefono(telefono)
+                                if not telValido:
+                                    print(mensajeError + " Intente nuevamente.")
 
                             # Guardar nuevo teléfono
                             choferes[int(legajo)]['telefono'] = telefono
@@ -508,16 +492,12 @@ def main():
 
                         elif opcion == "4":
                             # Ingresar nueva cantidad de km recorridos
-                            while True:
-                                cantidadKm = input("Ingrese la cantidad de km recorridos por el chofer (Presione Enter para 0): ")
-
-                                if cantidadKm == "":
-                                    cantidadKm = 0
-                                    break
-                                elif not cantidadKm.isdigit() or int(cantidadKm) < 0:
-                                    print("La cantidad de km solo puede contener números. Intente nuevamente.")
-                                else:
-                                    break
+                            kmValidos = False
+                            while not kmValidos:
+                                cantidadKm = input("Ingrese el cantidad de km recorridos del chofer: ")
+                                kmValidos, mensajeError = validarKm(cantidadKm)
+                                if not kmValidos:
+                                    print(mensajeError + " Intente nuevamente.")
 
                             # Guardar nueva cantidad de km
                             choferes[int(legajo)]['cantidadKm'] = int(cantidadKm)
