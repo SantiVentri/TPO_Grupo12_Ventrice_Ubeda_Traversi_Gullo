@@ -663,40 +663,53 @@ def main():
                     print("--------------------------------------\n")
 
                     # Imprimir los títulos de la tabla
+                    encabezados = ["Legajo", "Nombre", "Teléfono", "Km Recorridos", "Activo", "Turnos"]
                     print("-" * 135)
-                    print(f"|{'Legajo':^8}|{'Nombre':^25}|{'Teléfono':^17}|{'Km Recorridos':^15}|{'Activo':^8}|{'Turnos':^55}|")
+                    print(f"|{encabezados[0]:^8}|{encabezados[1]:^25}|{encabezados[2]:^17}|{encabezados[3]:^15}|{encabezados[4]:^8}|{encabezados[5]:^55}|")
                     print("-" * 135)
 
-                    # Imprimir filas de datos
+                    # Crear matriz con los datos de los choferes
+                    matriz = []
                     for legajo, datos in choferes.items():
                         nombre_completo = datos['nombre'] + " " + datos['apellido']
-                        
+
                         # Procesar celda de turnos
-                        celdaTurnos = ""
                         if len(datos['turnos']) == 0:
                             celdaTurnos = "Sin turnos"
                         else:
-                            for turno in datos['turnos'].values():
-                                if celdaTurnos == "":
-                                    celdaTurnos = turno
-                                else:
-                                    celdaTurnos += ", " + turno
+                            celdaTurnos = ", ".join(datos['turnos'].values())
 
                         # Procesar celda de activo
-                        if datos['activo']:
-                            activo_str = "Sí"
-                        else:
-                            activo_str = "No"
-                        
-                        # Imprimir fila
-                        print("|" +
-                            str(legajo).center(8) + "| " +                              # Celda legajo
-                            nombre_completo.ljust(24) + "| " +                          # Celda nombre completo
-                            str("+54 11 " + str(datos['telefono'])).ljust(8) + " | " +  # Celda teléfono
-                            str(datos['cantidadKm']).ljust(14) + "| " +                 # Celda km recorridos
-                            activo_str.ljust(7) + "| " +                                # Celda activo
-                            (celdaTurnos).ljust(54) + "|")                              # Celda turnos
-                    
+                        activo_str = "Sí" if datos['activo'] else "No"
+
+                        # Agregar fila a la matriz
+                        matriz.append([
+                            str(legajo),
+                            nombre_completo,
+                            "+54 11 " + str(datos['telefono']),
+                            str(datos['cantidadKm']),
+                            activo_str,
+                            celdaTurnos
+                        ])
+
+                    # Recorrer matriz con for i / for j e imprimir tabla
+                    for i in range(len(matriz)):
+                        print("|", end="")
+                        for j in range(len(matriz[i])):
+                            if j == 0:
+                                print(f"{matriz[i][j]:^8}|", end="")
+                            elif j == 1:
+                                print(f"{matriz[i][j]:<25}|", end="")
+                            elif j == 2:
+                                print(f"{matriz[i][j]:<17}|", end="")
+                            elif j == 3:
+                                print(f"{matriz[i][j]:<15}|", end="")
+                            elif j == 4:
+                                print(f"{matriz[i][j]:^8}|", end="")
+                            elif j == 5:
+                                print(f"{matriz[i][j]:<55}|", end="")
+                        print()  # salto de línea entre filas
+
                     # Cerrar tabla
                     print("-" * 135)
 
