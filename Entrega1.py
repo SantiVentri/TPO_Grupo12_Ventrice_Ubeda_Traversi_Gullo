@@ -819,15 +819,44 @@ def main():
                     print("----------LISTA DE VEHICULOS----------")
                     if len(vehiculos) == 0:
                         print("No hay vehiculos cargados.")
+                    
                     else: 
+                        encabezado = ["Patente", "Modelo", "Año", "Km", "Costo/Km", "Activo", "Infracciones"]
+                        tabla = []
+                        
+                        #Cargar datos de cada vehiculo
                         for patente, datos in vehiculos.items():
-                             print(f"\nPatente: {patente}")
-                             print(f"  Activo     : {datos['activo']}")
-                             print(f"  Modelo     : {datos['modelo']}")
-                             print(f"  Año compra : {datos['añoCompra']}")
-                             print(f"  Km totales : {datos['cantidadKm']}")
-                             print(f"  Costo x Km : {datos['costoKm']}")
-                             print(f"  Infracciones: {len(datos['infracciones'])} registradas")
+                            fila = [
+                                patente,
+                                datos["modelo"],
+                                datos["añoCompra"],
+                                datos["cantidadKm"],
+                                f"${datos["activo"]:.2f}",
+                                "Si" if datos["activo"] else "No",
+                                len(datos["infracciones"])
+                            ]
+                            tabla.append(fila)
+                        
+                        #Calcular ancho de cada columna 
+                        anchos=[max(len(str(fila[i])) for fila in ([encabezado] + tabla)) for i in range(len(encabezado))]
+
+                        #Funcion para imprimir una linea dvisoria 
+                        def linea():
+                            print("+" + "+".join("-" * (anchos[i] + 2) for i in range(len(anchos))) + "+")
+                        
+                        #Funcion para imprimir una fila formateada 
+                        def fila_texto(fila):
+                            print(" | " + " | ".join(str(fila[i]).ljust(anchos[i]) for i in range(len(fila))) + " |")
+                        
+                        #Imprimir la tabla completa
+
+                        linea()
+                        fila_texto(encabezado)
+                        linea()
+                        for f in tabla:
+                            fila_texto(f)
+                        linea()
+                    print("\n")
 
                 input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
                 print("\n\n")
