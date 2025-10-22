@@ -22,7 +22,7 @@ import random
 # FUNCIONES
 #----------------------------------------------------------------------------------------------
 from funciones.def_choferes import *
-
+from funciones.def_vehiculos import *
 #----------------------------------------------------------------------------------------------
 # CUERPO PRINCIPAL
 #----------------------------------------------------------------------------------------------
@@ -733,29 +733,48 @@ def main():
                 
                 elif opcionSubmenu == "1":   # Opción 1 del submenú
                         print("---------AGREGAR VEHICULO----------")
-                        patente = input("Ingrese la patente del vehículo (ej. AE456GH): ").upper()
-                        if patente in vehiculos:
+                        patenteValida=False
+                      
+                        while not patenteValida:
+                         patente = input("Ingrese la patente del vehículo (ej. AE456GH): ").upper()
+                         patenteValida, mensajeError = validar_patente(patente)
+
+                         if not patenteValida: 
+                             print(mensajeError)
+
+                         elif patente in vehiculos:
                             print("Ya existe un vehículo con esa patente.")
-                        else: 
-                            modelo = input("Ingrese el modelo del vehiculo: ")
+                         
+                         else: 
+                             print("Patente valida y disponible")
+                             patenteValida = True
+                         
+                        #modelo del vehiculo 
+                        modelo = input("Ingrese el modelo del vehiculo: ")
                         
                         añoCompra = input("Ingrese año de compra: ")
-                        while not añoCompra.isdigit():#Validar año de compra 
-                            print("Error: el año debe ser numérico.")
-                            añoCompra = input("Ingrese año de compra: ")
-                        añoCompra = int(añoCompra)
+                        valido, mensaje = validar_año_compra(añoCompra)
+                        while not valido: 
+                            print(mensaje)
+                            añoCompra = input("Ingrese nuevamente el año de compra: ")
+                            valido, mensaje = validar_año_compra(añoCompra)
+                        añoCompra= int(añoCompra)
 
                         cantidadKm = input("Ingrese cantidad de km actuales: ")
-                        while not cantidadKm.replace(".", "", 1).isdigit(): #validar cantidad de Km
-                            print("Error: el valor debe ser numérico.")
-                            cantidadKm = input("Ingrese cantidad de km actuales: ")
-                        cantidadKm = float(cantidadKm)
+                        valido,mensaje = validar_cant_km(cantidadKm)
+                        while not valido:
+                            print(mensaje)
+                            cantidadKm = input("Ingrese la cantidad nuevamente: ")
+                            valido,mensaje = validar_cant_km(cantidadKm)
 
-                        costoKm = input("Ingrese costo por km: ")
-                        while not costoKm.replace(".", "", 1).isdigit(): #validamos el costo por kilometro 
-                            print("Error: el valor debe ser numérico.")
-                            costoKm = input("Ingrese costo por km: ")
-                        costoKm = float(costoKm)
+                        costoKmValido = False 
+                        while not costoKmValido:
+                            costoKm = input ("Ingrese costo por Km: ")
+                            costoKmValido, mensajeError = validar_costo_km(costoKm)
+                            if not costoKmValido:
+                                print(mensajeError)
+                            costoKm = float(costoKm)
+                        
 
                         vehiculos[patente] = {
                             "activo": True,  # SIEMPRE TRUE al cargar
