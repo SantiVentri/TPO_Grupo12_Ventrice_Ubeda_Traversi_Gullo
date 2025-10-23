@@ -412,7 +412,7 @@ def main():
                         nombreValido = False
                         while not nombreValido:
                             nombre = input("Ingrese el primer nombre del chofer: ")
-                            nombreValido, mensajeError = validarNombre(nombre)
+                            nombreValido, mensajeError = validarNombreApellido("nombre", nombre)
                             if not nombreValido:
                                 print(mensajeError + " Intente nuevamente.")
 
@@ -420,7 +420,7 @@ def main():
                         apellidoValido = False
                         while not apellidoValido:
                             apellido = input("Ingrese el apellido del chofer: ")
-                            apellidoValido, mensajeError = validarApellido(apellido)
+                            apellidoValido, mensajeError = validarNombreApellido("apellido", apellido)
                             if not apellidoValido:
                                 print(mensajeError + " Intente nuevamente.")
 
@@ -502,6 +502,12 @@ def main():
                             print("Legajo inválido. Intente nuevamente.")
                             break
 
+                        # Mostrar estado de activo
+                        if choferes[int(legajo)]['activo'] == True:
+                            estaActivo = "Sí"
+                        else:
+                            estaActivo = "No"
+
                         # Seleccionar dato a modificar
                         print("\nDatos actuales del chofer:")
                         print(f"1. Nombre: {choferes[int(legajo)]['nombre']}")
@@ -509,7 +515,7 @@ def main():
                         print(f"3. Teléfono: +54 11 {choferes[int(legajo)]['telefono']}")
                         print(f"4. Cantidad de km: {choferes[int(legajo)]['cantidadKm']}")
                         print(f"5. Ver turnos")
-                        print(f"6. Estado activo: {'Sí' if choferes[int(legajo)]['activo'] else 'No'}")
+                        print(f"6. Estado activo: {estaActivo}")
                         print("\n¿Qué dato desea modificar?")
                         
                         opcion = input("Ingrese el número de la opción (1-6): ")
@@ -524,7 +530,7 @@ def main():
                                 nombre = formatearNombreApellido(nombre)
 
                                 # Validar nombre
-                                nombreValido, mensajeError = validarNombre(nombre)
+                                nombreValido, mensajeError = validarNombreApellido("nombre", nombre)
                                 if not nombreValido:
                                     print(mensajeError + " Intente nuevamente.")
 
@@ -543,7 +549,7 @@ def main():
                                 apellido = formatearNombreApellido(apellido)
                                 
                                 # Validar apellido
-                                apellidoValido, mensajeError = validarApellido(apellido)
+                                apellidoValido, mensajeError = validarNombreApellido("apellido", apellido)
                                 if not apellidoValido:
                                     print(mensajeError + " Intente nuevamente.")
 
@@ -684,15 +690,13 @@ def main():
 
                     # Imprimir los títulos de la tabla
                     encabezados = ["Legajo", "Nombre", "Teléfono", "Km Recorridos", "Activo", "Turnos"]
-                    print("-" * 143)
-                    print(f"|{encabezados[0]:^11}|{encabezados[1]:^26}|{encabezados[2]:^18}|{encabezados[3]:^16}|{encabezados[4]:^9}|{encabezados[5]:^56}|")
-                    print("-" * 143)
+                    print("-" * 133)
+                    print(f"|{encabezados[0]:^11}|{encabezados[1]:^18}|{encabezados[2]:^18}|{encabezados[3]:^15}|{encabezados[4]:^8}|{encabezados[5]:^56}|")
+                    print("-" * 133)
 
                     # Crear matriz con los datos de los choferes
                     matriz = []
                     for legajo, datos in choferes.items():
-                        nombreCompleto = datos['nombre'] + " " + datos['apellido']
-
                         # Procesar celda de turnos
                         if len(datos['turnos']) == 0:
                             celdaTurnos = "Sin turnos"
@@ -706,12 +710,12 @@ def main():
                             estaActivo = "No"
 
                         # Formatear celda de teléfono
-                        telefonoFormateado = "+54 11 " + formatearTelefono(str(datos['telefono']))
+                        telefonoFormateado = "+54 11 " + str(datos['telefono'])[:-4] + "-" + str(datos['telefono'])[-4:]
 
                         # Agregar fila a la matriz
                         matriz.append([
                             str(legajo),
-                            nombreCompleto,
+                            f"{datos['nombre']} {datos['apellido']}",
                             telefonoFormateado,
                             str(datos['cantidadKm']),
                             estaActivo,
@@ -725,19 +729,19 @@ def main():
                             if j == 0:
                                 print(f" LU{matriz[i][j]:^8}|", end="")
                             elif j == 1:
-                                print(f" {matriz[i][j]:<25}|", end="")
+                                print(f" {matriz[i][j]:<17}|", end="")
                             elif j == 2:
                                 print(f" {matriz[i][j]:<17}|", end="")
                             elif j == 3:
-                                print(f" {matriz[i][j]:<15}|", end="")
+                                print(f" {matriz[i][j]:<14}|", end="")
                             elif j == 4:
-                                print(f" {matriz[i][j]:^8}|", end="")
+                                print(f" {matriz[i][j]:^7}|", end="")
                             elif j == 5:
                                 print(f" {matriz[i][j]:<55}|", end="")
                         print()  # salto de línea entre filas
 
                     # Cerrar tabla
-                    print("-" * 143)
+                    print("-" * 133)
 
                 input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
                 print("\n\n")

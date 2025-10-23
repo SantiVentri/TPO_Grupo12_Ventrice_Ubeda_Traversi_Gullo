@@ -30,67 +30,36 @@ def crearLegajo(choferes):
         if legajo not in choferes:
             return legajo
         
-def validarNombre(nombre):
+def validarNombreApellido(tipo, texto):
     """
     Esta función valida el nombre de un chofer.
     Parámetros:
         nombre (str): El nombre a validar.
     Salidas:
-        nombreValido (bool): Indica si el nombre es válido.
+        textoValido (bool): Indica si el nombre es válido.
         mensajeError (str): Mensaje de error en caso de que el nombre no sea válido.
     """
 
-    nombreValido = True
+    textoValido = True
     mensajeError = ""
 
-    if not nombre or nombre.strip() == "":
-        nombreValido = False
-        mensajeError = "El nombre no puede estar vacío."
-    elif len(nombre) < 3:
-        nombreValido = False
-        mensajeError = "El nombre debe tener al menos 3 caracteres."
-    elif len(nombre) > 15:
-        nombreValido = False
-        mensajeError = "El nombre no puede exceder los 15 caracteres."
+    if not texto or texto.strip() == "":
+        textoValido = False
+        mensajeError = f"El {tipo} no puede estar vacío."
+    elif len(texto) < 3:
+        textoValido = False
+        mensajeError = f"El {tipo} debe tener al menos 3 caracteres."
+    elif len(texto) > 15:
+        textoValido = False
+        mensajeError = f"El {tipo} no puede exceder los 15 caracteres."
     else:
-        for char in nombre:
+        for char in texto:
             if not (char.isalpha() or char == " "):
-                nombreValido = False
-                mensajeError = "El nombre solo puede contener letras y espacios."
+                textoValido = False
+                mensajeError = f"El {tipo} solo puede contener letras y espacios."
                 break
 
-    return nombreValido, mensajeError
-
-def validarApellido(apellido):
-    """
-    Esta función valida el apellido de un chofer.
-    Parámetros:
-        apellido (str): El apellido a validar.
-    Salidas:
-        apellidoValido (bool): Indica si el apellido es válido.
-        mensajeError (str): Mensaje de error en caso de que el apellido no sea válido.
-    """
-
-    apellidoValido = True
-    mensajeError = ""
-
-    if not apellido or apellido.strip() == "":
-        apellidoValido = False
-        mensajeError = "El apellido no puede estar vacío."
-    elif len(apellido) < 3:
-        apellidoValido = False
-        mensajeError = "El apellido debe tener al menos 3 caracteres."
-    elif len(apellido) > 20:
-        apellidoValido = False
-        mensajeError = "El apellido no puede exceder los 20 caracteres."
-    else:
-        for char in apellido:
-            if not (char.isalpha() or char == " "):
-                apellidoValido = False
-                mensajeError = "El apellido solo puede contener letras y espacios."
-                break
-
-    return apellidoValido, mensajeError
+    return textoValido, mensajeError
 
 def formatearNombreApellido(texto):
     """
@@ -125,18 +94,6 @@ def validarTelefono(telefono):
         mensajeError = "El teléfono debe tener 8 dígitos."
 
     return telValido, mensajeError
-
-def formatearTelefono(telefono):
-    """
-    Esta función formatea el teléfono de un chofer para que tenga el formato adecuado.
-    Parámetros:
-        telefono (str): El teléfono a formatear.
-    Salida:
-        telefonoFormateado (str): El teléfono formateado con un guión en el formato adecuado.
-    """
-
-    telefonoFormateado = telefono[:4] + "-" + telefono[4:]
-    return telefonoFormateado
 
 def validarKm(km):
     """
