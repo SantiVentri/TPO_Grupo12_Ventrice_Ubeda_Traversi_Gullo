@@ -51,9 +51,9 @@ def main():
         "telefono": 26335567,
         "cantidadKm": 34500,
         "turnos": {
-            "turno1": "Mañana - Martes",
-            "turno2": "Tarde - Jueves",
-            "turno3": "Mañana - Viernes"
+            "turno1": "Martes - Mañana",
+            "turno2": "Jueves - Tarde",
+            "turno3": "Viernes - Mañana"
         }
     },
         33051: {
@@ -144,7 +144,7 @@ def main():
             "activo": True,
             "nombre": "Harry",
             "apellido": "Farias",
-            "telefono": 3436678,
+            "telefono": 34366785,
             "cantidadKm": 30500,
             "turnos": {
                 "turno1": "Martes - Tarde",
@@ -457,7 +457,7 @@ def main():
                                 print("Horario inválido. Intente nuevamente.")
                                 horarioTurno = input("Ingrese el nuevo horario (Mañana, Tarde o Noche): ")
 
-                            nuevoTurno = f"{horarioTurno} - {diaTurno}"
+                            nuevoTurno = f"{diaTurno} - {horarioTurno}"
 
                             # Confirmar turno
                             confirmarTurno = input(f"¿Confirma el turno {nuevoTurno}? (s/n): ").lower()
