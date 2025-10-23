@@ -435,8 +435,10 @@ def main():
                         # Solicitar cantidad de km recorridos
                         kmValidos = False
                         while not kmValidos:
-                            kmValidos = input("Ingrese la cantidad de km recorridos por el chofer (Presione Enter para 0): ")
-                            kmValidos, mensajeError = validarKm(kmValidos)
+                            cantidadKm = input("Ingrese la cantidad de km recorridos por el chofer (Presione Enter para 0): ")
+                            if cantidadKm.strip() == "":
+                                cantidadKm = "0"
+                            kmValidos, mensajeError = validarKm(cantidadKm)
                             if not kmValidos:
                                 print(mensajeError + " Intente nuevamente.")
 
@@ -471,7 +473,7 @@ def main():
                             "nombre": nombre,
                             "apellido": apellido,
                             "telefono": telefono,
-                            "cantidadKm": int(cantidadKm),
+                            "cantidadKm": float(cantidadKm),
                             "turnos": turnos
                         }
 
@@ -563,7 +565,7 @@ def main():
                                     print(mensajeError + " Intente nuevamente.")
 
                             # Guardar nueva cantidad de km
-                            choferes[int(legajo)]['cantidadKm'] = int(cantidadKm)
+                            choferes[int(legajo)]['cantidadKm'] = float(cantidadKm)
 
                             print("\nDato modificado exitosamente.")
                                     

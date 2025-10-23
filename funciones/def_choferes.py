@@ -130,7 +130,7 @@ def validarKm(km):
     if not km.isdigit():
         kmValido = False
         mensajeError = "Los kilómetros solo pueden contener números."
-    elif int(km) < 0:
+    elif float(km) < 0:
         kmValido = False
         mensajeError = "Los kilómetros no pueden ser negativos."
 
