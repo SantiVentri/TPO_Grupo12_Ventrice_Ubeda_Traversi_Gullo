@@ -671,11 +671,7 @@ def main():
                     # Crear matriz con los datos de los choferes
                     matriz = []
                     for legajo, datos in choferes.items():
-<<<<<<< HEAD
-                        nombre_completo = datos['nombre'] + " " + datos['apellido']
-=======
                         nombreCompleto = datos['nombre'] + " " + datos['apellido']
->>>>>>> 0d5f76ceba0db34c67970902868f89385dc0ab73
 
                         # Procesar celda de turnos
                         if len(datos['turnos']) == 0:
@@ -684,29 +680,18 @@ def main():
                             celdaTurnos = ", ".join(datos['turnos'].values())
 
                         # Procesar celda de activo
-<<<<<<< HEAD
-                        activo_str = "Sí" if datos['activo'] else "No"
-=======
                         if datos['activo']:
                             estaActivo = "Sí"
                         else:
                             estaActivo = "No"
->>>>>>> 0d5f76ceba0db34c67970902868f89385dc0ab73
 
                         # Agregar fila a la matriz
                         matriz.append([
                             str(legajo),
-<<<<<<< HEAD
-                            nombre_completo,
-                            "+54 11 " + str(datos['telefono']),
-                            str(datos['cantidadKm']),
-                            activo_str,
-=======
                             nombreCompleto,
                             "+54 11 " + str(datos['telefono']),
                             str(datos['cantidadKm']),
                             estaActivo,
->>>>>>> 0d5f76ceba0db34c67970902868f89385dc0ab73
                             celdaTurnos
                         ])
 
