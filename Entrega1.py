@@ -776,7 +776,7 @@ def main():
                       
                         while not patenteValida:
                          patente = input("Ingrese la patente del vehículo (ej. AE456GH): ").upper()
-                         patenteValida, mensajeError = validar_patente(patente)
+                         patenteValida, mensajeError = validarPatente(patente)
 
                          if not patenteValida: 
                              print(mensajeError)
@@ -792,24 +792,24 @@ def main():
                         modelo = input("Ingrese el modelo del vehiculo: ")
                         
                         añoCompra = input("Ingrese año de compra: ")
-                        valido, mensaje = validar_año_compra(añoCompra)
+                        valido, mensaje = validarAñoCompra(añoCompra)
                         while not valido: 
                             print(mensaje)
                             añoCompra = input("Ingrese nuevamente el año de compra: ")
-                            valido, mensaje = validar_año_compra(añoCompra)
+                            valido, mensaje = validarAñoCompra(añoCompra)
                         añoCompra= int(añoCompra)
 
                         cantidadKm = input("Ingrese cantidad de km actuales: ")
-                        valido,mensaje = validar_cant_km(cantidadKm)
+                        valido,mensaje = validarCantKm(cantidadKm)
                         while not valido:
                             print(mensaje)
                             cantidadKm = input("Ingrese la cantidad nuevamente: ")
-                            valido,mensaje = validar_cant_km(cantidadKm)
+                            valido,mensaje = validarCantKm(cantidadKm)
 
                         costoKmValido = False 
                         while not costoKmValido:
                             costoKm = input ("Ingrese costo por Km: ")
-                            costoKmValido, mensajeError = validar_costo_km(costoKm)
+                            costoKmValido, mensajeError = validarCostoKm(costoKm)
                             if not costoKmValido:
                                 print(mensajeError)
                             costoKm = float(costoKm)
@@ -850,7 +850,7 @@ def main():
                             nuevaPatenteValida = False
                             while not nuevaPatenteValida:
                                 nuevaPatente= input("Ingrese la nueva patente: ").upper()
-                                nuevaPatenteValida, mensajeError = validar_patente(nuevaPatente)
+                                nuevaPatenteValida, mensajeError = validarPatente(nuevaPatente)
 
                                 if not nuevaPatenteValida:
                                     print(f"{mensajeError}")
@@ -868,7 +868,7 @@ def main():
                             añoValido = False 
                             while not añoValido:
                                 nuevoAño =  input("Ingrese el nuevo año: ")
-                                añoValido, mensajeError = validar_año_compra(nuevoAño)
+                                añoValido, mensajeError = validarAñoCompra(nuevoAño)
                                 if not añoValido:
                                     print(mensajeError)
                                 else:
@@ -880,7 +880,7 @@ def main():
                              kmValido = False 
                              while not kmValido:
                                  nuevoKm = input("Ingrese l nueva cantidad de Km actuales: ")
-                                 kmValido, mensajeError = validar_cant_km(nuevoKm)
+                                 kmValido, mensajeError = validarCantKm(nuevoKm)
                                  if not kmValido:
                                      print(mensajeError)
                                  else: 
@@ -891,7 +891,7 @@ def main():
                             costoValido = False 
                             while not costoValido:
                                 nuevoCosto = input("Ingrese el nuevo costo del Km: ")
-                                costoValido, mensajeError = validar_costo_km(nuevoCosto)
+                                costoValido, mensajeError = validarCostoKm(nuevoCosto)
                                 if not costoValido:
                                     print(mensajeError)
                                 else:

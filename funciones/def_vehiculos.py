@@ -18,7 +18,7 @@ Pendientes:
 # FUNCIONES
 #----------------------------------------------------------------------------------------------
 
-def validar_patente(patente):
+def validarPatente(patente):
     """
     Valida una patente argentina en formato viejo (AAA123) o nuevo (AB123CD).
     Devuelve (patenteValida, mensajeError)
@@ -46,7 +46,7 @@ def validar_patente(patente):
     return patenteValida, mensajeError
 
 
-def validar_año_compra (añoCompra):
+def validarAñoCompra (añoCompra):
       """
       Validar que el año del vehiculo sea correcto
       """
@@ -73,7 +73,7 @@ def validar_año_compra (añoCompra):
     # Devuelve resultado al final
       return esValido, mensajeError
 
-def validar_cant_km(cantidadKm):
+def validarCantKm(cantidadKm):
     """
     Valida que un valor ingresado sea numérico (entero o decimal positivo).
     Devuelve una tupla (esValido, mensajeError)
@@ -94,7 +94,7 @@ def validar_cant_km(cantidadKm):
 
     return esValido, mensajeError
 
-def validar_costo_km(costoKm):
+def validarCostoKm(costoKm):
     """
     Valida que el costo por kilómetro sea un número positivo (puede tener decimales).
     Devuelve una tupla (esValido, mensajeError)
