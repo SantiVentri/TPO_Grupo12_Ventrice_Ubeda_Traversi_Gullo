@@ -679,9 +679,9 @@ def main():
 
                     # Imprimir los títulos de la tabla
                     encabezados = ["Legajo", "Nombre", "Teléfono", "Km Recorridos", "Activo", "Turnos"]
-                    print("-" * 140)
-                    print(f"|{encabezados[0]:^8}|{encabezados[1]:^26}|{encabezados[2]:^18}|{encabezados[3]:^16}|{encabezados[4]:^9}|{encabezados[5]:^56}|")
-                    print("-" * 140)
+                    print("-" * 143)
+                    print(f"|{encabezados[0]:^11}|{encabezados[1]:^26}|{encabezados[2]:^18}|{encabezados[3]:^16}|{encabezados[4]:^9}|{encabezados[5]:^56}|")
+                    print("-" * 143)
 
                     # Crear matriz con los datos de los choferes
                     matriz = []
@@ -718,7 +718,7 @@ def main():
                         print("|", end="")
                         for j in range(len(matriz[i])):
                             if j == 0:
-                                print(f"{matriz[i][j]:^8}|", end="")
+                                print(f" LU{matriz[i][j]:^8}|", end="")
                             elif j == 1:
                                 print(f" {matriz[i][j]:<25}|", end="")
                             elif j == 2:
@@ -732,7 +732,7 @@ def main():
                         print()  # salto de línea entre filas
 
                     # Cerrar tabla
-                    print("-" * 140)
+                    print("-" * 143)
 
                 input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
                 print("\n\n")
