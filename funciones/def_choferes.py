@@ -92,6 +92,18 @@ def validarApellido(apellido):
 
     return apellidoValido, mensajeError
 
+def formatearNombreApellido(texto):
+    """
+    Esta función formatea el nombre o apellido de un chofer para que la primera letra sea mayúscula.
+    Parámetros:
+        nombre (str): El nombre a formatear.
+    Salida:
+        textoFormateado (str): El nombre o apellido formateado con la primera letra en mayúscula y el resto en minúscula.
+    """
+
+    textoFormateado = texto.strip().title()
+    return textoFormateado
+
 def validarTelefono(telefono):
     """
     Esta función valida el teléfono de un chofer.
@@ -113,6 +125,18 @@ def validarTelefono(telefono):
         mensajeError = "El teléfono debe tener 8 dígitos."
 
     return telValido, mensajeError
+
+def formatearTelefono(telefono):
+    """
+    Esta función formatea el teléfono de un chofer para que tenga el formato adecuado.
+    Parámetros:
+        telefono (str): El teléfono a formatear.
+    Salida:
+        telefonoFormateado (str): El teléfono formateado con un guión en el formato adecuado.
+    """
+
+    telefonoFormateado = telefono[:4] + "-" + telefono[4:]
+    return telefonoFormateado
 
 def validarKm(km):
     """
