@@ -95,18 +95,6 @@ def validarTelefono(telefono):
 
     return telValido, mensajeError
 
-def formatearTelefono(telefono):
-    """
-    Esta función formatea el teléfono de un chofer para que tenga el formato adecuado.
-    Parámetros:
-        telefono (str): El teléfono a formatear.
-    Salida:
-        telefonoFormateado (str): El teléfono formateado con un guión en el formato adecuado.
-    """
-
-    telefonoFormateado = telefono[:4] + "-" + telefono[4:]
-    return telefonoFormateado
-
 def validarKm(km):
     """
     Esta función valida la cantidad de km recorridos por un chofer.

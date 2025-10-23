@@ -710,7 +710,7 @@ def main():
                             estaActivo = "No"
 
                         # Formatear celda de teléfono
-                        telefonoFormateado = "+54 11 " + formatearTelefono(str(datos['telefono']))
+                        telefonoFormateado = "+54 11 " + str(datos['telefono'])[:-4] + "-" + str(datos['telefono'])[-4:]
 
                         # Agregar fila a la matriz
                         matriz.append([
