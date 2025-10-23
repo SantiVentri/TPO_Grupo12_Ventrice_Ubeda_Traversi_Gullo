@@ -502,6 +502,12 @@ def main():
                             print("Legajo inválido. Intente nuevamente.")
                             break
 
+                        # Mostrar estado de activo
+                        if choferes[int(legajo)]['activo'] == True:
+                            estaActivo = "Sí"
+                        else:
+                            estaActivo = "No"
+
                         # Seleccionar dato a modificar
                         print("\nDatos actuales del chofer:")
                         print(f"1. Nombre: {choferes[int(legajo)]['nombre']}")
@@ -509,7 +515,7 @@ def main():
                         print(f"3. Teléfono: +54 11 {choferes[int(legajo)]['telefono']}")
                         print(f"4. Cantidad de km: {choferes[int(legajo)]['cantidadKm']}")
                         print(f"5. Ver turnos")
-                        print(f"6. Estado activo: {'Sí' if choferes[int(legajo)]['activo'] else 'No'}")
+                        print(f"6. Estado activo: {estaActivo}")
                         print("\n¿Qué dato desea modificar?")
                         
                         opcion = input("Ingrese el número de la opción (1-6): ")
