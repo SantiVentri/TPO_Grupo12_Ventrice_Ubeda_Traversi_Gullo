@@ -412,7 +412,7 @@ def main():
                         nombreValido = False
                         while not nombreValido:
                             nombre = input("Ingrese el primer nombre del chofer: ")
-                            nombreValido, mensajeError = validarNombre(nombre)
+                            nombreValido, mensajeError = validarNombreApellido("nombre", nombre)
                             if not nombreValido:
                                 print(mensajeError + " Intente nuevamente.")
 
@@ -420,7 +420,7 @@ def main():
                         apellidoValido = False
                         while not apellidoValido:
                             apellido = input("Ingrese el apellido del chofer: ")
-                            apellidoValido, mensajeError = validarApellido(apellido)
+                            apellidoValido, mensajeError = validarNombreApellido("apellido", apellido)
                             if not apellidoValido:
                                 print(mensajeError + " Intente nuevamente.")
 
@@ -530,7 +530,7 @@ def main():
                                 nombre = formatearNombreApellido(nombre)
 
                                 # Validar nombre
-                                nombreValido, mensajeError = validarNombre(nombre)
+                                nombreValido, mensajeError = validarNombreApellido("nombre", nombre)
                                 if not nombreValido:
                                     print(mensajeError + " Intente nuevamente.")
 
@@ -549,7 +549,7 @@ def main():
                                 apellido = formatearNombreApellido(apellido)
                                 
                                 # Validar apellido
-                                apellidoValido, mensajeError = validarApellido(apellido)
+                                apellidoValido, mensajeError = validarNombreApellido("apellido", apellido)
                                 if not apellidoValido:
                                     print(mensajeError + " Intente nuevamente.")
 
