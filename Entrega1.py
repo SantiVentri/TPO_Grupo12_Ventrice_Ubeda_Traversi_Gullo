@@ -427,7 +427,7 @@ def main():
                         # Solicitar teléfono
                         telValido = False
                         while not telValido:
-                            telefono = input("Ingrese el teléfono del chofer: ")
+                            telefono = input("Ingrese el teléfono del chofer: +54 11 ")
                             telValido, mensajeError = validarTelefono(telefono)
                             if not telValido:
                                 print(mensajeError + " Intente nuevamente.")
@@ -445,27 +445,28 @@ def main():
                         # Agregar turnos
                         turnos = {}
                         for i in range(3):
-                            # Ingresar nuevo día
-                            diaTurno = input("Ingrese el nuevo día (Lunes, Martes, etc.): ")
-                            while diaTurno not in ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]:
-                                print("Día inválido. Intente nuevamente.")
-                                diaTurno = input("Ingrese el nuevo día (Lunes, Martes, etc.): ")
-
-                            # Ingresar nuevo horario
-                            horarioTurno = input("Ingrese el nuevo horario (Mañana, Tarde o Noche): ")
-                            while horarioTurno not in ["Mañana", "Tarde", "Noche"]:
-                                print("Horario inválido. Intente nuevamente.")
-                                horarioTurno = input("Ingrese el nuevo horario (Mañana, Tarde o Noche): ")
-
-                            nuevoTurno = f"{diaTurno} - {horarioTurno}"
-
-                            # Confirmar turno
-                            confirmarTurno = input(f"¿Confirma el turno {nuevoTurno}? (s/n): ").lower()
-                            if confirmarTurno == "s" or confirmarTurno == "si":
-                                turnos[f"turno{i+1}"] = nuevoTurno
-                            else:
-                                print("Turno no confirmado. Intente nuevamente.")
-                                i -= 1  # Se resta 1 al índice para repetir el mismo turno
+                            turnoValido = False
+                            while not turnoValido:
+                                # Ingresar nuevo día
+                                diaTurno = input(f"Ingrese el día para el turno {i+1} (Lunes, Martes, etc.) o '-' para dejarlo vacío: ")
+                                
+                                if diaTurno == "-":
+                                    print(f"Turno {i+1} quedará vacío.")
+                                    turnoValido = True
+                                else:
+                                    # Ingresar nuevo horario
+                                    horarioTurno = input("Ingrese el horario (Mañana, Tarde o Noche): ")
+                                    
+                                    # Crear y validar el turno
+                                    nuevoTurno = f"{diaTurno.title()} - {horarioTurno.title()}"
+                                    turnoValido, mensajeError = validarTurno(turnos, nuevoTurno)
+                                    
+                                    if not turnoValido:
+                                        print(mensajeError + " Intente nuevamente.")
+                                    else:
+                                        # Guardar turno válido
+                                        turnos[f"turno{i+1}"] = nuevoTurno
+                                        print(f"Turno {nuevoTurno} agregado exitosamente.")
 
                         # Guardar chofer
                         choferes[legajo] = {
@@ -555,7 +556,7 @@ def main():
                             # Solicitar teléfono
                             telValido = False
                             while not telValido:
-                                telefono = input("Ingrese el teléfono del chofer: ")
+                                telefono = input("Ingrese el teléfono del chofer: +54 11 ")
                                 telValido, mensajeError = validarTelefono(telefono)
                                 if not telValido:
                                     print(mensajeError + " Intente nuevamente.")
@@ -597,29 +598,33 @@ def main():
                             elif turnoModificar not in ["1", "2", "3"]:
                                 print("Opción inválida. Intente nuevamente.")
                             else:
-                                # Ingresar nuevo día
-                                diaNuevoTurno = input("Ingrese el nuevo día (Lunes, Martes, etc.) o '-' para dejar vacío: ")
-                                if diaNuevoTurno == "-":
-                                    # Si se ingresa "-", eliminar el turno
-                                    del choferes[int(legajo)]['turnos'][f"turno{turnoModificar}"]
-                                    print("\nTurno eliminado exitosamente.")
-                                else:
-                                    while diaNuevoTurno not in ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]:
-                                        print("Día inválido. Intente nuevamente.")
-                                        diaNuevoTurno = input("Ingrese el nuevo día (Lunes, Martes, etc.) o '-' para dejar vacío: ")
-                                        if diaNuevoTurno == "-":
-                                            break
+                                turnoValido = False
+                                while not turnoValido:
+                                    # Ingresar nuevo día
+                                    nuevoDia = input("Ingrese el nuevo día del turno (Lunes a Viernes) o '-' para dejar vacío: ")
 
-                                    if diaNuevoTurno != "-":
+                                    if nuevoDia == "-":
+                                        # Eliminar el turno
+                                        if f'turno{turnoModificar}' in choferes[int(legajo)]['turnos']:
+                                            del choferes[int(legajo)]['turnos'][f'turno{turnoModificar}']
+                                        print("Turno eliminado exitosamente.")
+                                        turnoValido = True
+                                    else:
                                         # Ingresar nuevo horario
-                                        horarioNuevoTurno = input("Ingrese el nuevo horario (Mañana, Tarde o Noche): ")
-                                        while horarioNuevoTurno not in ["Mañana", "Tarde", "Noche"]:
-                                            print("Horario inválido. Intente nuevamente.")
-                                            horarioNuevoTurno = input("Ingrese el nuevo horario (Mañana, Tarde o Noche): ")
+                                        nuevoHorario = input("Ingrese el nuevo horario del turno (Mañana, Tarde o Noche): ")
 
-                                        nuevoTurno = f"{horarioNuevoTurno} - {diaNuevoTurno}"
-                                        choferes[int(legajo)]['turnos'][f"turno{turnoModificar}"] = nuevoTurno
-                                        print("\nDato modificado exitosamente.")
+                                        # Validar turno
+                                        nuevoTurno = f"{nuevoDia} - {nuevoHorario}"
+                                        turnoValido, mensajeError = validarTurno(choferes[int(legajo)]["turnos"].values(), nuevoTurno)
+
+                                        if not turnoValido:
+                                            print(mensajeError + " Intente nuevamente.")
+                                        else:
+                                            # Guardar nuevo turno
+                                            choferes[int(legajo)]['turnos'][f'turno{turnoModificar}'] = nuevoTurno
+
+                                            # Mensaje de éxito
+                                            print(f"Turno del {nuevoDia} a la {nuevoHorario} modificado exitosamente.")
                             
                         elif opcion == "6":
                             # Modificar estado
