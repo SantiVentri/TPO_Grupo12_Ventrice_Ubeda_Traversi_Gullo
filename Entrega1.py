@@ -840,19 +840,65 @@ def main():
                             print(f"  {campo}: {valor}")
                         
                         print("¿Que datos deseas modificar?")
-                        print("1.Modelo")
-                        print("2. Año de compra")
-                        print("3. Kilometraje")
-                        print("4. Costo por Km")
+                        print("1.Patente")
+                        print("2. Modelo")
+                        print("3. Año de compra")
+                        print("4. Kilometro")
+                        print("5. Costo por Km")
                         opcionMod = input("Seleccione una opcion: ")
                         if opcionMod == "1":
-                            vehiculo["modelo"] = input("Nuevo modelo: ")
+                            nuevaPatenteValida = False
+                            while not nuevaPatenteValida:
+                                nuevaPatente= input("Ingrese la nueva patente: ").upper()
+                                nuevaPatenteValida, mensajeError = validar_patente(nuevaPatente)
+
+                                if not nuevaPatenteValida:
+                                    print(f"{mensajeError}")
+                                elif nuevaPatente in vehiculos:
+                                    print("Esta patente ya se encuentra registrada.")
+                                    nuevaPatenteValida=False
+                                else:
+                                    print(f"Patente actualizada a {nuevaPatente}")
+                                    nuevaPatenteValida = True
+                            vehiculos[nuevaPatente] = vehiculo
+                            del vehiculos[patente]
                         elif opcionMod == "2":
-                            vehiculo["añoCompra"]= int(input("Nuevo año de compra: "))
+                              vehiculo["modelo"] = input("Nuevo modelo: ") 
                         elif opcionMod == "3":
-                            vehiculo[cantidadKm]= float(input("Nueva cantidad de Km: "))
-                        elif opcionMod == "4": 
-                            vehiculo[costoKm]= float(input("Nuevo costo de Km: "))
+                            añoValido = False 
+                            while not añoValido:
+                                nuevoAño =  input("Ingrese el nuevo año: ")
+                                añoValido, mensajeError = validar_año_compra(nuevoAño)
+                                if not añoValido:
+                                    print(mensajeError)
+                                else:
+                                    añoValido = True
+                            vehiculo["añoCompra"] = int(nuevoAño)
+                            print("Año de compra modificado ")
+
+                        elif opcionMod == "4":
+                             kmValido = False 
+                             while not kmValido:
+                                 nuevoKm = input("Ingrese l nueva cantidad de Km actuales: ")
+                                 kmValido, mensajeError = validar_cant_km(nuevoKm)
+                                 if not kmValido:
+                                     print(mensajeError)
+                                 else: 
+                                  kmValido = True
+                             vehiculo["cantidadKm"] = float(nuevoKm)
+                             print("Se modifico la cantidad de Km!")
+                        elif opcionMod == "5": 
+                            costoValido = False 
+                            while not costoValido:
+                                nuevoCosto = input("Ingrese el nuevo costo del Km: ")
+                                costoValido, mensajeError = validar_costo_km(nuevoCosto)
+                                if not costoValido:
+                                    print(mensajeError)
+                                else:
+                                    costoValido = True
+                            vehiculo["costoKm"] = float(nuevoCosto)
+                            print ("Costo del Km actualizado")
+                                
                         else:
                             print("Opcion invalida.")
                         print("Vehiculo modificado correctamente!") 
@@ -887,7 +933,7 @@ def main():
                                 datos["modelo"],
                                 datos["añoCompra"],
                                 datos["cantidadKm"],
-                                f"${datos["activo"]:.2f}",
+                                f"${datos["costoKm"]:.2f}",
                                 "Si" if datos["activo"] else "No",
                                 len(datos["infracciones"])
                             ]
