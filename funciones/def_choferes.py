@@ -159,3 +159,37 @@ def validarKm(km):
         mensajeError = "Los kilómetros no pueden ser negativos."
 
     return kmValido, mensajeError
+
+def validarTurno(turnos, turno):
+    """
+    Esta función valida un turno para un chofer y se fija si ya está en la lista de turnos.
+    Parámetros:
+        turnos (dict): Lista de turnos ya asignados al chofer.
+        turno (str): El turno a validar en el formato "Día - Horario".
+    Salidas:
+        turnoValido (bool): Indica si el turno es válido.
+        mensajeError (str): Mensaje de error en caso de que el turno no sea válido.
+    """
+
+    # Separa el día y el horario del turno
+    dia, horario = turno.split(" - ")
+
+    turnoValido = True
+
+    if turno in turnos:
+        turnoValido = False
+        mensajeError = "El chofer ya tiene asignado ese turno."
+    else:
+        diaValido = dia.title() in ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
+        horarioValido = horario.title() in ["Mañana", "Tarde", "Noche"]
+
+        if not diaValido:
+            turnoValido = False
+            mensajeError = "El día del turno no es válido."
+        elif not horarioValido:
+            turnoValido = False
+            mensajeError = "El horario del turno no es válido."
+        else:
+            mensajeError = ""
+
+    return turnoValido, mensajeError
