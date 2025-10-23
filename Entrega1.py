@@ -616,11 +616,14 @@ def main():
                             estado = input("¿Desea que el chofer esté activo? (s/n): ").lower()
                             if estado == "s" or estado == "si":
                                 choferes[int(legajo)]['activo'] = True
+                                print("\nDato modificado exitosamente.")
                             elif estado == "n" or estado == "no":
                                 choferes[int(legajo)]['activo'] = False
+                                print("\nDato modificado exitosamente.")
+                            else:
+                                print("Opción inválida.")
+                                break
 
-                            print("\nDato modificado exitosamente.")
-                            
                         else:
                             print("Opción inválida.")
                             break
