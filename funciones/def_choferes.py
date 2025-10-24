@@ -21,9 +21,9 @@ def crearLegajo(choferes):
     """
     Esta función genera un legajo único para un nuevo chofer.
     Parámetros:
-        choferes (dict): Diccionario de choferes existentes con sus legajos como claves.
+    - choferes (dict): Diccionario de choferes existentes con sus legajos como claves.
     Salida:
-        legajo (int): Legajo único generado para el nuevo chofer.
+    - legajo (int): Legajo único generado para el nuevo chofer.
     """
     
     while True:
@@ -35,9 +35,9 @@ def validarNombreApellido(tipo, texto):
     """
     Esta función valida el nombre de un chofer.
     Parámetros:
-        nombre (str): El nombre a validar.
+    - nombre (str): El nombre a validar.
     Salidas:
-        textoValido (bool): Indica si el nombre es válido.
+    - textoValido (bool): Indica si el nombre es válido.
     """
 
     textoValido = True
@@ -64,9 +64,9 @@ def formatearNombreApellido(texto):
     """
     Esta función formatea el nombre o apellido de un chofer para que la primera letra sea mayúscula.
     Parámetros:
-        nombre (str): El nombre a formatear.
+    - nombre (str): El nombre a formatear.
     Salida:
-        textoFormateado (str): El nombre o apellido formateado con la primera letra en mayúscula y el resto en minúscula.
+    - textoFormateado (str): El nombre o apellido formateado con la primera letra en mayúscula y el resto en minúscula.
     """
 
     textoFormateado = texto.strip().title()
@@ -76,9 +76,9 @@ def validarTelefono(telefono):
     """
     Esta función valida el teléfono de un chofer.
     Parámetros:
-        telefono (str): El teléfono a validar.
+    - telefono (str): El teléfono a validar.
     Salidas:
-        telValido (bool): Indica si el teléfono es válido.
+    - telValido (bool): Indica si el teléfono es válido.
     """
 
     telValido = True
@@ -96,9 +96,9 @@ def validarKm(km):
     """
     Esta función valida la cantidad de km recorridos por un chofer. Lanza un error si no es un número positivo.
     Parámetros:
-        km (str): La cantidad km a validar.
+    - km (str): La cantidad km a validar.
     Salidas:
-        kmValidos (bool): Indica si la cantidad de km es válido.
+    - kmValidos (bool): Indica si la cantidad de km es válido.
     """
 
     kmValido = True
@@ -119,10 +119,10 @@ def validarTurno(turnos, turno):
     """
     Esta función valida un turno para un chofer y se fija si ya está en la lista de turnos.
     Parámetros:
-        turnos (dict): Lista de turnos ya asignados al chofer.
-        turno (str): El turno a validar en el formato "Día - Horario".
+    - turnos (dict): Lista de turnos ya asignados al chofer.
+    - turno (str): El turno a validar en el formato "Día - Horario".
     Salidas:
-        turnoValido (bool): Indica si el turno es válido.
+    - turnoValido (bool): Indica si el turno es válido.
     """
 
     # Separa el día y el horario del turno
