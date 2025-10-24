@@ -503,23 +503,19 @@ def main():
                             print("Legajo inválido. Intente nuevamente.")
                             break
 
-                        # Mostrar estado de activo
-                        if choferes[int(legajo)]['activo'] == True:
-                            estaActivo = "Sí"
-                        else:
-                            estaActivo = "No"
+                        # Formatear celda de teléfono
+                        telefonoFormateado = str(choferes[int(legajo)]['telefono'])[4:] + "-" + str(choferes[int(legajo)]['telefono'])[:4]
 
                         # Seleccionar dato a modificar
                         print("\nDatos actuales del chofer:")
                         print(f"1. Nombre: {choferes[int(legajo)]['nombre']}")
                         print(f"2. Apellido: {choferes[int(legajo)]['apellido']}")
-                        print(f"3. Teléfono: +54 11 {choferes[int(legajo)]['telefono']}")
+                        print(f"3. Teléfono: +54 11 {telefonoFormateado}")
                         print(f"4. Cantidad de km: {choferes[int(legajo)]['cantidadKm']}")
                         print(f"5. Ver turnos")
-                        print(f"6. Estado activo: {estaActivo}")
                         print("\n¿Qué dato desea modificar?")
                         
-                        opcion = input("Ingrese el número de la opción (1-6): ")
+                        opcion = input("Ingrese el número de la opción (1-5): ")
                         
                         if opcion == "1":
                             # Ingresar nuevo nombre
@@ -632,19 +628,6 @@ def main():
 
                                             # Mensaje de éxito
                                             print(f"Turno del {nuevoDia} a la {nuevoHorario} modificado exitosamente.")
-                            
-                        elif opcion == "6":
-                            # Modificar estado
-                            estado = input("¿Desea que el chofer esté activo? (s/n): ").lower()
-                            if estado == "s" or estado == "si":
-                                choferes[int(legajo)]['activo'] = True
-                                print("\nDato modificado exitosamente.")
-                            elif estado == "n" or estado == "no":
-                                choferes[int(legajo)]['activo'] = False
-                                print("\nDato modificado exitosamente.")
-                            else:
-                                print("Opción inválida.")
-                                break
 
                         else:
                             print("Opción inválida.")
@@ -679,7 +662,7 @@ def main():
                             
                             # Si el usuario confirma la acción, se elimina el chofer. Sino, se cancela la operación
                             if confirmar == "s" or confirmar == "si":
-                                del choferes[legajo]
+                                choferes[legajo]["activo"] = False
                                 print(f"Chofer LU{legajo} eliminado exitosamente.\n")
                             else:
                                 print("Eliminación cancelada.\n")
