@@ -143,3 +143,56 @@ def validarCostoKm(costoKm):
 
     return valido
 
+
+def agregarInfraccion(vehiculo, descripcion):
+    """
+    Agrega una nueva infracción al vehículo.
+    """
+    descripcion = descripcion.strip()
+
+    if descripcion == "":
+        print("La descripción no puede estar vacía.")
+        return
+
+    clave = f"infraccion{len(vehiculo['infracciones']) + 1}"
+    vehiculo["infracciones"][clave] = descripcion
+    print(f"Se agregó la infracción '{descripcion}' correctamente.")
+
+
+def eliminarInfraccion(vehiculo, claveEliminar):
+    """
+    Elimina una infracción existente por su clave (ej: infraccion1).
+    """
+    infracciones = vehiculo["infracciones"]
+
+    if len(infracciones) == 0:
+        print("Este vehículo no tiene infracciones registradas.")
+        return
+
+    if claveEliminar in infracciones:
+        del infracciones[claveEliminar]
+        print("Infracción eliminada correctamente.")
+
+        # Reordenar nombres (para mantener infraccion1, infraccion2, ...)
+        nuevas = {}
+        for i, desc in enumerate(infracciones.values(), start=1):
+            nuevas[f"infraccion{i}"] = desc
+        vehiculo["infracciones"] = nuevas
+
+    else:
+        print("No existe una infracción con ese nombre.")
+
+
+def mostrarInfracciones(vehiculo):
+    """
+    Muestra todas las infracciones actuales del vehículo.
+    """
+    infracciones = vehiculo["infracciones"]
+
+    if len(infracciones) == 0:
+        print("Este vehículo no tiene infracciones registradas.")
+    else:
+        print("\nInfracciones actuales del vehículo:")
+        for clave, desc in infracciones.items():
+            print(f"  {clave}: {desc}")
+

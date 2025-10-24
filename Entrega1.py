@@ -786,75 +786,90 @@ def main():
                         print("Error la patente no se encuentra registrada") 
                     else: 
                         vehiculo = vehiculos[patente]
+
                         print("Datos actuales del vehiculo: ")
                         for campo, valor in vehiculo.items():
                          if campo != "infracciones":
                             print(f"  {campo}: {valor}")
-                        
+
+                        print()
                         print("¿Que datos deseas modificar?")
                         print("1.Patente")
                         print("2. Modelo")
                         print("3. Año de compra")
                         print("4. Kilometro")
                         print("5. Costo por Km")
+                        print("6. Infracciones")
                         opcionMod = input("Seleccione una opcion: ")
+
                         if opcionMod == "1":
                             nuevaPatenteValida = False
                             while not nuevaPatenteValida:
                                 nuevaPatente= input("Ingrese la nueva patente: ").upper()
-                                nuevaPatenteValida, mensajeError = validarPatente(nuevaPatente)
-
-                                if not nuevaPatenteValida:
-                                    print(f"{mensajeError}")
-                                elif nuevaPatente in vehiculos:
-                                    print("Esta patente ya se encuentra registrada.")
-                                    nuevaPatenteValida=False
-                                else:
-                                    print(f"Patente actualizada a {nuevaPatente}")
-                                    nuevaPatenteValida = True
+                                nuevaPatenteValida= validarPatente(nuevaPatente, vehiculos)
+                            
                             vehiculos[nuevaPatente] = vehiculo
                             del vehiculos[patente]
+                            print("Patente modificada corretamente")
+                               
+
                         elif opcionMod == "2":
-                              vehiculo["modelo"] = input("Nuevo modelo: ") 
+                            nuevoModelo = input("Ingrese el nuevo modelo: ")
+                            vehiculo["modelo"] = nuevoModelo
+                            print("Modelo modificado correctamente.")
+                        
                         elif opcionMod == "3":
                             añoValido = False 
                             while not añoValido:
-                                nuevoAño =  input("Ingrese el nuevo año: ")
-                                añoValido, mensajeError = validarAñoCompra(nuevoAño)
-                                if not añoValido:
-                                    print(mensajeError)
-                                else:
-                                    añoValido = True
+                                nuevoAño = input("Ingrese el nuevo año de compra: ")
+                                añoValido = validarAñoCompra(nuevoAño)
                             vehiculo["añoCompra"] = int(nuevoAño)
-                            print("Año de compra modificado ")
+                            print("Año de compra modificado correctamente")
 
                         elif opcionMod == "4":
                              kmValido = False 
                              while not kmValido:
                                  nuevoKm = input("Ingrese l nueva cantidad de Km actuales: ")
-                                 kmValido, mensajeError = validarCantKm(nuevoKm)
-                                 if not kmValido:
-                                     print(mensajeError)
-                                 else: 
-                                  kmValido = True
+                                 kmValido = validarCantKm(nuevoKm)
                              vehiculo["cantidadKm"] = float(nuevoKm)
-                             print("Se modifico la cantidad de Km!")
+                             print("cantidad de Km modifcado correctamente")
+                            
                         elif opcionMod == "5": 
                             costoValido = False 
                             while not costoValido:
                                 nuevoCosto = input("Ingrese el nuevo costo del Km: ")
-                                costoValido, mensajeError = validarCostoKm(nuevoCosto)
-                                if not costoValido:
-                                    print(mensajeError)
-                                else:
-                                    costoValido = True
+                                costoValido= validarCostoKm(nuevoCosto)
                             vehiculo["costoKm"] = float(nuevoCosto)
                             print ("Costo del Km actualizado")
-                                
+                        
+                        elif opcionMod == "6":
+                                                    
+                            print("\n------ MODIFICAR INFRACCIONES ------")
+                            print("1. Agregar infracción")
+                            print("2. Eliminar infracción")
+                            print("3. Ver infracciones actuales")
+
+                            opcionInf = input("Seleccione una opción: ")
+
+                            if opcionInf == "1":
+                                descripcion = input("Ingrese la descripción de la infracción: ")
+                                agregarInfraccion(vehiculo, descripcion)
+
+                            elif opcionInf == "2":
+                                mostrarInfracciones(vehiculo)
+                                claveEliminar = input("Ingrese el nombre exacto de la infracción a eliminar (ej: infraccion1): ")
+                                eliminarInfraccion(vehiculo, claveEliminar)
+
+                            elif opcionInf == "3":
+                                mostrarInfracciones(vehiculo)
+
+                            else:
+                                print("Opción inválida en el menú de infracciones.")
+                                                        
                         else:
-                            print("Opcion invalida.")
-                        print("Vehiculo modificado correctamente!") 
-                
+                             print("Opcion invalida.")
+                        
+                                        
                 elif opcionSubmenu == "3":   # Opción 3 del submenú
                     print("----------DESACTIVAR VEHICULO---------")
                     patente = input("Ingrese la pantente del vehiculo a desactivar: ").upper()
