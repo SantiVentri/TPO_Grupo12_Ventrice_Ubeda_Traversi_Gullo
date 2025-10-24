@@ -736,46 +736,37 @@ def main():
                         patenteValida=False
                       
                         while not patenteValida:
-                         patente = input("Ingrese la patente del vehículo (ej. AE456GH): ").upper()
-                         patenteValida, mensajeError = validarPatente(patente)
-
-                         if not patenteValida: 
-                             print(mensajeError)
-
-                         elif patente in vehiculos:
-                            print("Ya existe un vehículo con esa patente.")
-                         
-                         else: 
-                             print("Patente valida y disponible")
-                             patenteValida = True
-                         
+                            patente = input("Ingrese la patente del vehículo (ej. AE456GH): ").upper()
+                            patenteValida = validarPatente(patente, vehiculos)
+                       
                         #modelo del vehiculo 
                         modelo = input("Ingrese el modelo del vehiculo: ")
                         
-                        añoCompra = input("Ingrese año de compra: ")
-                        valido, mensaje = validarAñoCompra(añoCompra)
-                        while not valido: 
-                            print(mensaje)
-                            añoCompra = input("Ingrese nuevamente el año de compra: ")
-                            valido, mensaje = validarAñoCompra(añoCompra)
-                        añoCompra= int(añoCompra)
+                        #Agregar y validar año de compra 
+                       
+                        añoValido = False
+                        while not añoValido:
+                            añoCompra = input("Ingrese el año de compra del vehículo: ")
+                            añoValido = validarAñoCompra(añoCompra)
 
-                        cantidadKm = input("Ingrese cantidad de km actuales: ")
-                        valido,mensaje = validarCantKm(cantidadKm)
-                        while not valido:
-                            print(mensaje)
-                            cantidadKm = input("Ingrese la cantidad nuevamente: ")
-                            valido,mensaje = validarCantKm(cantidadKm)
+                        añoCompra = int(añoCompra)
 
-                        costoKmValido = False 
-                        while not costoKmValido:
-                            costoKm = input ("Ingrese costo por Km: ")
-                            costoKmValido, mensajeError = validarCostoKm(costoKm)
-                            if not costoKmValido:
-                                print(mensajeError)
-                            costoKm = float(costoKm)
+                        #Agregar y validar cantidad de Km
+                        kmValido = False
+                        while not kmValido:
+                            cantidadKm = input("Ingrese la cantidad de Km actuales: ")
+                            kmValido = validarCantKm(cantidadKm)
+
+                        cantidadKm = float(cantidadKm)
+                         #Agregar y modificar costo de Km
+                        costoValido = False
+                        while not costoValido:
+                            costoKm = input("Ingrese el costo por Km: ")
+                            costoValido = validarCostoKm(costoKm)
+
+                        costoKm = float(costoKm)
+
                         
-
                         vehiculos[patente] = {
                             "activo": True,  # SIEMPRE TRUE al cargar
                             "modelo": modelo,
