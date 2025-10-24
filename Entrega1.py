@@ -8,7 +8,6 @@ Descripción: Empresa de transporte que realiza viajes con sus vehículos y chof
 Cada vehículo tiene como dato su costo por kilómetro. El único usuario del sistema será el que
 gestiona los viajes en la empresa.
 
-Pendientes:
 -----------------------------------------------------------------------------------------------
 """
 
@@ -16,14 +15,14 @@ Pendientes:
 # MÓDULOS
 #----------------------------------------------------------------------------------------------
 import random
-
+from funciones.def_choferes import *
+from funciones.def_vehiculos import *
+from funciones.def_informes import *
 
 #----------------------------------------------------------------------------------------------
 # FUNCIONES
 #----------------------------------------------------------------------------------------------
-from funciones.def_choferes import *
-from funciones.def_vehiculos import *
-from funciones.def_informes import *
+
 #----------------------------------------------------------------------------------------------
 # CUERPO PRINCIPAL
 #----------------------------------------------------------------------------------------------
@@ -46,17 +45,17 @@ def main():
         },
               
         12994: {
-         "activo": True,
-        "nombre": "Rocco",
-        "apellido": "Morillo",
-        "telefono": 26335567,
-        "cantidadKm": 34500,
-        "turnos": {
-            "turno1": "Martes - Mañana",
-            "turno2": "Jueves - Tarde",
-            "turno3": "Viernes - Mañana"
-        }
-    },
+            "activo": True,
+            "nombre": "Rocco",
+            "apellido": "Morillo",
+            "telefono": 26335567,
+            "cantidadKm": 34500,
+            "turnos": {
+                "turno1": "Martes - Mañana",
+                "turno2": "Jueves - Tarde",
+                "turno3": "Viernes - Mañana"
+            }
+        },
         33051: {
             "activo": True,
             "nombre": "María",
@@ -247,17 +246,16 @@ def main():
                 
              }
         },
-         "AE432VX": {
-        "activo": False,
-        "modelo": "Fiat Ducato",
-        "añoCompra": 2018,
-        "cantidadKm": 207300,
-        "costoKm": 87.9,
-        "infracciones": {
-            "infraccion1": "Circula sin luces"
-            
-    }
-}
+        "AE432VX": {
+            "activo": False,
+            "modelo": "Fiat Ducato",
+            "añoCompra": 2018,
+            "cantidadKm": 207300,
+            "costoKm": 87.9,
+            "infracciones": {
+                "infraccion1": "Circula sin luces"                
+            }
+        }
     }
 
     rutas = {
@@ -648,57 +646,7 @@ def main():
                                 print("Eliminación cancelada.\n")
                 
                 elif opcionSubmenu == "4":   # Opción 4 del submenú
-                    print("--------------------------------------")
-                    print("MENÚ DE CHOFERES > Listado de choferes")
-                    print("--------------------------------------\n")
-
-                    print("SE LISTAN LOS CHOFERES ACTIVOS:\n")
-
-                    # Imprimir los títulos de la tabla
-                    print("-" * 124)
-                    print(f"|{"Legajo":^11}|{"Nombre":^18}|{"Teléfono":^18}|{"Km Recorridos":^15}|{"Turnos":^56}|")
-                    print("-" * 124)
-
-                    # Crear matriz con los datos de los choferes
-                    matriz = []
-                    for legajo, datos in choferes.items():
-                        if datos["activo"]:
-                            # Procesar celda de turnos
-                            if len(datos['turnos']) == 0:
-                                celdaTurnos = "Sin turnos"
-                            else:
-                                celdaTurnos = ", ".join(datos['turnos'].values())
-
-                            # Formatear celda de teléfono
-                            telefonoFormateado = "+54 11 " + str(datos['telefono'])[:-4] + "-" + str(datos['telefono'])[-4:]
-
-                            # Agregar fila a la matriz
-                            matriz.append([
-                                str(legajo),
-                                f"{datos['nombre']} {datos['apellido']}",
-                                telefonoFormateado,
-                                str(datos['cantidadKm']),
-                                celdaTurnos
-                            ])
-
-                    # Recorrer matriz con for i / for j e imprimir tabla
-                    for i in range(len(matriz)):
-                        print("|", end="")
-                        for j in range(len(matriz[i])):
-                            if j == 0:
-                                print(f" LU{matriz[i][j]:^8}|", end="")
-                            elif j == 1:
-                                print(f" {matriz[i][j]:<17}|", end="")
-                            elif j == 2:
-                                print(f" {matriz[i][j]:^17}|", end="")
-                            elif j == 3:
-                                print(f" {matriz[i][j] + "km ":>14}|", end="")
-                            elif j == 4:
-                                print(f" {matriz[i][j]:<55}|", end="")
-                        print()  # salto de línea entre filas
-
-                    # Cerrar tabla
-                    print("-" * 124)
+                    listarChoferes(choferes)
 
                 input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
                 print("\n\n")
