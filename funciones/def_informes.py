@@ -5,6 +5,9 @@
 def informeResumenMensualRutasVehiculos(rutas, vehiculos):
     """
     Muestra un listado con resumen mensual de rutas por vehículo.
+    Parámetros:
+    - rutas (dict): diccionario con datos de las rutas.
+    - vehiculos (dict): diccionario con datos de los vehículos.
     """
     resumen = {}
 
@@ -57,6 +60,9 @@ def informeResumenMensualRutasVehiculos(rutas, vehiculos):
 def informeRankingChoferes(choferes, rutas):
     """
     Muestra el ranking de choferes activos por km recorridos.
+    Parámetros:
+    - choferes (dict): diccionario con datos de los choferes.
+    - rutas (dict): diccionario con datos de las rutas.
     """
     ranking = {}
     for cod in rutas:
@@ -122,6 +128,9 @@ def informeRankingChoferes(choferes, rutas):
 def informeRankingVehiculos(vehiculos, rutas):
     """
     Muestra el ranking de vehículos activos por km recorridos.
+    Parámetros:
+    - vehiculos (dict): diccionario con datos de los vehículos.
+    - rutas (dict): diccionario con datos de las rutas.
     """
     ranking = {}
     for cod in rutas:
