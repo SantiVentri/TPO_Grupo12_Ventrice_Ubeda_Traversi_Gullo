@@ -25,6 +25,7 @@ def crearLegajo(choferes):
     Salida:
         legajo (int): Legajo único generado para el nuevo chofer.
     """
+    
     while True:
         legajo = random.randint(10000, 99999)
         if legajo not in choferes:
@@ -37,29 +38,27 @@ def validarNombreApellido(tipo, texto):
         nombre (str): El nombre a validar.
     Salidas:
         textoValido (bool): Indica si el nombre es válido.
-        mensajeError (str): Mensaje de error en caso de que el nombre no sea válido.
     """
 
     textoValido = True
-    mensajeError = ""
 
     if not texto or texto.strip() == "":
         textoValido = False
-        mensajeError = f"El {tipo} no puede estar vacío."
+        print(f"El {tipo} no puede estar vacío. Intente nuevamente.")
     elif len(texto) < 3:
         textoValido = False
-        mensajeError = f"El {tipo} debe tener al menos 3 caracteres."
+        print(f"El {tipo} debe tener al menos 3 caracteres. Intente nuevamente.")
     elif len(texto) > 15:
         textoValido = False
-        mensajeError = f"El {tipo} no puede exceder los 15 caracteres."
+        print(f"El {tipo} no puede exceder los 15 caracteres. Intente nuevamente.")
     else:
         for char in texto:
             if not (char.isalpha() or char == " "):
                 textoValido = False
-                mensajeError = f"El {tipo} solo puede contener letras y espacios."
+                print(f"El {tipo} solo puede contener letras y espacios. Intente nuevamente.")
                 break
 
-    return textoValido, mensajeError
+    return textoValido
 
 def formatearNombreApellido(texto):
     """
@@ -80,42 +79,41 @@ def validarTelefono(telefono):
         telefono (str): El teléfono a validar.
     Salidas:
         telValido (bool): Indica si el teléfono es válido.
-        mensajeError (str): Mensaje de error en caso de que el teléfono no sea válido.
     """
 
     telValido = True
-    mensajeError = ""
 
     if not telefono.isdigit():
         telValido = False
-        mensajeError = "El teléfono solo puede contener números."
+        print("El teléfono solo puede contener números. Intente nuevamente.")
     elif len(telefono) != 8:
         telValido = False
-        mensajeError = "El teléfono debe tener 8 dígitos."
+        print("El teléfono debe tener 8 dígitos. Intente nuevamente.")
 
-    return telValido, mensajeError
+    return telValido
 
 def validarKm(km):
     """
-    Esta función valida la cantidad de km recorridos por un chofer.
+    Esta función valida la cantidad de km recorridos por un chofer. Lanza un error si no es un número positivo.
     Parámetros:
         km (str): La cantidad km a validar.
     Salidas:
         kmValidos (bool): Indica si la cantidad de km es válido.
-        mensajeError (str): Mensaje de error en caso de que el la cantidad de km no sea válido.
     """
 
     kmValido = True
-    mensajeError = ""
 
-    if not km.isdigit():
-        kmValido = False
-        mensajeError = "Los kilómetros solo pueden contener números."
-    elif float(km) < 0:
-        kmValido = False
-        mensajeError = "Los kilómetros no pueden ser negativos."
+    for char in km:
+        if not char.isdigit() and char != '.' and char != '-':
+            kmValido = False
+            print("Los kilómetros solo pueden contener números y un punto decimal. Intente nuevamente.")
+            return kmValido
+        elif float(km) < 0:
+            kmValido = False
+            print("Los kilómetros no pueden ser negativos. Intente nuevamente.")
+            return kmValido
 
-    return kmValido, mensajeError
+    return kmValido
 
 def validarTurno(turnos, turno):
     """
@@ -125,7 +123,6 @@ def validarTurno(turnos, turno):
         turno (str): El turno a validar en el formato "Día - Horario".
     Salidas:
         turnoValido (bool): Indica si el turno es válido.
-        mensajeError (str): Mensaje de error en caso de que el turno no sea válido.
     """
 
     # Separa el día y el horario del turno
@@ -135,18 +132,16 @@ def validarTurno(turnos, turno):
 
     if turno in turnos:
         turnoValido = False
-        mensajeError = "El chofer ya tiene asignado ese turno."
+        print("El chofer ya tiene asignado ese turno. Intente nuevamente.")
     else:
         diaValido = dia.title() in ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
         horarioValido = horario.title() in ["Mañana", "Tarde", "Noche"]
 
         if not diaValido:
             turnoValido = False
-            mensajeError = "El día del turno no es válido."
+            print("El día del turno no es válido. Intente nuevamente.")
         elif not horarioValido:
             turnoValido = False
-            mensajeError = "El horario del turno no es válido."
-        else:
-            mensajeError = ""
+            print("El horario del turno no es válido. Intente nuevamente.")
 
-    return turnoValido, mensajeError
+    return turnoValido

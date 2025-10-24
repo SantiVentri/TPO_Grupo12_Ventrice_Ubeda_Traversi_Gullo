@@ -413,25 +413,19 @@ def main():
                         nombreValido = False
                         while not nombreValido:
                             nombre = input("Ingrese el primer nombre del chofer: ")
-                            nombreValido, mensajeError = validarNombreApellido("nombre", nombre)
-                            if not nombreValido:
-                                print(mensajeError + " Intente nuevamente.")
+                            nombreValido = validarNombreApellido("nombre", nombre)
 
                         # Solicitar apellido
                         apellidoValido = False
                         while not apellidoValido:
                             apellido = input("Ingrese el apellido del chofer: ")
-                            apellidoValido, mensajeError = validarNombreApellido("apellido", apellido)
-                            if not apellidoValido:
-                                print(mensajeError + " Intente nuevamente.")
+                            apellidoValido = validarNombreApellido("apellido", apellido)
 
                         # Solicitar teléfono
                         telValido = False
                         while not telValido:
                             telefono = input("Ingrese el teléfono del chofer: +54 11 ")
-                            telValido, mensajeError = validarTelefono(telefono)
-                            if not telValido:
-                                print(mensajeError + " Intente nuevamente.")
+                            telValido = validarTelefono(telefono)
 
                         # Solicitar cantidad de km recorridos
                         kmValidos = False
@@ -439,9 +433,7 @@ def main():
                             cantidadKm = input("Ingrese la cantidad de km recorridos por el chofer (Presione Enter para 0): ")
                             if cantidadKm.strip() == "":
                                 cantidadKm = "0"
-                            kmValidos, mensajeError = validarKm(cantidadKm)
-                            if not kmValidos:
-                                print(mensajeError + " Intente nuevamente.")
+                            kmValidos = validarKm(cantidadKm)
 
                         # Agregar turnos
                         turnos = {}
@@ -460,11 +452,9 @@ def main():
                                     
                                     # Crear y validar el turno
                                     nuevoTurno = f"{diaTurno.title()} - {horarioTurno.title()}"
-                                    turnoValido, mensajeError = validarTurno(turnos, nuevoTurno)
+                                    turnoValido = validarTurno(turnos, nuevoTurno)
                                     
-                                    if not turnoValido:
-                                        print(mensajeError + " Intente nuevamente.")
-                                    else:
+                                    if turnoValido:
                                         # Guardar turno válido
                                         turnos[f"turno{i+1}"] = nuevoTurno
                                         print(f"Turno {nuevoTurno} agregado exitosamente.")
@@ -527,9 +517,7 @@ def main():
                                 nombre = formatearNombreApellido(nombre)
 
                                 # Validar nombre
-                                nombreValido, mensajeError = validarNombreApellido("nombre", nombre)
-                                if not nombreValido:
-                                    print(mensajeError + " Intente nuevamente.")
+                                nombreValido = validarNombreApellido("nombre", nombre)
 
                             # Guardar nuevo nombre
                             choferes[int(legajo)]['nombre'] = nombre
@@ -546,9 +534,7 @@ def main():
                                 apellido = formatearNombreApellido(apellido)
                                 
                                 # Validar apellido
-                                apellidoValido, mensajeError = validarNombreApellido("apellido", apellido)
-                                if not apellidoValido:
-                                    print(mensajeError + " Intente nuevamente.")
+                                apellidoValido = validarNombreApellido("apellido", apellido)
 
                             # Guardar nuevo apellido
                             choferes[int(legajo)]['apellido'] = apellido
@@ -560,9 +546,7 @@ def main():
                             telValido = False
                             while not telValido:
                                 telefono = input("Ingrese el teléfono del chofer: +54 11 ")
-                                telValido, mensajeError = validarTelefono(telefono)
-                                if not telValido:
-                                    print(mensajeError + " Intente nuevamente.")
+                                telValido = validarTelefono(telefono)
 
                             # Guardar nuevo teléfono
                             choferes[int(legajo)]['telefono'] = telefono
@@ -574,9 +558,7 @@ def main():
                             kmValidos = False
                             while not kmValidos:
                                 cantidadKm = input("Ingrese el cantidad de km recorridos del chofer: ")
-                                kmValidos, mensajeError = validarKm(cantidadKm)
-                                if not kmValidos:
-                                    print(mensajeError + " Intente nuevamente.")
+                                kmValidos = validarKm(cantidadKm)
 
                             # Guardar nueva cantidad de km
                             choferes[int(legajo)]['cantidadKm'] = float(cantidadKm)
@@ -618,11 +600,9 @@ def main():
 
                                         # Validar turno
                                         nuevoTurno = f"{nuevoDia} - {nuevoHorario}"
-                                        turnoValido, mensajeError = validarTurno(choferes[int(legajo)]["turnos"].values(), nuevoTurno)
+                                        turnoValido = validarTurno(choferes[int(legajo)]["turnos"].values(), nuevoTurno)
 
-                                        if not turnoValido:
-                                            print(mensajeError + " Intente nuevamente.")
-                                        else:
+                                        if turnoValido:
                                             # Guardar nuevo turno
                                             choferes[int(legajo)]['turnos'][f'turno{turnoModificar}'] = nuevoTurno
 
