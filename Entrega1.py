@@ -8,7 +8,6 @@ Descripción: Empresa de transporte que realiza viajes con sus vehículos y chof
 Cada vehículo tiene como dato su costo por kilómetro. El único usuario del sistema será el que
 gestiona los viajes en la empresa.
 
-Pendientes:
 -----------------------------------------------------------------------------------------------
 """
 
@@ -16,14 +15,14 @@ Pendientes:
 # MÓDULOS
 #----------------------------------------------------------------------------------------------
 import random
-
+from funciones.def_choferes import *
+from funciones.def_vehiculos import *
+from funciones.def_informes import *
 
 #----------------------------------------------------------------------------------------------
 # FUNCIONES
 #----------------------------------------------------------------------------------------------
-from funciones.def_choferes import *
-from funciones.def_vehiculos import *
-from funciones.def_informes import *
+
 #----------------------------------------------------------------------------------------------
 # CUERPO PRINCIPAL
 #----------------------------------------------------------------------------------------------
@@ -46,17 +45,17 @@ def main():
         },
               
         12994: {
-         "activo": True,
-        "nombre": "Rocco",
-        "apellido": "Morillo",
-        "telefono": 26335567,
-        "cantidadKm": 34500,
-        "turnos": {
-            "turno1": "Martes - Mañana",
-            "turno2": "Jueves - Tarde",
-            "turno3": "Viernes - Mañana"
-        }
-    },
+            "activo": True,
+            "nombre": "Rocco",
+            "apellido": "Morillo",
+            "telefono": 26335567,
+            "cantidadKm": 34500,
+            "turnos": {
+                "turno1": "Martes - Mañana",
+                "turno2": "Jueves - Tarde",
+                "turno3": "Viernes - Mañana"
+            }
+        },
         33051: {
             "activo": True,
             "nombre": "María",
@@ -247,17 +246,16 @@ def main():
                 
              }
         },
-         "AE432VX": {
-        "activo": False,
-        "modelo": "Fiat Ducato",
-        "añoCompra": 2018,
-        "cantidadKm": 207300,
-        "costoKm": 87.9,
-        "infracciones": {
-            "infraccion1": "Circula sin luces"
-            
-    }
-}
+        "AE432VX": {
+            "activo": False,
+            "modelo": "Fiat Ducato",
+            "añoCompra": 2018,
+            "cantidadKm": 207300,
+            "costoKm": 87.9,
+            "infracciones": {
+                "infraccion1": "Circula sin luces"                
+            }
+        }
     }
 
     rutas = {
