@@ -23,6 +23,7 @@ import random
 #----------------------------------------------------------------------------------------------
 from funciones.def_choferes import *
 from funciones.def_vehiculos import *
+
 #----------------------------------------------------------------------------------------------
 # CUERPO PRINCIPAL
 #----------------------------------------------------------------------------------------------
@@ -688,39 +689,34 @@ def main():
                     print("MENÚ DE CHOFERES > Listado de choferes")
                     print("--------------------------------------\n")
 
+                    print("SE LISTAN LOS CHOFERES ACTIVOS:\n")
+
                     # Imprimir los títulos de la tabla
-                    encabezados = ["Legajo", "Nombre", "Teléfono", "Km Recorridos", "Activo", "Turnos"]
-                    print("-" * 133)
-                    print(f"|{encabezados[0]:^11}|{encabezados[1]:^18}|{encabezados[2]:^18}|{encabezados[3]:^15}|{encabezados[4]:^8}|{encabezados[5]:^56}|")
-                    print("-" * 133)
+                    print("-" * 124)
+                    print(f"|{"Legajo":^11}|{"Nombre":^18}|{"Teléfono":^18}|{"Km Recorridos":^15}|{"Turnos":^56}|")
+                    print("-" * 124)
 
                     # Crear matriz con los datos de los choferes
                     matriz = []
                     for legajo, datos in choferes.items():
-                        # Procesar celda de turnos
-                        if len(datos['turnos']) == 0:
-                            celdaTurnos = "Sin turnos"
-                        else:
-                            celdaTurnos = ", ".join(datos['turnos'].values())
+                        if datos["activo"]:
+                            # Procesar celda de turnos
+                            if len(datos['turnos']) == 0:
+                                celdaTurnos = "Sin turnos"
+                            else:
+                                celdaTurnos = ", ".join(datos['turnos'].values())
 
-                        # Procesar celda de activo
-                        if datos['activo']:
-                            estaActivo = "Sí"
-                        else:
-                            estaActivo = "No"
+                            # Formatear celda de teléfono
+                            telefonoFormateado = "+54 11 " + str(datos['telefono'])[:-4] + "-" + str(datos['telefono'])[-4:]
 
-                        # Formatear celda de teléfono
-                        telefonoFormateado = "+54 11 " + str(datos['telefono'])[:-4] + "-" + str(datos['telefono'])[-4:]
-
-                        # Agregar fila a la matriz
-                        matriz.append([
-                            str(legajo),
-                            f"{datos['nombre']} {datos['apellido']}",
-                            telefonoFormateado,
-                            str(datos['cantidadKm']),
-                            estaActivo,
-                            celdaTurnos
-                        ])
+                            # Agregar fila a la matriz
+                            matriz.append([
+                                str(legajo),
+                                f"{datos['nombre']} {datos['apellido']}",
+                                telefonoFormateado,
+                                str(datos['cantidadKm']),
+                                celdaTurnos
+                            ])
 
                     # Recorrer matriz con for i / for j e imprimir tabla
                     for i in range(len(matriz)):
@@ -731,17 +727,15 @@ def main():
                             elif j == 1:
                                 print(f" {matriz[i][j]:<17}|", end="")
                             elif j == 2:
-                                print(f" {matriz[i][j]:<17}|", end="")
+                                print(f" {matriz[i][j]:^17}|", end="")
                             elif j == 3:
-                                print(f" {matriz[i][j]:<14}|", end="")
+                                print(f" {matriz[i][j] + "km ":>14}|", end="")
                             elif j == 4:
-                                print(f" {matriz[i][j]:^7}|", end="")
-                            elif j == 5:
                                 print(f" {matriz[i][j]:<55}|", end="")
                         print()  # salto de línea entre filas
 
                     # Cerrar tabla
-                    print("-" * 133)
+                    print("-" * 124)
 
                 input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
                 print("\n\n")
