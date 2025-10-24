@@ -23,7 +23,7 @@ import random
 #----------------------------------------------------------------------------------------------
 from funciones.def_choferes import *
 from funciones.def_vehiculos import *
-
+from funciones.def_informes import *
 #----------------------------------------------------------------------------------------------
 # CUERPO PRINCIPAL
 #----------------------------------------------------------------------------------------------
@@ -994,13 +994,13 @@ def main():
                     ...
                 
                 elif opcionSubmenu == "3":   # Opción 3 del submenú
-                    ...
+                    informeResumenMensualRutasVehiculos(rutas, vehiculos)
                 
                 elif opcionSubmenu == "4":   # Opción 4 del submenú
-                    ...
+                    informeRankingChoferes(choferes, rutas)
 
                 elif opcionSubmenu == "5":   # Opción 4 del submenú
-                    ...
+                    informeRankingVehiculos(vehiculos, rutas)
 
                 input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
                 print("\n\n")
