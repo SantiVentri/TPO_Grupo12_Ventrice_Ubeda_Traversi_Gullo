@@ -27,21 +27,12 @@ def informeResumenMensualRutasVehiculos(rutas, vehiculos):
                 fila = [patente, modelo, resumen[patente]["rutas"], resumen[patente]["km"]]
                 lista.append(fila)
 
-    # Ordenar por km descendente (selección)
-    n = len(lista)
-    i = 0
-    while i < n - 1:
-        max_idx = i
-        j = i + 1
-        while j < n:
-            if lista[j][3] > lista[max_idx][3]:
-                max_idx = j
-            j = j + 1
-        if max_idx != i:
-            aux = lista[i]
-            lista[i] = lista[max_idx]
-            lista[max_idx] = aux
-        i = i + 1
+    #Crear lista temporal para ordenar por km (posición 3) 
+    listaTemp = [[fila[3]] + fila for fila in lista]  # km primero
+    listaTemp.sort(reverse=True)  # orden descendente por el primer valor (km)
+
+    #Quitar el km duplicado (dejamos la estructura original) 
+    listaOrdenada = [fila[1:] for fila in listaTemp]
 
     print("-"*66)
     print(f"| {"RESUMEN MENSUAL DE RUTAS POR VEHÍCULO":^62} |")
@@ -50,7 +41,7 @@ def informeResumenMensualRutasVehiculos(rutas, vehiculos):
     print("-" * 66)
 
     pos = 1
-    for fila in lista:
+    for fila in listaOrdenada:
         print(f"|{pos:^5}|{fila[0]:^10}|{fila[1]:<25}|{fila[2]:^8}|{fila[3]:^12}|")
         pos = pos + 1
 
