@@ -618,12 +618,12 @@ def main():
                 
                 elif opcionSubmenu == "3":   # Opción 3 del submenú
                     print("------------------------------------")
-                    print("MENÚ DE CHOFERES > Eliminar choferes")
+                    print("MENÚ DE CHOFERES > Desactivar choferes")
                     print("------------------------------------\n")
 
                     while True:
                         # Se pide el número de legajo a eliminar
-                        legajo = input("Ingrese el legajo del chofer a eliminar (o '0' para salir): ")
+                        legajo = input("Ingrese el legajo del chofer a desactivar (o '0' para salir): ")
 
                         # Si el número ingresado es 0, se sale del bucle
                         if legajo == "0":
@@ -636,14 +636,14 @@ def main():
                             chofer = choferes[legajo] # Obtener datos del chofer
 
                             # Mensaje de confirmación
-                            confirmar = input(f"¿Está seguro que desea eliminar al chofer {chofer['nombre']} {chofer['apellido']} (LU{legajo})? (s/n): ").lower()
+                            confirmar = input(f"¿Está seguro que desea desactivar al chofer {chofer['nombre']} {chofer['apellido']} (LU{legajo})? (s/n): ").lower()
                             
-                            # Si el usuario confirma la acción, se elimina el chofer. Sino, se cancela la operación
+                            # Si el usuario confirma la acción, se desactiva el chofer. Sino, se cancela la operación
                             if confirmar == "s" or confirmar == "si":
                                 choferes[legajo]["activo"] = False
-                                print(f"Chofer LU{legajo} eliminado exitosamente.\n")
+                                print(f"Chofer LU{legajo} desactivado exitosamente.\n")
                             else:
-                                print("Eliminación cancelada.\n")
+                                print("Desactivación cancelada.\n")
                 
                 elif opcionSubmenu == "4":   # Opción 4 del submenú
                     listarChoferes(choferes)
@@ -680,7 +680,9 @@ def main():
                     break # No sale del programa, sino que vuelve al menú anterior
                 
                 elif opcionSubmenu == "1":   # Opción 1 del submenú
-                        print("---------AGREGAR VEHICULO----------")
+                        print("--------------------------------------")
+                        print("MENÚ DE VEHÍCULOS > Agregar vehículos")
+                        print("--------------------------------------\n")
                         patenteValida=False
                       
                         while not patenteValida:
@@ -727,7 +729,10 @@ def main():
                         print("Se ingreso el vehiculo correctamente! ")
                     
                 elif opcionSubmenu == "2":   # Opción 2 del submenú
-                    print("----------MODIFICAR VEHICULOS----------")
+                    print("--------------------------------------")
+                    print("MENÚ DE VEHÍCULOS > Modificar vehículos")
+                    print("--------------------------------------\n")
+                    
                     patente = input("Ingrese la patente del vehiculo a modificar: ").upper()
 
                     if patente not in vehiculos:
@@ -819,7 +824,10 @@ def main():
                         
                                         
                 elif opcionSubmenu == "3":   # Opción 3 del submenú
-                    print("----------DESACTIVAR VEHICULO---------")
+                    print("--------------------------------------")
+                    print("MENÚ DE VEHÍCULOS > Desactivar vehículos")
+                    print("--------------------------------------\n")
+
                     patente = input("Ingrese la pantente del vehiculo a desactivar: ").upper()
                     if patente not in vehiculos:
                          print("No existe un vehículo con esa patente.")
@@ -835,7 +843,10 @@ def main():
                             print("Operación cancelada.")
 
                 elif opcionSubmenu == "4":   # Opción 4 del submenú
-                    print("----------LISTA DE VEHICULOS----------")
+                    print("--------------------------------------")
+                    print("MENÚ DE VEHÍCULOS > Listar vehículos")
+                    print("--------------------------------------\n")
+
                     if len(vehiculos) == 0:
                         print("No hay vehiculos cargados.")
                     
@@ -848,13 +859,13 @@ def main():
                        # Solo procesar los vehículos activos
                             if datos["activo"]:
                                 fila = [
-                                patente,
-                                datos["modelo"],
-                                datos["añoCompra"],
-                                datos["cantidadKm"],
-                                f"${datos['costoKm']:.2f}",
-                                "Sí" if datos["activo"] else "No",
-                                len(datos["infracciones"])
+                                    patente,
+                                    datos["modelo"],
+                                    datos["añoCompra"],
+                                    datos["cantidadKm"],
+                                    f"${datos['costoKm']:.2f}",
+                                    "Sí" if datos["activo"] else "No",
+                                    len(datos["infracciones"])
                                 ]
                                 tabla.append(fila)
 
