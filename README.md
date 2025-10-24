@@ -16,3 +16,41 @@
 **Profesor:** JORGE OSCAR MARCHINI
 
 **Materia:** Algoritmia y Estructura de Datos 1
+
+**Estructura de archivos**
+```
+├── Entrega1.py           # Archivo principal del sistema
+└── funciones/
+    ├── def_choferes.py   # Gestión de choferes
+    ├── def_informes.py   # Generación de informes
+    ├── def_rutas.py      # Gestión de rutas
+    └── def_vehiculos.py  # Gestión de vehículos
+```
+
+**Estructura de menú**
+```
+├── Menú Principal
+│   ├── [1] Gestión de choferes
+│   │   ├── [1] Ingresar choferes
+│   │   ├── [2] Modificar choferes
+│   │   ├── [3] Eliminar choferes
+│   │   └── [4] Listado choferes
+│   │
+│   ├── [2] Gestión de vehículos
+│   │   ├── [1] Ingresar vehículos
+│   │   ├── [2] Modificar vehículos
+│   │   ├── [3] Eliminar vehículos
+│   │   └── [4] Listado vehículos
+│   │
+│   ├── [3] Gestión de rutas
+│   │   └── [1] Registro de rutas
+│   │
+│   ├── [4] Informes
+│   │   ├── [1] Informe viajes del mes
+│   │   ├── [2] Resumen mensual de rutas por vehículo
+│   │   ├── [3] Resumen mensual de rutas por vehículos
+│   │   ├── [4] Ranking choferes
+│   │   └── [5] Ranking vehículos
+│   │
+│   └── [0] Salir del programa
+```
