@@ -29,34 +29,37 @@ def validarPatente(patente, vehiculos):
 
     # --- Verifico largo correcto ---
     if len(patente) == 6:  # Formato viejo: AAA123
-            if not (patente[:3].isalpha() and patente[3:].isdigit()):
-                print(" La patente es incorrecta. Formato esperado: AAA123")
-                patenteValida = False
+        if not (patente[:3].isalpha() and patente[3:].isdigit()):
+            print(" La patente es incorrecta. Formato esperado: AAA123")
+            patenteValida = False
 
     elif len(patente) == 7:  # Formato nuevo: AB123CD
-            if not (patente[:2].isalpha() and patente[2:5].isdigit() and patente[5:].isalpha()):
-                print(" La patente es incorrecta. Formato esperado: AB123CD")
-                patenteValida = False
+        if not (patente[:2].isalpha() and patente[2:5].isdigit() and patente[5:].isalpha()):
+            print(" La patente es incorrecta. Formato esperado: AB123CD")
+            patenteValida = False
 
     else:
-            print(" La patente debe tener 6 o 7 caracteres.")
-            patenteValida = False
+        print(" La patente debe tener 6 o 7 caracteres.")
+        patenteValida = False
 
     # --- Verificar si ya existe ---
     if patenteValida:
-            if patente in vehiculos:
-                print(" Ya existe un vehículo con esa patente.")
-                patenteValida = False
-            else:
-                print(" Patente válida y disponible.")
+        if patente in vehiculos:
+            print(" Ya existe un vehículo con esa patente.")
+            patenteValida = False
+        else:
+            print(" Patente válida y disponible.")
 
     return patenteValida
 
 
 def validarAñoCompra(añoCompra):
     """
-    Valida que el año de compra del vehículo sea correcto.
-    Muestra mensajes de error o confirmación y devuelve True o False.
+    Valida que el año de compra del vehículo sea correcto. Muestra mensajes de error o confirmación.
+    Parámetros:
+    - añoCompra (str): El año a validar.
+    Salida:
+    - añoValido (bool): Indica si el año es válido (True) o no (False).
     """
 
     # Eliminar espacios
@@ -91,7 +94,11 @@ def validarAñoCompra(añoCompra):
 def validarCantKm(cantidadKm):
     """
     Valida que la cantidad de kilómetros sea un número positivo (entero o decimal).
-    Muestra mensajes de error o confirmación. Devuelve True o False.
+    Muestra mensajes de error o confirmación.
+    Parámetros:
+    - cantidadKm (str):la cantidad de kilómetros a validar.
+    Salida:
+    - valido (bool): Indica si la cantidad es válida (True) o no (False).
     """
 
     cantidadKm = cantidadKm.strip()
@@ -119,7 +126,11 @@ def validarCantKm(cantidadKm):
 def validarCostoKm(costoKm):
     """
     Valida que el costo por kilómetro sea un número positivo (entero o decimal).
-    Muestra mensajes de error o confirmación. Devuelve True o False.
+    Muestra mensajes de error o confirmación.
+    Parámetros:
+    - costoKm (str): el costo por kilómetro a validar.
+    Salida:
+    - valido (bool): Indica si el costo es válido (True) o no (False).
     """
 
     costoKm = costoKm.strip()
