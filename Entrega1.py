@@ -235,7 +235,7 @@ def main():
                 "infraccion3": "Circular sin luces"
             }
         },
-        "AD654TU": {
+        "AE452EV": {
             "activo": True,
             "modelo": "Volkswagen Crafter",
             "añoCompra": 2020,
@@ -264,40 +264,40 @@ def main():
             "idPatente": "AA345NO",   # Peugeot Boxer
             "totalKm": 180,
             "costoRuta": 16794.0,
-            "horaSalida": "2025-10-21 06:45",
-            "horaLlegada": "2025-10-21 09:15"
+            "horaSalida": "2025.10.21 06.45",
+            "horaLlegada": "2025.10.21 09.15"
         },
         "2025.10.22 14.00.00": {
             "idLegajo": "33051",      # María Gómez
             "idPatente": "AC456FG",   # Renault Master
             "totalKm": 220,
             "costoRuta": 20020.0,
-            "horaSalida": "2025-10-22 14:00",
-            "horaLlegada": "2025-10-22 18:30"
+            "horaSalida": "2025.10.22 14.00",
+            "horaLlegada": "2025.10.22 18.30"
         },
         "2025.10.21 22.30.00": {
             "idLegajo": "27713",      # Jorge López
             "idPatente": "AE101JK",   # Iveco Daily
             "totalKm": 310,
             "costoRuta": 32705.0,
-            "horaSalida": "2025-10-21 22:30",
-            "horaLlegada": "2025-10-22 03:45"  # Cruce de medianoche
+            "horaSalida": "2025.10.21 22.30",
+            "horaLlegada": "2025.10.22 03.45"  # Cruce de medianoche
         },
         "2025.10.22 08.00.00": {
             "idLegajo": "81306",      # Elena Silva
             "idPatente": "AE456GH",   # Mercedes-Benz Sprinter
             "totalKm": 160,
             "costoRuta": 13680.0,
-            "horaSalida": "2025-10-22 08:00",
-            "horaLlegada": "2025-10-22 10:40"
+            "horaSalida": "2025.10.22 08.00",
+            "horaLlegada": "2025.10.22 10.40"
         },
         "2025.10.24 19.00.00": {
             "idLegajo": "61895",      # Sofía Fernández
             "idPatente": "AB678PQ",   # Hyundai H100
             "totalKm": 195,
             "costoRuta": 16185.0,
-            "horaSalida": "2025-10-24 19:00",
-            "horaLlegada": "2025-10-24 23:10"
+            "horaSalida": "2025.10.24 19.00",
+            "horaLlegada": "2025.10.24 23.10"
         },
         "2025.10.21 07.15.00": {
             "idLegajo": "56982",      # Luis Rodríguez
@@ -325,18 +325,18 @@ def main():
         },
         "2025.10.24 08.30.00": {
             "idLegajo": "81306",      # Elena Silva
-            "idPatente": "D654TU",    # Vehículo: Volkswagen Crafter
+            "idPatente": "AE452EV",    # Vehículo: Volkswagen Crafter
             "totalKm": 250,
-            "costoRuta": 26375.0,
+            "costoRuta": 23675.0,     # 250 km * 94.7 $/km
             "horaSalida": "2025-10-24 08:30",
             "horaLlegada": "2025-10-24 13:15"
         },
-        "2025.10.21 06.45.00": {
+        "2025.10.21 06.46.00": {
             "idLegajo": "96767",      # Harry Farias
             "idPatente": "AE432VX",   # Vehículo: Fiat Ducato
             "totalKm": 145,
             "costoRuta": 13528.5,
-            "horaSalida": "2025-10-21 06:45",
+            "horaSalida": "2025-10-21 06:46",
             "horaLlegada": "2025-10-21 10:00"
         }
     }
@@ -899,9 +899,9 @@ def main():
                 while True:
                     opciones = 1
                     print()
-                    print("---------------------------")
+                    print("------------------------------")
                     print("MENÚ PRINCIPAL > MENÚ DE RUTAS")
-                    print("---------------------------")
+                    print("------------------------------")
                     print("[1] Registro de rutas")
                     print("---------------------------")
                     print("[0] Volver al menú anterior")
@@ -968,13 +968,31 @@ def main():
                         # Obtener la fecha y hora actual para la clave
                         fechaHora = obtenerFechaHora()
 
+                        # Calcular costo de la ruta
+                        costoKm = vehiculos[patente]['costoKm']
+                        costoRuta = float(totalKm) * costoKm
+
+                        # Convertir fechas al formato YYYY.MM.DD HH.MM
+                        # Para la hora de salida
+                        partes_salida = fechaSalida.split()
+                        fecha_salida = partes_salida[0]  # Ya está en formato YYYY.MM.DD
+                        hora_salida = ".".join(partes_salida[1].split(".")[:2])  # Solo tomamos hora y minutos
+                        horaSalida = f"{fecha_salida} {hora_salida}"
+
+                        # Para la hora de llegada
+                        partes_llegada = fechaLlegada.split()
+                        fecha_llegada = partes_llegada[0]  # Ya está en formato YYYY.MM.DD
+                        hora_llegada = ".".join(partes_llegada[1].split(".")[:2])  # Solo tomamos hora y minutos
+                        horaLlegada = f"{fecha_llegada} {hora_llegada}"
+
                         # Guardar ruta
                         rutas[fechaHora] = {
-                            "legajo": int(legajo),
-                            "patente": patente,
+                            "idLegajo": legajo,
+                            "idPatente": patente,
                             "totalKm": float(totalKm),
-                            "fechaSalida": fechaSalida,
-                            "fechaLlegada": fechaLlegada
+                            "costoRuta": costoRuta,
+                            "horaSalida": horaSalida,
+                            "horaLlegada": horaLlegada
                         }
 
                         # Actualizar km del chofer y vehículo
@@ -1015,7 +1033,7 @@ def main():
                     break # No sale del programa, sino que vuelve al menú anterior
                 
                 elif opcionSubmenu == "1":   # Opción 1 del submenú
-                    ...
+                    informeViajesDelMes(rutas, choferes, vehiculos)
                     
                 elif opcionSubmenu == "2":   # Opción 2 del submenú
                     ...

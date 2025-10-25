@@ -2,15 +2,19 @@ import time
 
 def obtenerFechaHora():
     """
+    Obtiene la fecha y hora actual en formato YYYY.MM.DD HH.MM.SS
     """
-    fechaHora = time.strftime("%Y.%m.%d - %H.%M.%S")
+    fechaHora = time.strftime("%Y.%m.%d %H.%M.%S")
 
     return fechaHora
 
 def validarFechaHora(fechaHora):
     """
     Valida una fecha y hora en formato 'YYYY.MM.DD HH.MM.SS'.
-    Devuelve True si es válida, False en caso contrario.
+    Parámetro:
+    - fechaHora (str): cadena con la fecha y hora a validar.
+    Salida:
+    - Devuelve True si es válida, False en caso contrario.
     """
 
     formato = "YYYY.MM.DD HH.MM.SS"
