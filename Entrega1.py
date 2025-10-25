@@ -14,9 +14,9 @@ gestiona los viajes en la empresa.
 #----------------------------------------------------------------------------------------------
 # MÓDULOS
 #----------------------------------------------------------------------------------------------
-import random
 from funciones.def_choferes import *
 from funciones.def_vehiculos import *
+from funciones.def_rutas import *
 from funciones.def_informes import *
 
 #----------------------------------------------------------------------------------------------
@@ -919,7 +919,69 @@ def main():
                     break # No sale del programa, sino que vuelve al menú anterior
                 
                 elif opcionSubmenu == "1":   # Opción 1 del submenú
-                    ...
+                    # Ingresar legajo
+                    while True:
+                        legajo = input("Ingrese el legajo del chofer (o '0' para salir): ")
+
+                        # Si el número ingresado es 0, se sale del bucle
+                        if legajo == "0":
+                            print("Saliendo de la modificación de choferes.\n")
+                        elif not legajo.isdigit() or int(legajo) not in choferes or not choferes[int(legajo)]["activo"]:
+                            print("Legajo inválido. Intente nuevamente.")
+                        else:
+                            break
+                        
+                    # Ingresar patente
+                    patenteValida = False
+                    while not patenteValida:
+                        patente = input("Ingrese la patente del vehículo (ej. AE456GH): ").upper()
+                        patenteValida = validarPatenteExistente(patente, vehiculos)
+
+                    # Ingresar kms
+                    kmValidos = False
+                    while not kmValidos:
+                        totalKm = input("Ingrese la cantidad de km recorridos en la ruta: ")
+                        kmValidos = validarCantKm(totalKm)
+
+                    # Ingresar salida
+                    fechaSalidaValida = False
+                    while not fechaSalidaValida:
+                        fechaSalida = input("Ingrese la fecha y hora de salida (AAAA.MM.DD HH.MM.SS): ")
+                        fechaSalidaValida = validarFechaHora(fechaSalida)
+
+                    # Ingresar llegada
+                    fechaLlegadaValida = False
+                    while not fechaLlegadaValida:
+                        fechaLlegada = input("Ingrese la fecha y hora de llegada (AAAA.MM.DD HH.MM.SS): ")
+                        fechaLlegadaValida = validarFechaHora(fechaLlegada)
+
+                    # Confirmación
+                    print("\nResumen de la ruta a registrar:")
+                    print(f"Chofer: LU{legajo} - {choferes[int(legajo)]['nombre']} {choferes[int(legajo)]['apellido']}")
+                    print(f"Vehículo: {patente} - {vehiculos[patente]['modelo']}")
+                    print(f"Km recorridos: {totalKm} km")
+                    print(f"Fecha y hora de salida: {fechaSalida}")
+                    print(f"Fecha y hora de llegada: {fechaLlegada}")
+                    confirmar = input("¿Desea registrar esta ruta? (s/n): ").lower()
+
+                    if confirmar == "s" or confirmar == "si":
+                        # Obtener la fecha y hora actual para la clave
+                        fechaHora = obtenerFechaHora()
+
+                        # Guardar ruta
+                        rutas[fechaHora] = {
+                            "legajo": int(legajo),
+                            "patente": patente,
+                            "totalKm": float(totalKm),
+                            "fechaSalida": fechaSalida,
+                            "fechaLlegada": fechaLlegada
+                        }
+
+                        # Actualizar km del chofer y vehículo
+                        choferes[int(legajo)]['cantidadKm'] += float(totalKm)
+                        vehiculos[patente]['cantidadKm'] += float(totalKm)
+
+                        print(f"\nRuta registrada exitosamente.\n")
 
                 input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
                 print("\n\n")
