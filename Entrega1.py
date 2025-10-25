@@ -956,10 +956,12 @@ def main():
                     ...
                     
                 elif opcionSubmenu == "2":   # Opción 2 del submenú
-                    ...
+                    patenteBuscar = input("Ingrese la patente del vehículo: ").upper()
+                    informeResumenMensualKmVehiculo(patenteBuscar, rutas, vehiculos)
+
                 
                 elif opcionSubmenu == "3":   # Opción 3 del submenú
-                    informeResumenMensualRutasVehiculos(rutas, vehiculos)
+                    informeResumenMensualCostosVehiculos(rutas, vehiculos)
                 
                 elif opcionSubmenu == "4":   # Opción 4 del submenú
                     informeRankingChoferes(choferes, rutas)
