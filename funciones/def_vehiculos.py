@@ -1,7 +1,7 @@
 """
 -----------------------------------------------------------------------------------------------
 Título: Funciones de vehiculos
-Fecha:
+Fecha: 20/10/2025
 Autores: Santino Ventrice, Valentina Ubeda, Santino Traversi y Rocco Gullo
 
 Descripción: Funciones relacionadas a la gestión de vehiculos.
@@ -17,7 +17,6 @@ Pendientes:
 #----------------------------------------------------------------------------------------------
 # FUNCIONES
 #----------------------------------------------------------------------------------------------
-
 def validarPatente(patente, vehiculos):
     """
     Valida una patente argentina (formato viejo AAA123 o nuevo AB123CD).
