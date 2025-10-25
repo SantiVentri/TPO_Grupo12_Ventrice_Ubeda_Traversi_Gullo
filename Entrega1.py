@@ -14,10 +14,10 @@ gestiona los viajes en la empresa.
 #----------------------------------------------------------------------------------------------
 # MÓDULOS
 #----------------------------------------------------------------------------------------------
-from funciones.def_choferes import *
-from funciones.def_vehiculos import *
-from funciones.def_rutas import *
-from funciones.def_informes import *
+from funciones.choferes import *
+from funciones.vehiculos import *
+from funciones.rutas import *
+from funciones.informes import *
 
 #----------------------------------------------------------------------------------------------
 # FUNCIONES
