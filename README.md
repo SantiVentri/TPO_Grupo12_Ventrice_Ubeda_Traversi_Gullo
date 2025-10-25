@@ -21,10 +21,10 @@
 ```
 ├── Entrega1.py           # Archivo principal del sistema
 └── funciones/
-    ├── def_choferes.py   # Gestión de choferes
-    ├── def_informes.py   # Generación de informes
-    ├── def_rutas.py      # Gestión de rutas
-    └── def_vehiculos.py  # Gestión de vehículos
+    ├── choferes.py   # Gestión de choferes
+    ├── informes.py   # Generación de informes
+    ├── rutas.py      # Gestión de rutas
+    └── vehiculos.py  # Gestión de vehículos
 ```
 
 **Estructura de menú**
