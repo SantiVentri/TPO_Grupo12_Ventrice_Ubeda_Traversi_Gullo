@@ -52,6 +52,38 @@ def validarPatente(patente, vehiculos):
 
     return patenteValida
 
+def validarPatenteExistente(patente, vehiculos):
+    """
+    Valida una patente argentina (formato viejo AAA123 o nuevo AB123CD).
+    Muestra los mensajes de error o confirmación y devuelve True/False.
+    """
+
+    patente = patente.upper().strip()
+    patenteValida = True
+
+    # --- Verifico largo correcto ---
+    if len(patente) == 6:  # Formato viejo: AAA123
+        if not (patente[:3].isalpha() and patente[3:].isdigit()):
+            print(" La patente es incorrecta. Formato esperado: AAA123")
+            patenteValida = False
+
+    elif len(patente) == 7:  # Formato nuevo: AB123CD
+        if not (patente[:2].isalpha() and patente[2:5].isdigit() and patente[5:].isalpha()):
+            print(" La patente es incorrecta. Formato esperado: AB123CD")
+            patenteValida = False
+
+    else:
+        print(" La patente debe tener 6 o 7 caracteres.")
+        patenteValida = False
+
+    # --- Verificar si ya existe ---
+    if patenteValida:
+        if not (patente in vehiculos):
+            print("No existe un vehículo con esa patente.")
+            patenteValida = False
+
+    return patenteValida
+
 
 def validarAñoCompra(añoCompra):
     """

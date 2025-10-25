@@ -1,6 +1,49 @@
 #----------------------------------------------------------------------------------------------
 # FUNCIONES DE INFORMES
 #----------------------------------------------------------------------------------------------
+def informeViajesDelMes(rutas, choferes, vehiculos):
+    """
+    Muestra un listado con todos los viajes del mes.
+    Parámetros:
+    - rutas (dict): diccionario con datos de las rutas
+    - choferes (dict): diccionario con datos de los choferes
+    - vehiculos (dict): diccionario con datos de los vehículos
+    """
+    # Crear lista con los datos de cada viaje
+    lista = []
+    for fecha, datos in rutas.items():
+        # Calcular costo multiplicando km por costo/km del vehículo
+        patente = datos['idPatente']
+        totalKm = datos['totalKm']
+        costoKm = vehiculos[patente]['costoKm']
+        costoRuta = totalKm * costoKm
+
+        # Formatear hora de llegada sin segundos
+        hora_llegada = datos['horaLlegada']
+
+        fila = [
+            fecha,                    # fecha y hora
+            f"LU{datos['idLegajo']}", # legajo
+            patente,                  # patente
+            totalKm,                  # total km
+            costoRuta,               # costo calculado
+            datos['horaSalida'],      # hora salida  
+            hora_llegada             # hora llegada (sin segundos)
+        ]
+        lista.append(fila)
+
+    # Imprimir encabezado
+    print("-"*105)
+    print(f"| {'LISTADO DE VIAJES DEL MES':^101} |")
+    print("-"*105)
+    print(f"|{'Fecha/Hora':^19}|{'Legajo':^8}|{'Patente':^10}|{'Total Km':^10}|{'Costo ($)':^12}|{'Hora Salida':^19}|{'Hora Llegada':^19}|")
+    print("-"*105)
+
+    # Imprimir cada fila
+    for fila in lista:
+        print(f"|{fila[0]:^19}|{fila[1]:^8}|{fila[2]:^10}|{fila[3]:^10}|{fila[4]:^12.2f}|{fila[5]:^19}|{fila[6]:^19}|")
+
+    print("-"*105)
 
 def informeResumenMensualKmVehiculo(patente, rutas, vehiculos):
     """
