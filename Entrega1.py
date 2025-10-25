@@ -304,40 +304,40 @@ def main():
             "idPatente": "AA345NO",   # Peugeot Boxer
             "totalKm": 240,
             "costoRuta": 22392.0,
-            "horaSalida": "2025-10-21 07:15",
-            "horaLlegada": "2025-10-21 11:45"
+            "horaSalida": "2025.10.21 07.15",
+            "horaLlegada": "2025.10.21 11.45"
         },
         "2025.10.23 22.30.00": {
             "idLegajo": "27713",      # Jorge López
             "idPatente": "AE101JK",   # Iveco Daily
             "totalKm": 275,
             "costoRuta": 29012.5,
-            "horaSalida": "2025-10-23 22:30",
-            "horaLlegada": "2025-10-24 02:20"  # Cruce de medianoche
+            "horaSalida": "2025.10.23 22.30",
+            "horaLlegada": "2025.10.24 02.20"  # Cruce de medianoche
         },
         "2025.10.24 14.00.00": {
             "idLegajo": "33051",      # María Gómez
             "idPatente": "AC456FG",   # Renault Master
             "totalKm": 190,
             "costoRuta": 17290.0,
-            "horaSalida": "2025-10-24 14:00",
-            "horaLlegada": "2025-10-24 18:00"
+            "horaSalida": "2025.10.24 14.00",
+            "horaLlegada": "2025.10.24 18.00"
         },
         "2025.10.24 08.30.00": {
             "idLegajo": "81306",      # Elena Silva
             "idPatente": "AE452EV",    # Vehículo: Volkswagen Crafter
             "totalKm": 250,
             "costoRuta": 23675.0,     # 250 km * 94.7 $/km
-            "horaSalida": "2025-10-24 08:30",
-            "horaLlegada": "2025-10-24 13:15"
+            "horaSalida": "2025.10.24 08.30",
+            "horaLlegada": "2025.10.24 13.15"
         },
         "2025.10.21 06.46.00": {
             "idLegajo": "96767",      # Harry Farias
             "idPatente": "AE432VX",   # Vehículo: Fiat Ducato
             "totalKm": 145,
             "costoRuta": 13528.5,
-            "horaSalida": "2025-10-21 06:46",
-            "horaLlegada": "2025-10-21 10:00"
+            "horaSalida": "2025.10.21 06.46",
+            "horaLlegada": "2025.10.21 10.00"
         }
     }
 
