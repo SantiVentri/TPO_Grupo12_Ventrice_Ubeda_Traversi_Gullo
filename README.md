@@ -19,7 +19,11 @@
 
 **Estructura de archivos**
 ```
-├── Entrega1.py           # Archivo principal del sistema
+├── Entrega1.py          # Archivo principal del sistema
+├── diccionarios/
+│   ├── choferes.json    # Diccionario con datos de choferes
+│   ├── vehiculos.json   # Diccionario con datos de vehículos
+│   └── rutas.json       # Diccionario con datos de rutas
 └── funciones/
     ├── choferes.py   # Gestión de choferes
     ├── informes.py   # Generación de informes
