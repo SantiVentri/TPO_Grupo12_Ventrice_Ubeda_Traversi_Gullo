@@ -584,7 +584,7 @@ def main():
                                 turnoValido = False
                                 while not turnoValido:
                                     # Ingresar nuevo día
-                                    nuevoDia = input("Ingrese el nuevo día del turno (Lunes a Viernes) o '-' para dejar vacío: ")
+                                    nuevoDia = input("Ingrese el nuevo día del turno (Lunes a Viernes) o '-' para dejar vacío: ").title()
 
                                     if nuevoDia == "-":
                                         # Eliminar el turno
@@ -594,7 +594,7 @@ def main():
                                         turnoValido = True
                                     else:
                                         # Ingresar nuevo horario
-                                        nuevoHorario = input("Ingrese el nuevo horario del turno (Mañana, Tarde o Noche): ")
+                                        nuevoHorario = input("Ingrese el nuevo horario del turno (Mañana, Tarde o Noche): ").title()
 
                                         # Validar turno
                                         nuevoTurno = f"{nuevoDia} - {nuevoHorario}"
