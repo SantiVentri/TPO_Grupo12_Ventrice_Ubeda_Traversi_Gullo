@@ -90,15 +90,15 @@ def validarFechaHora(fechaHora):
         return False
 
     # Validar días según mes (usando time)
-    dias_por_mes = [31, 29 if (año % 4 == 0 and (año % 100 != 0 or año % 400 == 0)) else 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-    if not (1 <= dia <= dias_por_mes[mes - 1]):
+    diasPorMes = [31, 29 if (año % 4 == 0 and (año % 100 != 0 or año % 400 == 0)) else 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    if not (1 <= dia <= diasPorMes[mes - 1]):
         print("El día no corresponde al mes indicado")
         return False
 
     # Validar que sea una fecha válida
     partes = (año, mes, dia, hora, minuto, segundo, 0, 0, -1)
-    fecha_formateada = time.strftime("%Y.%m.%d %H.%M.%S", partes)
-    if fecha_formateada != fechaHora:
+    fechaFormateada = time.strftime("%Y.%m.%d %H.%M.%S", partes)
+    if fechaFormateada != fechaHora:
         print(f"La fecha y hora debe tener el formato {formato} y ser válida")
         return False
     
