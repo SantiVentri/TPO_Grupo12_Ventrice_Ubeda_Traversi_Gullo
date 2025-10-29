@@ -1,0 +1,122 @@
+{
+    "12507": {
+        "activo": true,
+        "nombre": "Carlos",
+        "apellido": "Pérez",
+        "telefono": 34567890,
+        "cantidadKm": 25400,
+        "turnos": {
+            "turno1": "Lunes - Mañana",
+            "turno2": "Miércoles - Mañana",
+            "turno3": "Viernes - Mañana"
+        }
+    },
+    "12994": {
+        "activo": true,
+        "nombre": "Rocco",
+        "apellido": "Morillo",
+        "telefono": 26335567,
+        "cantidadKm": 34500,
+        "turnos": {
+            "turno1": "Martes - Mañana",
+            "turno2": "Jueves - Tarde",
+            "turno3": "Viernes - Mañana"
+        }
+    },
+    "33051": {
+        "activo": true,
+        "nombre": "María",
+        "apellido": "Gómez",
+        "telefono": 23456789,
+        "cantidadKm": 18750,
+        "turnos": {
+            "turno1": "Martes - Tarde",
+            "turno2": "Jueves - Tarde",
+            "turno3": "Sábado - Tarde"
+        }
+    },
+    "27713": {
+        "activo": true,
+        "nombre": "Jorge",
+        "apellido": "López",
+        "telefono": 45678901,
+        "cantidadKm": 31000,
+        "turnos": {
+            "turno1": "Lunes - Noche",
+            "turno2": "Miércoles - Noche",
+            "turno3": "Viernes - Noche"
+        }
+    },
+    "44128": {
+        "activo": false,
+        "nombre": "Ana",
+        "apellido": "Martínez",
+        "telefono": 67890123,
+        "cantidadKm": 9800,
+        "turnos": {
+            "turno1": "Martes - Tarde",
+            "turno2": "Jueves - Tarde",
+            "turno3": "Sábado - Tarde"
+        }
+    },
+    "56982": {
+        "activo": true,
+        "nombre": "Luis",
+        "apellido": "Rodríguez",
+        "telefono": 78901234,
+        "cantidadKm": 42000,
+        "turnos": {
+            "turno1": "Lunes - Mañana",
+            "turno2": "Martes - Mañana",
+            "turno3": "Jueves - Mañana"
+        }
+    },
+    "61895": {
+        "activo": true,
+        "nombre": "Sofía",
+        "apellido": "Fernández",
+        "telefono": 89012345,
+        "cantidadKm": 22100,
+        "turnos": {
+            "turno1": "Martes - Noche",
+            "turno2": "Jueves - Noche",
+            "turno3": "Sábado - Noche"
+        }
+    },
+    "78136": {
+        "activo": false,
+        "nombre": "Diego",
+        "apellido": "Ruiz",
+        "telefono": 90123456,
+        "cantidadKm": 15000,
+        "turnos": {
+            "turno1": "Lunes - Tarde",
+            "turno2": "Miércoles - Tarde",
+            "turno3": "Viernes - Tarde"
+        }
+    },
+    "81306": {
+        "activo": true,
+        "nombre": "Elena",
+        "apellido": "Silva",
+        "telefono": 31234567,
+        "cantidadKm": 30500,
+        "turnos": {
+            "turno1": "Martes - Mañana",
+            "turno2": "Jueves - Mañana",
+            "turno3": "Sábado - Mañana"
+        }
+    },
+    "96767": {
+        "activo": true,
+        "nombre": "Harry",
+        "apellido": "Farias",
+        "telefono": 34366785,
+        "cantidadKm": 30500,
+        "turnos": {
+            "turno1": "Martes - Tarde",
+            "turno2": "Lunes - Mañana",
+            "turno3": "Sábado - Tarde"
+        }
+    }
+}
