@@ -15,7 +15,7 @@ Descripción: Funciones relacionadas a los informes.
 #----------------------------------------------------------------------------------------------
 # FUNCIONES
 #----------------------------------------------------------------------------------------------
-def informeViajesDelMes(rutas, choferes, vehiculos):
+def informeViajesDelMes(rutas, vehiculos):
     """
     Muestra un listado con todos los viajes del mes.
     Parámetros:
@@ -33,16 +33,16 @@ def informeViajesDelMes(rutas, choferes, vehiculos):
         costoRuta = totalKm * costoKm
 
         # Formatear hora de llegada sin segundos
-        hora_llegada = datos['horaLlegada']
+        horaLlegada = datos['horaLlegada']
 
         fila = [
             fecha,                    # fecha y hora
             f"LU{datos['idLegajo']}", # legajo
             patente,                  # patente
             totalKm,                  # total km
-            costoRuta,               # costo calculado
+            costoRuta,                # costo calculado
             datos['horaSalida'],      # hora salida  
-            hora_llegada             # hora llegada (sin segundos)
+            horaLlegada               # hora llegada (sin segundos)
         ]
         lista.append(fila)
 
