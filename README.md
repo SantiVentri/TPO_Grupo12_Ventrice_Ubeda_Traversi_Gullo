@@ -1,4 +1,4 @@
-# TP Grupal Equipo N°12 - v1.0
+# TP Grupal Equipo N°12 - v2.0
 
 **Modelo de datos**: N°11
 
