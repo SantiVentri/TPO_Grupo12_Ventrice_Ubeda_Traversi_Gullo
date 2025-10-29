@@ -33,33 +33,31 @@ def crearLegajo(choferes):
         
 def validarNombreApellido(tipo, texto):
     """
-    Esta función valida el nombre de un chofer.
+    Esta función valida el nombre o apellido de un chofer.
     Parámetros:
-    - nombre (str): El nombre a validar.
+    - tipo (str): Indica si se está validando el nombre o el apellido.
+    - texto (str): El texto a validar.
     Salidas:
-    - textoValido (bool): Indica si el nombre es válido.
+    - textoValido (bool): Indica si el texto es válido.
     """
 
     textoValido = True
 
-    if not texto or texto.strip() == "":
-        textoValido = False
-        print(f"El {tipo} no puede estar vacío. Intente nuevamente.")
-    elif len(texto) < 3:
-        textoValido = False
-        print(f"El {tipo} debe tener al menos 3 caracteres. Intente nuevamente.")
-    elif len(texto) > 15:
-        textoValido = False
-        print(f"El {tipo} no puede exceder los 15 caracteres. Intente nuevamente.")
-    else:
+    try:
+        if not texto or texto.strip() == "":
+            raise Exception(f"El {tipo} no puede estar vacío. Intente nuevamente.")
+        elif len(texto) < 3:
+            raise Exception(f"El {tipo} debe tener al menos 3 caracteres. Intente nuevamente.")
+        elif len(texto) > 15:
+            raise Exception(f"El {tipo} no puede exceder los 15 caracteres. Intente nuevamente.")
+
         for char in texto:
             if not (char.isalpha() or char == " "):
-                textoValido = False
-                print(f"El {tipo} solo puede contener letras y espacios. Intente nuevamente.")
-                break
+                raise Exception(f"El {tipo} solo puede contener letras y espacios. Intente nuevamente.")
 
-    return textoValido
-
+    except Exception as e:
+        textoValido = False
+        print(e)
 
     finally:
         return textoValido
@@ -75,14 +73,22 @@ def validarTelefono(telefono):
 
     telValido = True
 
-    if not telefono.isdigit():
+    try:
+        int(telefono)
+
+        if len(telefono) != 8:
+            raise Exception("El teléfono debe tener 8 dígitos. Intente nuevamente.")
+        
+    except ValueError:
         telValido = False
         print("El teléfono solo puede contener números. Intente nuevamente.")
-    elif len(telefono) != 8:
-        telValido = False
-        print("El teléfono debe tener 8 dígitos. Intente nuevamente.")
 
-    return telValido
+    except Exception as e:
+        telValido = False
+        print(e)
+
+    finally:
+        return telValido
 
 def validarKm(km):
     """
@@ -95,17 +101,18 @@ def validarKm(km):
 
     kmValido = True
 
-    for char in km:
-        if not char.isdigit() and char != '.' and char != '-':
-            kmValido = False
-            print("Los kilómetros solo pueden contener números y un punto decimal. Intente nuevamente.")
-            return kmValido
-        elif float(km) < 0:
+    try:
+        km = float(km)
+        if km < 0:
             kmValido = False
             print("Los kilómetros no pueden ser negativos. Intente nuevamente.")
-            return kmValido
 
-    return kmValido
+    except ValueError:
+        kmValido = False
+        print("Los kilómetros deben ser un número válido. Intente nuevamente.")
+
+    finally:
+        return kmValido
 
 def validarTurno(turnos, turno):
     """
@@ -118,25 +125,33 @@ def validarTurno(turnos, turno):
     """
 
     # Separa el día y el horario del turno
-    dia, horario = turno.split(" - ")
-
     turnoValido = True
 
-    if turno in turnos:
+    try:
+        dia, horario = turno.split(" - ")
+
+        if turno in turnos:
+            turnoValido = False
+            print("El chofer ya tiene asignado ese turno. Intente nuevamente.")
+        else:
+            diaValido = dia.title() in ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
+            if not diaValido:
+                raise Exception("día")
+            
+            horarioValido = horario.title() in ["Mañana", "Tarde", "Noche"]
+            if not horarioValido:
+                raise Exception("horario")
+
+    except ValueError:
         turnoValido = False
-        print("El chofer ya tiene asignado ese turno. Intente nuevamente.")
-    else:
-        diaValido = dia.title() in ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
-        horarioValido = horario.title() in ["Mañana", "Tarde", "Noche"]
+        print("Hubo un error al obtener el formato")
 
-        if not diaValido:
-            turnoValido = False
-            print("El día del turno no es válido. Intente nuevamente.")
-        elif not horarioValido:
-            turnoValido = False
-            print("El horario del turno no es válido. Intente nuevamente.")
+    except Exception as e:
+        turnoValido = False
+        print(f"El {e} del turno no es válido. Intente nuevamente.")
 
-    return turnoValido
+    finally:
+        return turnoValido
 
 def listarChoferes(choferes):
     """
@@ -148,50 +163,55 @@ def listarChoferes(choferes):
     print("MENÚ DE CHOFERES > Listado de choferes")
     print("--------------------------------------\n")
 
-    print("SE LISTAN LOS CHOFERES ACTIVOS:\n")
+    try:
+        print("SE LISTAN LOS CHOFERES ACTIVOS:\n")
+        
+        # Imprimir los títulos de la tabla
+        print("-" * 124)
+        print(f"|{"Legajo":^11}|{"Nombre":^18}|{"Teléfono":^18}|{"Km Recorridos":^15}|{"Turnos":^56}|")
+        print("-" * 124)
 
-    # Imprimir los títulos de la tabla
-    print("-" * 124)
-    print(f"|{"Legajo":^11}|{"Nombre":^18}|{"Teléfono":^18}|{"Km Recorridos":^15}|{"Turnos":^56}|")
-    print("-" * 124)
+        # Crear matriz con los datos de los choferes
+        matriz = []
+        for legajo, datos in choferes.items():
+            if datos["activo"]:
+                # Procesar celda de turnos
+                if len(datos['turnos']) == 0:
+                    celdaTurnos = "Sin turnos"
+                else:
+                    celdaTurnos = ", ".join(datos['turnos'].values())
 
-    # Crear matriz con los datos de los choferes
-    matriz = []
-    for legajo, datos in choferes.items():
-        if datos["activo"]:
-            # Procesar celda de turnos
-            if len(datos['turnos']) == 0:
-                celdaTurnos = "Sin turnos"
-            else:
-                celdaTurnos = ", ".join(datos['turnos'].values())
+                # Formatear celda de teléfono
+                telefonoFormateado = "+54 11 " + str(datos['telefono'])[:-4] + "-" + str(datos['telefono'])[-4:]
 
-            # Formatear celda de teléfono
-            telefonoFormateado = "+54 11 " + str(datos['telefono'])[:-4] + "-" + str(datos['telefono'])[-4:]
+                # Agregar fila a la matriz
+                matriz.append([
+                    str(legajo),
+                    f"{datos['nombre']} {datos['apellido']}",
+                    telefonoFormateado,
+                    str(datos['cantidadKm']),
+                    celdaTurnos
+                ])
 
-            # Agregar fila a la matriz
-            matriz.append([
-                str(legajo),
-                f"{datos['nombre']} {datos['apellido']}",
-                telefonoFormateado,
-                str(datos['cantidadKm']),
-                celdaTurnos
-            ])
+        # Recorrer matriz con for i / for j e imprimir tabla
+        for i in range(len(matriz)):
+            print("|", end="")
+            for j in range(len(matriz[i])):
+                if j == 0:
+                    print(f" LU{matriz[i][j]:^8}|", end="")
+                elif j == 1:
+                    print(f" {matriz[i][j]:<17}|", end="")
+                elif j == 2:
+                    print(f" {matriz[i][j]:^17}|", end="")
+                elif j == 3:
+                    print(f" {matriz[i][j] + "km ":>14}|", end="")
+                elif j == 4:
+                    print(f" {matriz[i][j]:<55}|", end="")
+            print()  # salto de línea entre filas
 
-    # Recorrer matriz con for i / for j e imprimir tabla
-    for i in range(len(matriz)):
-        print("|", end="")
-        for j in range(len(matriz[i])):
-            if j == 0:
-                print(f" LU{matriz[i][j]:^8}|", end="")
-            elif j == 1:
-                print(f" {matriz[i][j]:<17}|", end="")
-            elif j == 2:
-                print(f" {matriz[i][j]:^17}|", end="")
-            elif j == 3:
-                print(f" {matriz[i][j] + "km ":>14}|", end="")
-            elif j == 4:
-                print(f" {matriz[i][j]:<55}|", end="")
-        print()  # salto de línea entre filas
+        # Cerrar tabla
+        print("-" * 124)
 
-    # Cerrar tabla
-    print("-" * 124)
+    except Exception as e:
+        print("Error al listar choferes.")
+        print(f"Detalles: {e}")
