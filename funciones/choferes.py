@@ -60,17 +60,9 @@ def validarNombreApellido(tipo, texto):
 
     return textoValido
 
-def formatearNombreApellido(texto):
-    """
-    Esta función formatea el nombre o apellido de un chofer para que la primera letra sea mayúscula.
-    Parámetros:
-    - nombre (str): El nombre a formatear.
-    Salida:
-    - textoFormateado (str): El nombre o apellido formateado con la primera letra en mayúscula y el resto en minúscula.
-    """
 
-    textoFormateado = texto.strip().title()
-    return textoFormateado
+    finally:
+        return textoValido
 
 def validarTelefono(telefono):
     """

@@ -512,7 +512,7 @@ def main():
                                 nombre = input("Ingrese el primer nombre del chofer: ")
 
                                 # Formatear nombre (primera letra mayúscula, resto minúsculas)
-                                nombre = formatearNombreApellido(nombre)
+                                nombre = nombre.strip().title()
 
                                 # Validar nombre
                                 nombreValido = validarNombreApellido("nombre", nombre)
@@ -529,7 +529,7 @@ def main():
                                 apellido = input("Ingrese el apellido del chofer: ")
 
                                 # Formatear apellido (primera letra mayúscula, resto minúsculas)
-                                apellido = formatearNombreApellido(apellido)
+                                apellido = apellido.strip().title()
                                 
                                 # Validar apellido
                                 apellidoValido = validarNombreApellido("apellido", apellido)
