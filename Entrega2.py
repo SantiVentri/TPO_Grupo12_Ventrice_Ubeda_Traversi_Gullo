@@ -14,6 +14,8 @@ gestiona los viajes en la empresa.
 #----------------------------------------------------------------------------------------------
 # MÓDULOS
 #----------------------------------------------------------------------------------------------
+import json
+from funciones.archivos import *
 from funciones.choferes import *
 from funciones.vehiculos import *
 from funciones.rutas import *
@@ -413,9 +415,6 @@ def main():
                     print("------------------------------------\n")
 
                     while True:
-                        # Crear legajo
-                        legajo = crearLegajo(choferes)
-                        
                         # Solicitar nombre
                         nombreValido = False
                         while not nombreValido:
@@ -466,8 +465,22 @@ def main():
                                         turnos[f"turno{i+1}"] = nuevoTurno
                                         print(f"Turno {nuevoTurno} agregado exitosamente.")
 
-                        # Guardar chofer
-                        choferes[legajo] = {
+                        # Crear variable con dirección de archivo del diccionario de choferes
+                        rutaChoferes = "diccionarios/choferes.json"
+
+                        # Cargar datos de choferes
+                        archivo = abrirArchivo(rutaChoferes, "r")
+                        if archivo is not None:
+                            choferes = json.load(archivo)
+                            cerrarArchivo(archivo)
+                        else:
+                            choferes = {}  # Si no existe, iniciar vacío
+
+                        # Crear legajo
+                        legajo = crearLegajo(choferes)
+
+                        # Crear diccionario con los datos del chofer
+                        datosChoferes = {
                             "activo": True,
                             "nombre": nombre,
                             "apellido": apellido,
@@ -476,13 +489,25 @@ def main():
                             "turnos": turnos
                         }
 
-                        print(f"\nSe agregó al chofer {nombre} {apellido}, LU{legajo} exitosamente.\n")
+                        # Asignar los datos del chofer al chofer
+                        choferes[legajo] = datosChoferes
 
-                        # Preguntar si desea agregar otro chofer
-                        agregarOtro = input("¿Desea agregar otro chofer? (s/n): ").lower()
-                        if agregarOtro != "s" and agregarOtro != "si":
-                            break
-                        
+                        # Abrir archivo en modo escritura usando tu función
+                        archivo = abrirArchivo(rutaChoferes, "w")
+                        if archivo is not None:
+                            json.dump(choferes, archivo, indent=4, ensure_ascii=False)
+                            cerrarArchivo(archivo)
+
+                            # Mensaje de éxito
+                            print(f"\nSe agregó al chofer {nombre} {apellido}, LU{legajo} exitosamente.\n")
+
+                            # Preguntar si desea agregar otro chofer
+                            agregarOtro = input("¿Desea agregar otro chofer? (s/n): ").lower()
+                            if agregarOtro != "s" and agregarOtro != "si":
+                                break
+                        else:
+                            print("No se pudo guardar el chofer. Verifique el archivo.")
+
                 elif opcionSubmenu == "2":   # Opción 2 del submenú
                     print("----------------------------------------")
                     print("MENÚ DE CHOFERES > Modificar de choferes")

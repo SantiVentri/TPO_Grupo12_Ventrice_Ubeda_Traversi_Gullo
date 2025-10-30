@@ -12,7 +12,8 @@ Pendientes:
 #----------------------------------------------------------------------------------------------
 # MÓDULOS
 #----------------------------------------------------------------------------------------------
-import random
+import random, json
+from funciones.archivos import *
 
 #----------------------------------------------------------------------------------------------
 # FUNCIONES
@@ -25,7 +26,8 @@ def crearLegajo(choferes):
     Salida:
     - legajo (int): Legajo único generado para el nuevo chofer.
     """
-    
+
+    # Generar el legajo de 5 dígitos del chofer
     while True:
         legajo = random.randint(10000, 99999)
         if legajo not in choferes:
