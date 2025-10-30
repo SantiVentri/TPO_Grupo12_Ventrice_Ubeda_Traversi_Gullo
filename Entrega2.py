@@ -655,6 +655,17 @@ def main():
                     print("MENÚ DE CHOFERES > Desactivar choferes")
                     print("------------------------------------\n")
 
+                    # Crear variable con dirección de archivo del diccionario de choferes
+                    rutaChoferes = "diccionarios/choferes.json"
+
+                    # Cargar datos de choferes
+                    archivo = abrirArchivo(rutaChoferes, "r")
+                    if archivo is not None:
+                        choferes = json.load(archivo)
+                        cerrarArchivo(archivo)
+                    else:
+                        choferes = {}  # Si no existe, iniciar vacío
+
                     while True:
                         # Se pide el número de legajo a eliminar
                         legajo = input("Ingrese el legajo del chofer a desactivar (o '0' para salir): ")
@@ -663,10 +674,9 @@ def main():
                         if legajo == "0":
                             break
                         # Validar legajo
-                        elif not legajo.isdigit() or int(legajo) not in choferes:
+                        elif not legajo.isdigit() or legajo not in choferes:
                             print("Legajo inválido. Intente nuevamente.")
                         else:
-                            legajo = int(legajo) # Convertir a entero
                             chofer = choferes[legajo] # Obtener datos del chofer
 
                             # Mensaje de confirmación
@@ -675,9 +685,20 @@ def main():
                             # Si el usuario confirma la acción, se desactiva el chofer. Sino, se cancela la operación
                             if confirmar == "s" or confirmar == "si":
                                 choferes[legajo]["activo"] = False
-                                print(f"Chofer LU{legajo} desactivado exitosamente.\n")
+
                             else:
                                 print("Desactivación cancelada.\n")
+                            
+                            # Abrir archivo en modo escritura usando tu función
+                            archivo = abrirArchivo(rutaChoferes, "w")
+                            if archivo is not None:
+                                json.dump(choferes, archivo, indent=4, ensure_ascii=False)
+                                cerrarArchivo(archivo)
+
+                                # Mensaje de éxito
+                                print(f"\nSe desactivó al chofer {chofer['nombre']} {chofer['apellido']}, LU{legajo} exitosamente.\n")
+                            else:
+                                print("No se pudo guardar el chofer. Verifique el archivo.")
                 
                 elif opcionSubmenu == "4":   # Opción 4 del submenú
                     listarChoferes()
