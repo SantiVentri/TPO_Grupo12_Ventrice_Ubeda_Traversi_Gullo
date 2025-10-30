@@ -547,7 +547,7 @@ def main():
                                 print("Desactivación cancelada.\n")
                 
                 elif opcionSubmenu == "4":   # Opción 4 del submenú
-                    listarChoferes(choferes)
+                    listarChoferes()
 
                 input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
                 print("\n\n")
