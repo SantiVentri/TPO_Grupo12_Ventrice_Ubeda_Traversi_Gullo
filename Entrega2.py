@@ -513,6 +513,17 @@ def main():
                     print("MENÚ DE CHOFERES > Modificar de choferes")
                     print("----------------------------------------\n")
 
+                    # Crear variable con dirección de archivo del diccionario de choferes
+                    rutaChoferes = "diccionarios/choferes.json"
+
+                    # Cargar datos de choferes
+                    archivo = abrirArchivo(rutaChoferes, "r")
+                    if archivo is not None:
+                        choferes = json.load(archivo)
+                        cerrarArchivo(archivo)
+                    else:
+                        choferes = {}  # Si no existe, iniciar vacío
+
                     while True:
                         # Preguntar legajo de chofer a modificar
                         legajo = input("Ingrese el legajo del chofer a modificar (o '0' para salir): ")
@@ -521,20 +532,20 @@ def main():
                         if legajo == "0":
                             print("Saliendo de la modificación de choferes.\n")
                             break
-                        elif not legajo.isdigit() or int(legajo) not in choferes:
+                        elif not legajo.isdigit() or legajo not in choferes:
                             print("Legajo inválido. Intente nuevamente.")
                             break
 
                         # Formatear celda de teléfono
-                        telefonoFormateado = str(choferes[int(legajo)]['telefono'])[4:] + "-" + str(choferes[int(legajo)]['telefono'])[:4]
+                        telefonoFormateado = f"+54 11 {str(choferes[legajo]['telefono'])[4:]}-{str(choferes[legajo]['telefono'])[:4]}"
 
                         # Seleccionar dato a modificar
                         print("\nDatos actuales del chofer:")
-                        print(f"1. Nombre: {choferes[int(legajo)]['nombre']}")
-                        print(f"2. Apellido: {choferes[int(legajo)]['apellido']}")
-                        print(f"3. Teléfono: +54 11 {telefonoFormateado}")
-                        print(f"4. Cantidad de km: {choferes[int(legajo)]['cantidadKm']}")
-                        print(f"5. Ver turnos")
+                        print(f"1. Nombre: {choferes[legajo]['nombre']}")
+                        print(f"2. Apellido: {choferes[legajo]['apellido']}")
+                        print(f"3. Teléfono: {telefonoFormateado}")
+                        print(f"4. Cantidad de km: {choferes[legajo]['cantidadKm']}")
+                        print("5. Ver turnos")
                         print("\n¿Qué dato desea modificar?")
                         
                         opcion = input("Ingrese el número de la opción (1-5): ")
@@ -552,7 +563,7 @@ def main():
                                 nombreValido = validarNombreApellido("nombre", nombre)
 
                             # Guardar nuevo nombre
-                            choferes[int(legajo)]['nombre'] = nombre
+                            choferes[legajo]['nombre'] = nombre
 
                             print("\nDato modificado exitosamente.")
                             
@@ -569,7 +580,7 @@ def main():
                                 apellidoValido = validarNombreApellido("apellido", apellido)
 
                             # Guardar nuevo apellido
-                            choferes[int(legajo)]['apellido'] = apellido
+                            choferes[legajo]['apellido'] = apellido
 
                             print("\nDato modificado exitosamente.")
 
@@ -581,7 +592,7 @@ def main():
                                 telValido = validarTelefono(telefono)
 
                             # Guardar nuevo teléfono
-                            choferes[int(legajo)]['telefono'] = telefono
+                            choferes[legajo]['telefono'] = telefono
 
                             print("\nDato modificado exitosamente.")
 
@@ -593,7 +604,7 @@ def main():
                                 kmValidos = validarKm(cantidadKm)
 
                             # Guardar nueva cantidad de km
-                            choferes[int(legajo)]['cantidadKm'] = float(cantidadKm)
+                            choferes[legajo]['cantidadKm'] = float(cantidadKm)
 
                             print("\nDato modificado exitosamente.")
                                     
@@ -601,8 +612,8 @@ def main():
                             # Ver turnos
                             print("\nTurnos actuales del chofer:")
                             for i in range(1, 4):
-                                if f"turno{i}" in choferes[int(legajo)]['turnos']:
-                                    print(f"{i}. {choferes[int(legajo)]['turnos'][f'turno{i}']}")
+                                if f"turno{i}" in choferes[legajo]['turnos']:
+                                    print(f"{i}. {choferes[legajo]['turnos'][f'turno{i}']}")
                                 else:
                                     print(f"{i}. Sin turno asignado")
 
@@ -622,8 +633,8 @@ def main():
 
                                     if nuevoDia == "-":
                                         # Eliminar el turno
-                                        if f'turno{turnoModificar}' in choferes[int(legajo)]['turnos']:
-                                            del choferes[int(legajo)]['turnos'][f'turno{turnoModificar}']
+                                        if f'turno{turnoModificar}' in choferes[legajo]['turnos']:
+                                            del choferes[legajo]['turnos'][f'turno{turnoModificar}']
                                         print("Turno eliminado exitosamente.")
                                         turnoValido = True
                                     else:
@@ -632,23 +643,25 @@ def main():
 
                                         # Validar turno
                                         nuevoTurno = f"{nuevoDia} - {nuevoHorario}"
-                                        turnoValido = validarTurno(choferes[int(legajo)]["turnos"].values(), nuevoTurno)
+                                        turnoValido = validarTurno(choferes[legajo]["turnos"].values(), nuevoTurno)
 
                                         if turnoValido:
                                             # Guardar nuevo turno
-                                            choferes[int(legajo)]['turnos'][f'turno{turnoModificar}'] = nuevoTurno
+                                            choferes[legajo]['turnos'][f'turno{turnoModificar}'] = nuevoTurno
 
                                             # Mensaje de éxito
                                             print(f"Turno del {nuevoDia} a la {nuevoHorario} modificado exitosamente.")
 
                         else:
                             print("Opción inválida.")
-                            break
                             
-                        # Preguntar si desea modificar otro chofer
-                        modificarOtro = input("¿Desea modificar otro chofer? (s/n): ").lower()
-                        if modificarOtro != "s" and modificarOtro != "si":
-                            break
+                        # Abrir archivo en modo escritura usando tu función
+                        archivo = abrirArchivo(rutaChoferes, "w")
+                        if archivo is not None:
+                            json.dump(choferes, archivo, indent=4, ensure_ascii=False)
+                            cerrarArchivo(archivo)
+                        else:
+                            print("No se pudo guardar el chofer. Verifique el archivo.")
                 
                 elif opcionSubmenu == "3":   # Opción 3 del submenú
                     print("------------------------------------")
