@@ -30,6 +30,8 @@ def main():
     #-------------------------------------------------
     # Inicialización de variables
     #----------------------------------------------------------------------------------------------
+    """
+    # Precarga de datos de choferes
     choferes = {
         12507: {
             "activo": True,
@@ -153,7 +155,10 @@ def main():
             }
         }
     }
+    """
 
+    """
+    # Precarga de datos de vehículos
     vehiculos = {
         "AE456GH": {
             "activo": False,
@@ -257,7 +262,10 @@ def main():
             }
         }
     }
+    """
 
+    """
+    # Precarga de datos de rutas
     rutas = {
         "2025.10.21 06.45.00": {
             "idLegajo": "12507",      # Carlos Pérez
@@ -340,6 +348,7 @@ def main():
             "horaLlegada": "2025.10.21 10.00"
         }
     }
+    """
 
     #-------------------------------------------------
     # Bloque de menú
