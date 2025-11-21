@@ -517,59 +517,37 @@ def main():
                         
                         if opcion == "1":
                             # Ingresar nuevo nombre
-                            nombreValido = False
-                            while not nombreValido:
-                                nombre = input("Ingrese el primer nombre del chofer: ")
-
-                                # Formatear nombre (primera letra mayúscula, resto minúsculas)
-                                nombre = nombre.strip().title()
-
-                                # Validar nombre
-                                nombreValido = validarNombreApellido("nombre", nombre)
+                            nuevoNombre = solicitarNombre("nombre")
 
                             # Guardar nuevo nombre
-                            choferes[legajo]['nombre'] = nombre
+                            choferes[legajo]['nombre'] = nuevoNombre
 
                             print("\nDato modificado exitosamente.")
                             
                         elif opcion == "2":
                             # Ingresar nuevo apellido
-                            apellidoValido = False
-                            while not apellidoValido:
-                                apellido = input("Ingrese el apellido del chofer: ")
-
-                                # Formatear apellido (primera letra mayúscula, resto minúsculas)
-                                apellido = apellido.strip().title()
-                                
-                                # Validar apellido
-                                apellidoValido = validarNombreApellido("apellido", apellido)
+                            nuevoApellido = solicitarApellido()
 
                             # Guardar nuevo apellido
-                            choferes[legajo]['apellido'] = apellido
+                            choferes[legajo]['apellido'] = nuevoApellido
 
                             print("\nDato modificado exitosamente.")
 
                         elif opcion == "3":
                             # Solicitar teléfono
-                            telValido = False
-                            while not telValido:
-                                telefono = input("Ingrese el teléfono del chofer: +54 11 ")
-                                telValido = validarTelefono(telefono)
+                            nuevoTelefono = solicitarTelefono()
 
                             # Guardar nuevo teléfono
-                            choferes[legajo]['telefono'] = telefono
+                            choferes[legajo]['telefono'] = nuevoTelefono
 
                             print("\nDato modificado exitosamente.")
 
                         elif opcion == "4":
                             # Ingresar nueva cantidad de km recorridos
-                            kmValidos = False
-                            while not kmValidos:
-                                cantidadKm = input("Ingrese el cantidad de km recorridos del chofer: ")
-                                kmValidos = validarKm(cantidadKm)
+                            nuevosKm = solicitarKm()
 
                             # Guardar nueva cantidad de km
-                            choferes[legajo]['cantidadKm'] = float(cantidadKm)
+                            choferes[legajo]['cantidadKm'] = nuevosKm
 
                             print("\nDato modificado exitosamente.")
                                     
@@ -591,31 +569,14 @@ def main():
                             elif turnoModificar not in ["1", "2", "3"]:
                                 print("Opción inválida. Intente nuevamente.")
                             else:
-                                turnoValido = False
-                                while not turnoValido:
-                                    # Ingresar nuevo día
-                                    nuevoDia = input("Ingrese el nuevo día del turno (Lunes a Viernes) o '-' para dejar vacío: ").title()
+                                turnosExistentes = list(choferes[legajo]['turnos'].values())
+                                nuevoTurno = solicitarUnTurno(int(turnoModificar), turnosExistentes)
 
-                                    if nuevoDia == "-":
-                                        # Eliminar el turno
-                                        if f'turno{turnoModificar}' in choferes[legajo]['turnos']:
-                                            del choferes[legajo]['turnos'][f'turno{turnoModificar}']
-                                        print("Turno eliminado exitosamente.")
-                                        turnoValido = True
-                                    else:
-                                        # Ingresar nuevo horario
-                                        nuevoHorario = input("Ingrese el nuevo horario del turno (Mañana, Tarde o Noche): ").title()
-
-                                        # Validar turno
-                                        nuevoTurno = f"{nuevoDia} - {nuevoHorario}"
-                                        turnoValido = validarTurno(choferes[legajo]["turnos"].values(), nuevoTurno)
-
-                                        if turnoValido:
-                                            # Guardar nuevo turno
-                                            choferes[legajo]['turnos'][f'turno{turnoModificar}'] = nuevoTurno
-
-                                            # Mensaje de éxito
-                                            print(f"Turno del {nuevoDia} a la {nuevoHorario} modificado exitosamente.")
+                                if nuevoTurno:
+                                    choferes[legajo]['turnos'][f'turno{turnoModificar}'] = nuevoTurno
+                                else:
+                                    if f'turno{turnoModificar}' in choferes[legajo]['turnos']:
+                                        del choferes[legajo]['turnos'][f'turno{turnoModificar}']
 
                         else:
                             print("Opción inválida.")
