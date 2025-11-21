@@ -3,6 +3,7 @@
         "activo": true,
         "nombre": "Carlos",
         "apellido": "Pérez",
+        "email": "carlos.perez@gmail.com",
         "telefono": 34567890,
         "cantidadKm": 25400,
         "turnos": {
@@ -15,6 +16,7 @@
         "activo": true,
         "nombre": "Rocco",
         "apellido": "Morillo",
+        "email": "rocco.morillo@gmail.com",
         "telefono": 26335567,
         "cantidadKm": 34500,
         "turnos": {
@@ -27,6 +29,7 @@
         "activo": true,
         "nombre": "María",
         "apellido": "Gómez",
+        "email": "maria.gomez@gmail.com",
         "telefono": 23456789,
         "cantidadKm": 18750,
         "turnos": {
@@ -39,6 +42,7 @@
         "activo": true,
         "nombre": "Jorge",
         "apellido": "López",
+        "email": "jorge.lopez@gmail.com",
         "telefono": 45678901,
         "cantidadKm": 31000,
         "turnos": {
@@ -51,6 +55,7 @@
         "activo": false,
         "nombre": "Ana",
         "apellido": "Martínez",
+        "email": "ana.martinez@gmail.com",
         "telefono": 67890123,
         "cantidadKm": 9800,
         "turnos": {
@@ -63,6 +68,7 @@
         "activo": true,
         "nombre": "Luis",
         "apellido": "Rodríguez",
+        "email": "luis.rodriguez@gmail.com",
         "telefono": 78901234,
         "cantidadKm": 42000,
         "turnos": {
@@ -75,6 +81,7 @@
         "activo": true,
         "nombre": "Sofía",
         "apellido": "Fernández",
+        "email": "sofia.fernandez@gmail.com",
         "telefono": 89012345,
         "cantidadKm": 22100,
         "turnos": {
@@ -87,6 +94,7 @@
         "activo": false,
         "nombre": "Diego",
         "apellido": "Ruiz",
+        "email": "diego.ruiz@gmail.com",
         "telefono": 90123456,
         "cantidadKm": 15000,
         "turnos": {
@@ -98,7 +106,8 @@
     "81306": {
         "activo": true,
         "nombre": "Elena",
-        "apellido": "Silva",
+        "apellido": "Salva",
+        "email": "elena.salva@gmail.com",
         "telefono": 31234567,
         "cantidadKm": 30500,
         "turnos": {
@@ -111,6 +120,7 @@
         "activo": true,
         "nombre": "Harry",
         "apellido": "Farias",
+        "email": "harry.farias@gmail.com",
         "telefono": 34366785,
         "cantidadKm": 30500,
         "turnos": {
