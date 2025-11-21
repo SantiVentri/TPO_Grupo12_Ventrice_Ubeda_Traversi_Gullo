@@ -206,14 +206,22 @@ def listarChoferes():
                 print("|", end="")
                 for j in range(len(matriz[i])):
                     if j == 0:
+                        # Imprimir legajo
                         print(f" LU{matriz[i][j]:^8}|", end="")
                     elif j == 1:
-                        print(f" {matriz[i][j]:<17}|", end="")
+                        # Reemplazar los ultimos 3 caracteres del nombre por "..." si es muy largo
+                        nombre = matriz[i][j]
+                        if len(nombre) > 16:
+                            nombre = nombre[:13] + "..."
+                        print(f" {nombre:<17}|", end="")
                     elif j == 2:
+                        # Imprimir teléfono
                         print(f" {matriz[i][j]:^17}|", end="")
                     elif j == 3:
+                        # Imprimir km recorridos
                         print(f"{matriz[i][j]:>14} |", end="")
                     elif j == 4:
+                        # Imprimir turnos
                         print(f" {matriz[i][j]:<55}|", end="")
                 print()  # salto de línea entre filas
 
