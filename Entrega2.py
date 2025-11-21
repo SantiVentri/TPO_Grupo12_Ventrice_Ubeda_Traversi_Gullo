@@ -416,54 +416,19 @@ def main():
 
                     while True:
                         # Solicitar nombre
-                        nombreValido = False
-                        while not nombreValido:
-                            nombre = input("Ingrese el primer nombre del chofer: ")
-                            nombreValido = validarNombreApellido("nombre", nombre)
-
+                        nombre = solicitarNombre()
+                        
                         # Solicitar apellido
-                        apellidoValido = False
-                        while not apellidoValido:
-                            apellido = input("Ingrese el apellido del chofer: ")
-                            apellidoValido = validarNombreApellido("apellido", apellido)
+                        apellido = solicitarApellido()
 
                         # Solicitar teléfono
-                        telValido = False
-                        while not telValido:
-                            telefono = input("Ingrese el teléfono del chofer: +54 11 ")
-                            telValido = validarTelefono(telefono)
+                        telefono = solicitarTelefono()
 
                         # Solicitar cantidad de km recorridos
-                        kmValidos = False
-                        while not kmValidos:
-                            cantidadKm = input("Ingrese la cantidad de km recorridos por el chofer (Presione Enter para 0): ")
-                            if cantidadKm.strip() == "":
-                                cantidadKm = "0"
-                            kmValidos = validarKm(cantidadKm)
+                        cantidadKm = solicitarKm()
 
                         # Agregar turnos
-                        turnos = {}
-                        for i in range(3):
-                            turnoValido = False
-                            while not turnoValido:
-                                # Ingresar nuevo día
-                                diaTurno = input(f"Ingrese el día para el turno {i+1} (Lunes, Martes, etc.) o '-' para dejarlo vacío: ")
-                                
-                                if diaTurno == "-":
-                                    print(f"Turno {i+1} quedará vacío.")
-                                    turnoValido = True
-                                else:
-                                    # Ingresar nuevo horario
-                                    horarioTurno = input("Ingrese el horario (Mañana, Tarde o Noche): ")
-                                    
-                                    # Crear y validar el turno
-                                    nuevoTurno = f"{diaTurno.title()} - {horarioTurno.title()}"
-                                    turnoValido = validarTurno(turnos, nuevoTurno)
-                                    
-                                    if turnoValido:
-                                        # Guardar turno válido
-                                        turnos[f"turno{i+1}"] = nuevoTurno
-                                        print(f"Turno {nuevoTurno} agregado exitosamente.")
+                        turnos = solicitarTurnos()
 
                         # Crear variable con dirección de archivo del diccionario de choferes
                         rutaChoferes = "diccionarios/choferes.json"
@@ -485,7 +450,7 @@ def main():
                             "nombre": nombre,
                             "apellido": apellido,
                             "telefono": telefono,
-                            "cantidadKm": float(cantidadKm),
+                            "cantidadKm": cantidadKm,
                             "turnos": turnos
                         }
 

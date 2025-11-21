@@ -18,6 +18,8 @@ from funciones.archivos import *
 #----------------------------------------------------------------------------------------------
 # FUNCIONES
 #----------------------------------------------------------------------------------------------
+
+# ------------------ Creación de legajos ------------------
 def crearLegajo(choferes):
     """
     Esta función genera un legajo único para un nuevo chofer.
@@ -32,8 +34,36 @@ def crearLegajo(choferes):
         legajo = random.randint(10000, 99999)
         if legajo not in choferes:
             return legajo
-        
-def validarNombreApellido(tipo, texto):
+
+# ------------------ Solicitar y validar nombre y apellido ------------------
+def solicitarNombre():
+    """
+    Esta función solicita el nombre y apellido de un chofer y los valida.
+    Salidas:
+    - nombre (str): Nombre válido del chofer.
+    - apellido (str): Apellido válido del chofer.
+    """
+    nombreValido = False
+    while not nombreValido:
+        nombre = input("Ingrese el primer nombre del chofer: ")
+        nombreValido = validarNombre("nombre", nombre)
+
+    return nombre
+
+def solicitarApellido():
+    """
+    Esta función solicita el apellido de un chofer y los valida.
+    Salidas:
+    - apellido (str): Apellido válido del chofer.
+    """
+    apellidoValido = False
+    while not apellidoValido:
+        apellido = input("Ingrese el apellido del chofer: ")
+        apellidoValido = validarNombre("apellido", apellido)
+
+    return apellido
+
+def validarNombre(tipo, texto):
     """
     Esta función valida el nombre o apellido de un chofer.
     Parámetros:
@@ -42,7 +72,6 @@ def validarNombreApellido(tipo, texto):
     Salidas:
     - textoValido (bool): Indica si el texto es válido.
     """
-
     textoValido = True
 
     try:
@@ -63,6 +92,21 @@ def validarNombreApellido(tipo, texto):
 
     finally:
         return textoValido
+
+# ------------------ Solicitar y validar teléfonos ------------------
+def solicitarTelefono():
+    """
+    Esta función solicita el teléfono de un chofer y lo valida.
+    Salidas:
+    - telefono (str): Teléfono válido del chofer.
+    """
+
+    telValido = False
+    while not telValido:
+        telefono = input("Ingrese el teléfono del chofer: +54 11 ")
+        telValido = validarTelefono(telefono)
+
+    return telefono
 
 def validarTelefono(telefono):
     """
@@ -92,6 +136,17 @@ def validarTelefono(telefono):
     finally:
         return telValido
 
+# ------------------ Solicitar y validar kms ------------------
+def solicitarKm():
+    kmValidos = False
+    while not kmValidos:
+        cantidadKm = input("Ingrese la cantidad de km recorridos por el chofer (Presione Enter para 0): ")
+        if cantidadKm.strip() == "":
+            cantidadKm = "0"
+        kmValidos = validarKm(cantidadKm)
+
+    return float(cantidadKm)
+
 def validarKm(km):
     """
     Esta función valida la cantidad de km recorridos por un chofer. Lanza un error si no es un número positivo.
@@ -115,6 +170,49 @@ def validarKm(km):
 
     finally:
         return kmValido
+
+# ------------------ Solicitar y validar turnos ------------------
+def solicitarTurnos():
+    """
+    Esta función solicita hasta 3 turnos para un chofer y los valida.
+    Salidas:
+    - turnos (dict): Diccionario con los turnos válidos asignados al chofer.
+    """
+
+    turnos = {}
+    for i in range(3):
+        nuevoTurno = solicitarUnTurno(i + 1, turnos)
+        if nuevoTurno:
+            turnos[f"turno{i+1}"] = nuevoTurno
+
+    return turnos
+
+def solicitarUnTurno(numeroTurno, turnosExistentes):
+    """
+    Solicita un turno individual y lo valida.
+    Parámetros:
+    - numeroTurno (int): El número de turno que se está solicitando (1, 2 o 3).
+    - turnosExistentes (dict): Diccionario de turnos ya asignados para validar duplicados.
+    Salidas:
+    - nuevoTurno (str|None): El string del turno válido o None si se dejó vacío.
+    """
+    while True:
+        # Ingresar nuevo día
+        diaTurno = input(f"Ingrese el día para el turno {numeroTurno} (Lunes, Martes, etc.) o '-' para dejarlo vacío: ")
+        
+        if diaTurno == "-":
+            print(f"Turno {numeroTurno} quedará vacío.")
+            return None
+        
+        # Ingresar nuevo horario
+        horarioTurno = input("Ingrese el horario (Mañana, Tarde o Noche): ")
+        
+        # Crear y validar el turno
+        nuevoTurno = f"{diaTurno.title()} - {horarioTurno.title()}"
+        
+        if validarTurno(turnosExistentes, nuevoTurno):
+            print(f"Turno {nuevoTurno} agregado exitosamente.")
+            return nuevoTurno
 
 def validarTurno(turnos, turno):
     """
@@ -155,6 +253,7 @@ def validarTurno(turnos, turno):
     finally:
         return turnoValido
 
+# ------------------ Listado de choferes ------------------
 def listarChoferes():
     """
     Esta función se encarga de mostrar un listado de choferes activos con sus datos formateados.
