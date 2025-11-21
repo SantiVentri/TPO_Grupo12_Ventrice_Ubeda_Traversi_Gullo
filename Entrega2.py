@@ -352,6 +352,9 @@ def main():
     }
     """
 
+    # Rutas de archivos de los diccionarios
+    rutaChoferes = "diccionarios/choferes.json"
+
     #-------------------------------------------------
     # Bloque de menú
     #----------------------------------------------------------------------------------------------
@@ -433,9 +436,6 @@ def main():
                         # Agregar turnos
                         turnos = solicitarTurnos()
 
-                        # Crear variable con dirección de archivo del diccionario de choferes
-                        rutaChoferes = "diccionarios/choferes.json"
-
                         # Cargar datos de choferes
                         archivo = abrirArchivo(rutaChoferes, "r")
                         if archivo is not None:
@@ -481,9 +481,6 @@ def main():
                     print("----------------------------------------")
                     print("MENÚ DE CHOFERES > Modificar de choferes")
                     print("----------------------------------------\n")
-
-                    # Crear variable con dirección de archivo del diccionario de choferes
-                    rutaChoferes = "diccionarios/choferes.json"
 
                     # Cargar datos de choferes
                     archivo = abrirArchivo(rutaChoferes, "r")
@@ -607,9 +604,6 @@ def main():
                     print("------------------------------------")
                     print("MENÚ DE CHOFERES > Desactivar choferes")
                     print("------------------------------------\n")
-
-                    # Crear variable con dirección de archivo del diccionario de choferes
-                    rutaChoferes = "diccionarios/choferes.json"
 
                     # Cargar datos de choferes
                     archivo = abrirArchivo(rutaChoferes, "r")
