@@ -12,7 +12,7 @@ Pendientes:
 #----------------------------------------------------------------------------------------------
 # MÓDULOS
 #----------------------------------------------------------------------------------------------
-import random, json
+import random, json, re
 from funciones.archivos import *
 
 #----------------------------------------------------------------------------------------------
@@ -324,6 +324,7 @@ def listarChoferes():
                 fila = [
                     legajo,
                     f"{datos['nombre']} {datos['apellido']}",
+                    f"{datos['email']}",
                     f"+54 11 {str(datos['telefono'])[:4]}-{str(datos['telefono'])[4:]}",
                     f"{datos['cantidadKm']}",
                     turnos
@@ -334,10 +335,9 @@ def listarChoferes():
             print("SE LISTAN LOS CHOFERES ACTIVOS:\n")
             
             # Imprimir los títulos de la tabla
-            print("-" * 124)
-            print(f"|{"Legajo":^11}|{"Nombre":^18}|{"Teléfono":^18}|{"Km Recorridos":^15}|{"Turnos":^56}|")
-            print("-" * 124)
-
+            print("-" * 152)
+            print(f"|{"Legajo":^11}|{"Nombre":^18}|{"Email":^27}|{"Teléfono":^18}|{"Km Recorridos":^15}|{"Turnos":^56}|")
+            print("-" * 152)
             # Recorrer matriz con for i / for j e imprimir tabla
             for i in range(len(matriz)):
                 print("|", end="")
@@ -352,18 +352,24 @@ def listarChoferes():
                             nombre = nombre[:13] + "..."
                         print(f" {nombre:<17}|", end="")
                     elif j == 2:
+                        # Reemplazar los ultimos 3 caracteres del email por "..." si es muy largo
+                        email = matriz[i][j]
+                        if len(email) > 25:
+                            email = email[:22] + "..."
+                        print(f" {email:<26}|", end="")
+                    elif j == 3:
                         # Imprimir teléfono
                         print(f" {matriz[i][j]:^17}|", end="")
-                    elif j == 3:
+                    elif j == 4:
                         # Imprimir km recorridos
                         print(f"{matriz[i][j]:>14} |", end="")
-                    elif j == 4:
+                    elif j == 5:
                         # Imprimir turnos
                         print(f" {matriz[i][j]:<55}|", end="")
                 print()  # salto de línea entre filas
 
             # Cerrar tabla
-            print("-" * 124)
+            print("-" * 152)
 
     except Exception as e:
         print("Error al listar choferes.")

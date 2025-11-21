@@ -421,6 +421,9 @@ def main():
                         # Solicitar apellido
                         apellido = solicitarApellido()
 
+                        # Solicitar email
+                        email = solicitarEmail()
+
                         # Solicitar teléfono
                         telefono = solicitarTelefono()
 
@@ -449,6 +452,7 @@ def main():
                             "activo": True,
                             "nombre": nombre,
                             "apellido": apellido,
+                            "email": email,
                             "telefono": telefono,
                             "cantidadKm": cantidadKm,
                             "turnos": turnos
@@ -508,9 +512,10 @@ def main():
                         print("\nDatos actuales del chofer:")
                         print(f"1. Nombre: {choferes[legajo]['nombre']}")
                         print(f"2. Apellido: {choferes[legajo]['apellido']}")
-                        print(f"3. Teléfono: {telefonoFormateado}")
-                        print(f"4. Cantidad de km: {choferes[legajo]['cantidadKm']}")
-                        print("5. Ver turnos")
+                        print(f"3. Email: {choferes[legajo]['email']}")
+                        print(f"4. Teléfono: {telefonoFormateado}")
+                        print(f"5. Cantidad de km: {choferes[legajo]['cantidadKm']}")
+                        print("6. Ver turnos")
                         print("\n¿Qué dato desea modificar?")
                         
                         opcion = input("Ingrese el número de la opción (1-5): ")
@@ -534,6 +539,15 @@ def main():
                             print("\nDato modificado exitosamente.")
 
                         elif opcion == "3":
+                            # Ingresar nuevo email
+                            nuevoEmail = solicitarEmail()
+
+                            # Guardar nuevo email
+                            choferes[legajo]['email'] = nuevoEmail
+
+                            print("\nDato modificado exitosamente.")
+
+                        elif opcion == "4":
                             # Solicitar teléfono
                             nuevoTelefono = solicitarTelefono()
 
@@ -542,7 +556,7 @@ def main():
 
                             print("\nDato modificado exitosamente.")
 
-                        elif opcion == "4":
+                        elif opcion == "5":
                             # Ingresar nueva cantidad de km recorridos
                             nuevosKm = solicitarKm()
 
@@ -551,7 +565,7 @@ def main():
 
                             print("\nDato modificado exitosamente.")
                                     
-                        elif opcion == "5":
+                        elif opcion == "6":
                             # Ver turnos
                             print("\nTurnos actuales del chofer:")
                             for i in range(1, 4):
