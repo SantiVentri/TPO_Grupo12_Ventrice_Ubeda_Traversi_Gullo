@@ -677,42 +677,24 @@ def main():
                         print("--------------------------------------")
                         print("MENÚ DE VEHÍCULOS > Agregar vehículos")
                         print("--------------------------------------\n")
-                        patenteValida=False
-                      
-                        while not patenteValida:
-                            patente = input("Ingrese la patente del vehículo (ej. AE456GH): ").upper()
-                            patenteValida = validarPatente(patente, vehiculos)
+                        
+                        # Solicitar patente
+                        patente = solicitarPatente(vehiculos)
                        
                         #modelo del vehiculo 
                         modelo = input("Ingrese el modelo del vehiculo: ")
                         
                         #Agregar y validar año de compra 
-                       
-                        añoValido = False
-                        while not añoValido:
-                            añoCompra = input("Ingrese el año de compra del vehículo: ")
-                            añoValido = validarAñoCompra(añoCompra)
-
-                        añoCompra = int(añoCompra)
+                        añoCompra = solicitarAñoCompra()
 
                         #Agregar y validar cantidad de Km
-                        kmValido = False
-                        while not kmValido:
-                            cantidadKm = input("Ingrese la cantidad de Km actuales: ")
-                            kmValido = validarCantKm(cantidadKm)
+                        cantidadKm = solicitarKm()
 
-                        cantidadKm = float(cantidadKm)
-                         #Agregar y modificar costo de Km
-                        costoValido = False
-                        while not costoValido:
-                            costoKm = input("Ingrese el costo por Km: ")
-                            costoValido = validarCostoKm(costoKm)
+                        #Agregar y modificar costo de Km
+                        costoKm = solicitarCostoKm()
 
-                        costoKm = float(costoKm)
-
-                        
                         vehiculos[patente] = {
-                            "activo": True,  # SIEMPRE TRUE al cargar
+                            "activo": True,  # Siempre TRUE al cargar
                             "modelo": modelo,
                             "añoCompra": añoCompra,
                             "cantidadKm": cantidadKm,
@@ -736,8 +718,8 @@ def main():
 
                         print("Datos actuales del vehiculo: ")
                         for campo, valor in vehiculo.items():
-                         if campo != "infracciones":
-                            print(f"  {campo}: {valor}")
+                            if campo != "infracciones":
+                                print(f"  {campo}: {valor}")
 
                         print()
                         print("¿Que datos deseas modificar?")
@@ -758,39 +740,32 @@ def main():
                             vehiculos[nuevaPatente] = vehiculo
                             del vehiculos[patente]
                             print("Patente modificada corretamente")
-                               
 
                         elif opcionMod == "2":
+                            # Modificar modelo
                             nuevoModelo = input("Ingrese el nuevo modelo: ")
                             vehiculo["modelo"] = nuevoModelo
                             print("Modelo modificado correctamente.")
                         
                         elif opcionMod == "3":
-                            añoValido = False 
-                            while not añoValido:
-                                nuevoAño = input("Ingrese el nuevo año de compra: ")
-                                añoValido = validarAñoCompra(nuevoAño)
+                            # Modificar año de compra
+                            nuevoAño = solicitarAñoCompra()
                             vehiculo["añoCompra"] = int(nuevoAño)
                             print("Año de compra modificado correctamente")
 
                         elif opcionMod == "4":
-                             kmValido = False 
-                             while not kmValido:
-                                 nuevoKm = input("Ingrese l nueva cantidad de Km actuales: ")
-                                 kmValido = validarCantKm(nuevoKm)
-                             vehiculo["cantidadKm"] = float(nuevoKm)
-                             print("cantidad de Km modifcado correctamente")
+                            # Modificar cantidad de Km
+                            nuevoKm = solicitarKm()
+                            vehiculo["cantidadKm"] = nuevoKm
+                            print("cantidad de Km modifcado correctamente")
                             
-                        elif opcionMod == "5": 
-                            costoValido = False 
-                            while not costoValido:
-                                nuevoCosto = input("Ingrese el nuevo costo del Km: ")
-                                costoValido= validarCostoKm(nuevoCosto)
-                            vehiculo["costoKm"] = float(nuevoCosto)
+                        elif opcionMod == "5":
+                            # Modificar costo por Km 
+                            nuevoCosto = solicitarCostoKm()
+                            vehiculo["costoKm"] = nuevoCosto
                             print ("Costo del Km actualizado")
                         
                         elif opcionMod == "6":
-                                                    
                             print("\n------ MODIFICAR INFRACCIONES ------")
                             print("1. Agregar infracción")
                             print("2. Eliminar infracción")
@@ -815,7 +790,6 @@ def main():
                                                         
                         else:
                              print("Opcion invalida.")
-                        
                                         
                 elif opcionSubmenu == "3":   # Opción 3 del submenú
                     print("--------------------------------------")
@@ -824,7 +798,7 @@ def main():
 
                     patente = input("Ingrese la pantente del vehiculo a desactivar: ").upper()
                     if patente not in vehiculos:
-                         print("No existe un vehículo con esa patente.")
+                        print("No existe un vehículo con esa patente.")
                     else:
                         if not vehiculos[patente]["activo"]:
                          print("Ese vehículo ya está inactivo.")
@@ -841,49 +815,7 @@ def main():
                     print("MENÚ DE VEHÍCULOS > Listar vehículos")
                     print("--------------------------------------\n")
 
-                    if len(vehiculos) == 0:
-                        print("No hay vehiculos cargados.")
-                    
-                    else: 
-                        encabezado = ["Patente", "Modelo", "Año", "Km", "Costo/Km", "Activo", "Infracciones"]
-                        tabla = []
-                        
-                        #Cargar datos de cada vehiculo
-                        for patente, datos in vehiculos.items():
-                       # Solo procesar los vehículos activos
-                            if datos["activo"]:
-                                fila = [
-                                    patente,
-                                    datos["modelo"],
-                                    datos["añoCompra"],
-                                    datos["cantidadKm"],
-                                    f"${datos['costoKm']:.2f}",
-                                    "Sí" if datos["activo"] else "No",
-                                    len(datos["infracciones"])
-                                ]
-                                tabla.append(fila)
-
-                        
-                        #Calcular ancho de cada columna 
-                        anchos=[max(len(str(fila[i])) for fila in ([encabezado] + tabla)) for i in range(len(encabezado))]
-
-                        #Funcion para imprimir una linea dvisoria 
-                        def linea():
-                            print("+" + "+".join("-" * (anchos[i] + 2) for i in range(len(anchos))) + "+")
-                        
-                        #Funcion para imprimir una fila formateada 
-                        def fila_texto(fila):
-                            print(" | " + " | ".join(str(fila[i]).ljust(anchos[i]) for i in range(len(fila))) + " |")
-                        
-                        #Imprimir la tabla completa
-
-                        linea()
-                        fila_texto(encabezado)
-                        linea()
-                        for f in tabla:
-                            fila_texto(f)
-                        linea()
-                    print("\n")
+                    listarVehiculos(vehiculos)
 
                 input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
                 print("\n\n")

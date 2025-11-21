@@ -17,6 +17,27 @@ Pendientes:
 #----------------------------------------------------------------------------------------------
 # FUNCIONES
 #----------------------------------------------------------------------------------------------
+
+# ------------------ Solicitar y validar patentes ------------------
+def solicitarPatente(vehiculos, tipo="nueva"):
+    """
+    Esta función solicita y valida la patente del vehículo.
+    Parámetros:
+    - vehiculos (dict): Diccionario de vehículos para verificar existencia.
+    - tipo (str): "nueva" para patentes nuevas, "existente" para patentes ya registradas.
+    Salida:
+    - patente (str): La patente validada.
+    """
+    patenteValida=False
+    while not patenteValida:
+        patente = input("Ingrese la patente del vehículo (ej. AE456GH): ").upper()
+        if tipo == "nueva":
+            patenteValida = validarPatente(patente, vehiculos)
+        elif tipo == "existente":
+            patenteValida = validarPatenteExistente(patente, vehiculos)
+
+    return patente
+
 def validarPatente(patente, vehiculos):
     """
     Valida una patente argentina (formato viejo AAA123 o nuevo AB123CD).
@@ -83,6 +104,19 @@ def validarPatenteExistente(patente, vehiculos):
 
     return patenteValida
 
+# ------------------ Solicitar y validar año de compra de vehículo ------------------
+def solicitarAñoCompra():
+    """
+    Esta función solicita y valida el año de compra del vehículo.
+    Salida:
+    - añoCompra (int): El año de compra validado.
+    """
+    añoValido = False
+    while not añoValido:
+        añoCompra = input("Ingrese el año de compra del vehículo: ")
+        añoValido = validarAñoCompra(añoCompra)
+
+    return int(añoCompra)
 
 def validarAñoCompra(añoCompra):
     """
@@ -121,38 +155,20 @@ def validarAñoCompra(añoCompra):
 
     return añoValido
 
-
-def validarCantKm(cantidadKm):
+# ------------------ Solicitar y validar costo x km ------------------
+def solicitarCostoKm():
     """
-    Valida que la cantidad de kilómetros sea un número positivo (entero o decimal).
-    Muestra mensajes de error o confirmación.
-    Parámetros:
-    - cantidadKm (str):la cantidad de kilómetros a validar.
+    Esta función solicita y valida el costo por kilómetro del vehículo.
     Salida:
-    - valido (bool): Indica si la cantidad es válida (True) o no (False).
+    - costoKm (float): El costo por kilómetro validado.
     """
 
-    cantidadKm = cantidadKm.strip()
-    valido = True
+    costoValido = False
+    while not costoValido:
+        costoKm = input("Ingrese el costo por Km: ")
+        costoValido = validarCostoKm(costoKm)
 
-    # Validar que sea numérico (permite solo un punto)
-    if not cantidadKm.replace(".", "", 1).isdigit():
-        print("Error: el valor debe ser numérico.")
-        valido = False
-
-    elif cantidadKm.count(".") > 1:
-        print("Solo se permite un punto decimal.")
-        valido = False
-
-    elif cantidadKm == "" or float(cantidadKm) < 0:
-        print("El valor no puede ser vacío ni negativo.")
-        valido = False
-
-    else:
-        print("Cantidad de Km válida.")
-
-    return valido
-
+    return float(costoKm)
 
 def validarCostoKm(costoKm):
     """
@@ -185,7 +201,7 @@ def validarCostoKm(costoKm):
 
     return valido
 
-
+# ------------------ Agregar y modificar infracciones ------------------
 def agregarInfraccion(vehiculo, descripcion):
     """
     Agrega una nueva infracción al vehículo.
@@ -199,7 +215,6 @@ def agregarInfraccion(vehiculo, descripcion):
     clave = f"infraccion{len(vehiculo['infracciones']) + 1}"
     vehiculo["infracciones"][clave] = descripcion
     print(f"Se agregó la infracción '{descripcion}' correctamente.")
-
 
 def eliminarInfraccion(vehiculo, claveEliminar):
     """
@@ -224,7 +239,6 @@ def eliminarInfraccion(vehiculo, claveEliminar):
     else:
         print("No existe una infracción con ese nombre.")
 
-
 def mostrarInfracciones(vehiculo):
     """
     Muestra todas las infracciones actuales del vehículo.
@@ -238,3 +252,51 @@ def mostrarInfracciones(vehiculo):
         for clave, desc in infracciones.items():
             print(f"  {clave}: {desc}")
 
+# ------------------ Listado de vehículos ------------------
+def listarVehiculos(vehiculos):
+    """
+    Muestra una lista de todos los vehículos registrados.
+    """
+    if len(vehiculos) == 0:
+        print("No hay vehiculos cargados.")
+        return
+    
+    else: 
+        encabezado = ["Patente", "Modelo", "Año", "Km", "Costo/Km", "Activo", "Infracciones"]
+        tabla = []
+        
+        #Cargar datos de cada vehiculo
+        for patente, datos in vehiculos.items():
+        # Solo procesar los vehículos activos
+            if datos["activo"]:
+                fila = [
+                    patente,
+                    datos["modelo"],
+                    datos["añoCompra"],
+                    datos["cantidadKm"],
+                    f"${datos['costoKm']:.2f}",
+                    "Sí" if datos["activo"] else "No",
+                    len(datos["infracciones"])
+                ]
+                tabla.append(fila)
+        
+        #Calcular ancho de cada columna 
+        anchos=[max(len(str(fila[i])) for fila in ([encabezado] + tabla)) for i in range(len(encabezado))]
+
+        #Funcion para imprimir una linea dvisoria 
+        def linea():
+            print("+" + "+".join("-" * (anchos[i] + 2) for i in range(len(anchos))) + "+")
+        
+        #Funcion para imprimir una fila formateada 
+        def filaTexto(fila):
+            print(" | " + " | ".join(str(fila[i]).ljust(anchos[i]) for i in range(len(fila))) + " |")
+        
+        #Imprimir la tabla completa
+        linea()
+        filaTexto(encabezado)
+        linea()
+        for f in tabla:
+            filaTexto(f)
+        linea()
+
+    print("\n")
