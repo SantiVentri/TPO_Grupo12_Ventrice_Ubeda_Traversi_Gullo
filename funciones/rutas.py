@@ -25,6 +25,20 @@ def obtenerFechaHora():
 
     return fechaHora
 
+# ------------------ Solicitar y validar fecha y hora ------------------
+def solicitarFechaHora():
+    """
+    Solicita al usuario una fecha y hora en formato 'YYYY.MM.DD HH.MM.SS' y la valida.
+    Salida:
+    - fechaHora (str): La fecha y hora validada.
+    """
+    fechaHoraValida = False
+    while not fechaHoraValida:
+        fechaHora = input("Ingrese la fecha y hora (formato 'YYYY.MM.DD HH.MM.SS'): ")
+        fechaHoraValida = validarFechaHora(fechaHora)
+
+    return fechaHora
+
 def validarFechaHora(fechaHora):
     """
     Valida una fecha y hora en formato 'YYYY.MM.DD HH.MM.SS'.

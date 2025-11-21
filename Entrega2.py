@@ -858,28 +858,16 @@ def main():
                             break
                         
                     # Ingresar patente
-                    patenteValida = False
-                    while not patenteValida:
-                        patente = input("Ingrese la patente del vehículo (ej. AE456GH): ").upper()
-                        patenteValida = validarPatenteExistente(patente, vehiculos)
+                    patente = solicitarPatente(vehiculos, "existente")
 
                     # Ingresar kms
-                    kmValidos = False
-                    while not kmValidos:
-                        totalKm = input("Ingrese la cantidad de km recorridos en la ruta: ")
-                        kmValidos = validarCantKm(totalKm)
+                    totalKm = solicitarKm()
 
                     # Ingresar salida
-                    fechaSalidaValida = False
-                    while not fechaSalidaValida:
-                        fechaSalida = input("Ingrese la fecha y hora de salida (AAAA.MM.DD HH.MM.SS): ")
-                        fechaSalidaValida = validarFechaHora(fechaSalida)
+                    fechaSalida = solicitarFechaHora()
 
                     # Ingresar llegada
-                    fechaLlegadaValida = False
-                    while not fechaLlegadaValida:
-                        fechaLlegada = input("Ingrese la fecha y hora de llegada (AAAA.MM.DD HH.MM.SS): ")
-                        fechaLlegadaValida = validarFechaHora(fechaLlegada)
+                    fechaLlegada = solicitarFechaHora()
 
                     # Confirmación
                     print("\nResumen de la ruta a registrar:")
