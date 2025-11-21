@@ -93,6 +93,44 @@ def validarNombre(tipo, texto):
     finally:
         return textoValido
 
+# ------------------ Solicitar y validar email ------------------
+def solicitarEmail():
+    """
+    Esta función solicita el email de un chofer y lo valida.
+    Salidas:
+    - email (str): Email válido del chofer.
+    """
+
+    emailValido = False
+    while not emailValido:
+        email = input("Ingrese el email del chofer: ")
+        emailValido = validarEmail(email)
+
+    return email
+
+def validarEmail(email):
+    """
+    Esta función valida el email de un chofer.
+    Parámetros:
+    - email (str): El email a validar.
+    Salidas:
+    - emailValido (bool): Indica si el email es válido.
+    """
+
+    emailValido = True
+
+    pat = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+
+    try:
+        if not re.match(pat, email):
+            raise Exception("El email no es válido. Intente nuevamente.")
+        
+    except Exception as e:
+        emailValido = False
+        print(e)
+
+    return emailValido
+
 # ------------------ Solicitar y validar teléfonos ------------------
 def solicitarTelefono():
     """
