@@ -5,10 +5,9 @@ Fecha: 20/10/2025
 Autores: Santino Ventrice, Valentina Ubeda, Santino Traversi y Rocco Gullo
 
 Descripción: Funciones relacionadas a la gestión de rutas.
-
-Pendientes:
 -----------------------------------------------------------------------------------------------
 """
+
 #----------------------------------------------------------------------------------------------
 # MÓDULOS
 #----------------------------------------------------------------------------------------------
@@ -17,103 +16,161 @@ import time
 #----------------------------------------------------------------------------------------------
 # FUNCIONES
 #----------------------------------------------------------------------------------------------
+
 def obtenerFechaHora():
     """
     Obtiene la fecha y hora actual en formato YYYY.MM.DD HH.MM.SS
     """
-    fechaHora = time.strftime("%Y.%m.%d %H.%M.%S")
+    try:
+        fechaHora = time.strftime("%Y.%m.%d %H.%M.%S")
+        return fechaHora
+    except Exception as e:
+        print(f"Error al obtener la fecha y hora actual: {e}")
+        return "0000.00.00 00.00.00"   # Valor de emergencia
 
-    return fechaHora
 
-# ------------------ Solicitar y validar fecha y hora ------------------
+
 def solicitarFechaHora():
     """
     Solicita al usuario una fecha y hora en formato 'YYYY.MM.DD HH.MM.SS' y la valida.
-    Salida:
-    - fechaHora (str): La fecha y hora validada.
     """
     fechaHoraValida = False
+
     while not fechaHoraValida:
-        fechaHora = input("Ingrese la fecha y hora (formato 'YYYY.MM.DD HH.MM.SS'): ")
-        fechaHoraValida = validarFechaHora(fechaHora)
+        try:
+            fechaHora = input("Ingrese la fecha y hora (formato 'YYYY.MM.DD HH.MM.SS'): ")
+        except Exception as e:
+            print(f"Error al leer la entrada: {e}")
+            continue
+
+        try:
+            fechaHoraValida = validarFechaHora(fechaHora)
+        except Exception as e:
+            print(f"Error inesperado validando la fecha: {e}")
+            fechaHoraValida = False
 
     return fechaHora
+
+
 
 def validarFechaHora(fechaHora):
     """
     Valida una fecha y hora en formato 'YYYY.MM.DD HH.MM.SS'.
-    Parámetro:
-    - fechaHora (str): cadena con la fecha y hora a validar.
-    Salida:
-    - Devuelve True si es válida, False en caso contrario.
     """
-
     formato = "YYYY.MM.DD HH.MM.SS"
 
-    # Verificar longitud exacta
-    if len(fechaHora) != 19:
-        print(f"La fecha y hora debe tener el formato {formato}")
+    try:
+        # Verificar longitud
+        if len(fechaHora) != 19:
+            print(f"La fecha y hora debe tener el formato {formato}")
+            return False
+
+        # Verificar estructura fija
+        if (fechaHora[4] != "." or fechaHora[7] != "." or
+            fechaHora[10] != " " or fechaHora[13] != "." or
+            fechaHora[16] != "."):
+            print(f"La fecha y hora debe tener el formato {formato}")
+            return False
+
+        # Extraer partes con try por si hay error de índices
+        try:
+            año = fechaHora[0:4]
+            mes = fechaHora[5:7]
+            dia = fechaHora[8:10]
+            hora = fechaHora[11:13]
+            minuto = fechaHora[14:16]
+            segundo = fechaHora[17:19]
+        except Exception:
+            print("Error al extraer partes de la fecha.")
+            return False
+
+        print(f"Analizando: Año={año}, Mes={mes}, Día={dia}, Hora={hora}, Minuto={minuto}, Segundo={segundo}")
+
+        # Verificar dígitos
+        if not (año.isdigit() and mes.isdigit() and dia.isdigit()
+                and hora.isdigit() and minuto.isdigit() and segundo.isdigit()):
+            print(f"La fecha y hora debe tener el formato {formato}")
+            return False
+
+        # Convertir a enteros de forma segura
+        try:
+            año = int(año)
+            mes = int(mes)
+            dia = int(dia)
+            hora = int(hora)
+            minuto = int(minuto)
+            segundo = int(segundo)
+        except ValueError:
+            print("Los valores numéricos ingresados no son válidos.")
+            return False
+
+        # Validaciones de rango
+        if año < 2025:
+            print("El año debe ser mayor o igual a 2025")
+            return False
+        if not (1 <= mes <= 12):
+            print("El mes debe estar entre 01 y 12")
+            return False
+        if not (0 <= hora <= 23):
+            print("La hora debe estar entre 00 y 23")
+            return False
+        if not (0 <= minuto <= 59):
+            print("Los minutos deben estar entre 00 y 59")
+            return False
+        if not (0 <= segundo <= 59):
+            print("Los segundos deben estar entre 00 y 59")
+            return False
+
+        # Validación de días según el mes
+        diasPorMes = [
+            31,
+            29 if (año % 4 == 0 and (año % 100 != 0 or año % 400 == 0)) else 28,
+            31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+        ]
+
+        if not (1 <= dia <= diasPorMes[mes - 1]):
+            print("El día no corresponde al mes indicado")
+            return False
+
+        # Validación final con time.strftime
+        try:
+            partes = (año, mes, dia, hora, minuto, segundo, 0, 0, -1)
+            fechaFormateada = time.strftime("%Y.%m.%d %H.%M.%S", partes)
+        except Exception:
+            print("Error al formatear la fecha para validar.")
+            return False
+
+        if fechaFormateada != fechaHora:
+            print(f"La fecha y hora debe tener el formato {formato} y ser válida")
+            return False
+
+        return True
+
+    except Exception as e:
+        print(f"Error inesperado en la validación: {e}")
         return False
 
-    # Verificar estructura fija (puntos y espacios)
-    if (fechaHora[4] != "." or fechaHora[7] != "." or
-        fechaHora[10] != " " or fechaHora[13] != "." or
-        fechaHora[16] != "." ):
-        print(f"La fecha y hora debe tener el formato {formato}")
-        return False
+def codigoRuta():
+    """
+    Solicita al usuario un código de ruta y lo devuelve.
+    """
+    codigo = input("Ingrese el código de la ruta: ").strip()
+    return codigo
 
-    # Extraer partes numéricas
-    año = fechaHora[0:4]
-    mes = fechaHora[5:7]
-    dia = fechaHora[8:10]
-    hora = fechaHora[11:13]
-    minuto = fechaHora[14:16]
-    segundo = fechaHora[17:19]
 
-    # Debug - muestra lo que se está extrayendo
-    print(f"Analizando: Año={año}, Mes={mes}, Día={dia}, Hora={hora}, Minuto={minuto}, Segundo={segundo}")
+def datosRuta():
+    """
+    Solicita los datos necesarios para crear una ruta y devuelve un diccionario.
+    """
+    print("\n--- INGRESO DE DATOS DE LA RUTA ---")
+    origen = input("Ingrese el origen: ")
+    destino = input("Ingrese el destino: ")
+    fechaHora = solicitarFechaHora()   # Usa tu función existente
 
-    # Verificar que todas las partes sean dígitos
-    if not (año.isdigit() and mes.isdigit() and dia.isdigit() and hora.isdigit() and minuto.isdigit() and segundo.isdigit()):
-        print(f"La fecha y hora debe tener el formato {formato}")
-        return False
+    datos = {
+        "origen": origen,
+        "destino": destino,
+        "fechaHora": fechaHora
+    }
 
-    # Convertir a enteros manualmente
-    año = int(año)
-    mes = int(mes)
-    dia = int(dia)
-    hora = int(hora)
-    minuto = int(minuto)
-    segundo = int(segundo)
-
-    # Validaciones básicas de rango
-    if año < 2025:
-        print("El año debe ser mayor o igual a 2025")
-        return False
-    if not (1 <= mes <= 12):
-        print("El mes debe estar entre 01 y 12")
-        return False
-    if not (0 <= hora <= 23):
-        print("La hora debe estar entre 00 y 23")
-        return False
-    if not (0 <= minuto <= 59):
-        print("Los minutos deben estar entre 00 y 59")
-        return False
-    if not (0 <= segundo <= 59):
-        print("Los segundos deben estar entre 00 y 59")
-        return False
-
-    # Validar días según mes (usando time)
-    diasPorMes = [31, 29 if (año % 4 == 0 and (año % 100 != 0 or año % 400 == 0)) else 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-    if not (1 <= dia <= diasPorMes[mes - 1]):
-        print("El día no corresponde al mes indicado")
-        return False
-
-    # Validar que sea una fecha válida
-    partes = (año, mes, dia, hora, minuto, segundo, 0, 0, -1)
-    fechaFormateada = time.strftime("%Y.%m.%d %H.%M.%S", partes)
-    if fechaFormateada != fechaHora:
-        print(f"La fecha y hora debe tener el formato {formato} y ser válida")
-        return False
-    
-    return True
+    return datos

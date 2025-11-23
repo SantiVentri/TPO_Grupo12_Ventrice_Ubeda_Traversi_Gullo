@@ -355,6 +355,7 @@ def main():
     # Rutas de archivos de los diccionarios
     rutaChoferes = "diccionarios/choferes.json"
     rutaVehiculos = "diccionarios/vehiculos.json"
+    rutaRutas = "diccionarios/rutas.json"
 
     #-------------------------------------------------
     # Bloque de menú
@@ -462,7 +463,7 @@ def main():
                         # Asignar los datos del chofer al chofer
                         choferes[legajo] = datosChoferes
 
-                        # Abrir archivo en modo escritura usando tu función
+                        # Abrir archivo en modo escritura
                         archivo = abrirArchivo(rutaChoferes, "w")
                         if archivo is not None:
                             json.dump(choferes, archivo, indent=4, ensure_ascii=False)
@@ -593,7 +594,7 @@ def main():
                         else:
                             print("Opción inválida.")
                             
-                        # Abrir archivo en modo escritura usando tu función
+                        # Abrir archivo en modo escritura
                         archivo = abrirArchivo(rutaChoferes, "w")
                         if archivo is not None:
                             json.dump(choferes, archivo, indent=4, ensure_ascii=False)
@@ -637,7 +638,7 @@ def main():
                             else:
                                 print("Desactivación cancelada.\n")
                             
-                            # Abrir archivo en modo escritura usando tu función
+                            # Abrir archivo en modo escritura
                             archivo = abrirArchivo(rutaChoferes, "w")
                             if archivo is not None:
                                 json.dump(choferes, archivo, indent=4, ensure_ascii=False)
@@ -920,6 +921,31 @@ def main():
                     break # No sale del programa, sino que vuelve al menú anterior
                 
                 elif opcionSubmenu == "1":   # Opción 1 del submenú
+
+                    # Cargar datos de choferes
+                    archivo = abrirArchivo(rutaChoferes, "r")
+                    if archivo is not None:
+                        choferes = json.load(archivo)
+                        cerrarArchivo(archivo)
+                    else:
+                        choferes = {}
+
+                    # Cargar datos de vehículos
+                    archivo = abrirArchivo(rutaVehiculos, "r")
+                    if archivo is not None:
+                        vehiculos = json.load(archivo)
+                        cerrarArchivo(archivo)
+                    else:
+                        vehiculos = {}
+
+                    # Cargar datos de rutas
+                    archivo = abrirArchivo(rutaRutas, "r")
+                    if archivo is not None:
+                        rutas = json.load(archivo)
+                        cerrarArchivo(archivo)
+                    else:
+                        rutas = {}
+
                     # Ingresar legajo
                     while True:
                         legajo = input("Ingrese el legajo del chofer (o '0' para salir): ")
@@ -927,11 +953,11 @@ def main():
                         # Si el número ingresado es 0, se sale del bucle
                         if legajo == "0":
                             print("Saliendo de la modificación de choferes.\n")
-                        elif not legajo.isdigit() or int(legajo) not in choferes or not choferes[int(legajo)]["activo"]:
+                        elif not legajo.isdigit() or legajo not in choferes or not choferes[legajo]["activo"]:
                             print("Legajo inválido. Intente nuevamente.")
                         else:
                             break
-                        
+
                     # Ingresar patente
                     patente = solicitarPatente(vehiculos, "existente")
 
@@ -946,7 +972,7 @@ def main():
 
                     # Confirmación
                     print("\nResumen de la ruta a registrar:")
-                    print(f"Chofer: LU{legajo} - {choferes[int(legajo)]['nombre']} {choferes[int(legajo)]['apellido']}")
+                    print(f"Chofer: LU{legajo} - {choferes[legajo]['nombre']} {choferes[legajo]['apellido']}")
                     print(f"Vehículo: {patente} - {vehiculos[patente]['modelo']}")
                     print(f"Km recorridos: {totalKm} km")
                     print(f"Fecha y hora de salida: {fechaSalida}")
@@ -959,7 +985,7 @@ def main():
 
                         # Calcular costo de la ruta
                         costoKm = vehiculos[patente]['costoKm']
-                        costoRuta = float(totalKm) * costoKm
+                        costoRuta = totalKm * costoKm
 
                         # Convertir fechas al formato YYYY.MM.DD HH.MM
                         # Para la hora de salida
@@ -978,17 +1004,41 @@ def main():
                         rutas[fechaHora] = {
                             "idLegajo": legajo,
                             "idPatente": patente,
-                            "totalKm": float(totalKm),
+                            "totalKm": totalKm,
                             "costoRuta": costoRuta,
                             "horaSalida": horaSalida,
                             "horaLlegada": horaLlegada
                         }
 
                         # Actualizar km del chofer y vehículo
-                        choferes[int(legajo)]['cantidadKm'] += float(totalKm)
-                        vehiculos[patente]['cantidadKm'] += float(totalKm)
+                        choferes[legajo]['cantidadKm'] += totalKm
+                        vehiculos[patente]['cantidadKm'] += totalKm
 
-                        print(f"\nRuta registrada exitosamente.\n")
+                        # Abrir archivo de choferes en modo escritura
+                        archivo = abrirArchivo(rutaChoferes, "w")
+                        if archivo is not None:
+                            json.dump(choferes, archivo, indent=4, ensure_ascii=False)
+                            cerrarArchivo(archivo)
+                        else:
+                            print("No se pudo guardar el chofer. Verifique el archivo.")
+
+                        # Abrir archivo de vehiculos en modo escritura
+                        archivo = abrirArchivo(rutaVehiculos, "w")
+                        if archivo is not None:
+                            json.dump(vehiculos, archivo, indent=4, ensure_ascii=False)
+                            cerrarArchivo(archivo)
+                        else:
+                            print("No se pudo guardar el chofer. Verifique el archivo.")
+
+                        # Abrir archivo de rutas en modo escritura
+                        archivo = abrirArchivo(rutaRutas, "w")
+                        if archivo is not None:
+                            json.dump(rutas, archivo, indent=4, ensure_ascii=False)
+                            cerrarArchivo(archivo)
+
+                            print(f"\nRuta registrada exitosamente.\n")
+                        else:
+                            print("No se pudo guardar el chofer. Verifique el archivo.")
 
                 input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
                 print("\n\n")
