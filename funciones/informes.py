@@ -62,72 +62,73 @@ def informeViajesDelMes(rutas, vehiculos):
 
     print("-"*105)
 
-def informeResumenMensualKmVehiculo(patente, rutas, vehiculos):
+def informeResumenMensualKmVehiculo(rutas, vehiculos):
     """
-    Muestra un resumen mensual de rutas por vehículo,
-    mostrando la cantidad total de kilómetros recorridos.
+    Muestra un resumen mensual de rutas por vehículo (CANTIDADES KM),
+    en formato matricial (filas: vehículos, columnas: meses).
     """
 
-    # Verificar si el vehículo existe y si esta activo
-    if patente not in vehiculos:
-        print(f"No existe un vehículo con la patente '{patente}'.")
+    if not rutas:
+        print("No hay rutas registradas.")
         return
 
-    vehiculo = vehiculos[patente]
+    # Tomar automáticamente el año del primer registro para el encabezado
+    primera_clave = next(iter(rutas))
+    año = int(primera_clave[0:4])
 
-    
-    if not vehiculo["activo"]:
-        print(f"El vehículo con patente '{patente}' está inactivo.")
-        return
+    # Meses abreviados
+    meses = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN",
+             "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"]
 
-    #Calcular kilómetros totales 
-    kmTotales = 0
-    cantidadRutas = 0
+    # 1. Inicializar matriz para vehículos ACTIVOS
+    #    [cite_start]Diccionario: patente -> lista de 12 valores (uno por mes) [cite: 92]
+    matriz = {}
+    for patente, v in vehiculos.items():
+        if v["activo"]:
+            matriz[patente] = [0] * 12
 
-    for cod, datos in rutas.items():
-        if datos["idPatente"] == patente:
-            kmTotales += datos["totalKm"]
-            cantidadRutas += 1
+    # 2. Rellenar la matriz con los datos de las rutas
+    for clave, datos in rutas.items():
+        fechaSalida = datos["horaSalida"] 
+        # El formato es "YYYY.MM.DD HH.MM"
+        añoRuta = int(fechaSalida[0:4])
+        mesRuta = int(fechaSalida[5:7])
+        patente = datos["idPatente"]
 
-    #Preparar los datos para la tabla
-    encabezado = ["Patente", "Modelo", "Año", "Rutas", "Km Totales"]
-    tabla = [[
-        patente,
-        vehiculo["modelo"],
-        vehiculo["añoCompra"],
-        cantidadRutas,
-        kmTotales
-    ]]
+        # Solo sumamos si el vehículo está en la matriz (activo) y coincide el año
+        if añoRuta == año and patente in matriz:
+            km = datos["totalKm"]
+            matriz[patente][mesRuta - 1] += km
 
-    #Calcular anchos de columnas
-    anchos = [max(len(str(fila[i])) for fila in ([encabezado] + tabla)) for i in range(len(encabezado))]
+    # 3. Imprimir el informe matricial
+    print("\n" + "-" * 150)
+    print(f"{f'KILÓMETROS TOTALES POR MES ({año})':^150}")
+    print("-" * 150)
 
-    #Imprimir el título del informe 
-    print("\n" + "-" * (sum(anchos) + len(anchos) * 3 + 1))
-    print(f"| {'RESUMEN MENSUAL DE RUTAS POR VEHÍCULO':^{sum(anchos) + len(anchos) * 3 - 1}} |")
-    print("-" * (sum(anchos) + len(anchos) * 3 + 1))
+    # Encabezado de Columnas (Meses)
+    print(f"{'Vehículo':<20}", end="")
+    for m in meses:
+        # Formato ENE.25
+        print(f"{m}.{str(año)[2:]}".rjust(10), end="")
+    print()
+    print("-" * 150)
 
-    #Imprimir la tabla 
-    # Línea superior
-    print("+" + "+".join("-" * (anchos[i] + 2) for i in range(len(anchos))) + "+")
+    # Filas de Datos
+    for patente, valores in matriz.items():
+        # Obtenemos el modelo para mostrarlo junto a la patente
+        modelo = vehiculos[patente]['modelo']
+        # Recortamos modelo si es muy largo para que entre en la columna
+        etiqueta = f"{patente} ({modelo[:10]})"
+        
+        print(f"{etiqueta:<20}", end="")
+        for cantidad in valores:
+            if cantidad == 0:
+                 print(f"{'-':>10}", end="") # Guión si es 0 para lectura más limpia
+            else:
+                 print(f"{cantidad:10.0f}", end="") # Número entero alineado
+        print()
 
-    # Encabezado
-    print("| " + " | ".join(str(encabezado[i]).ljust(anchos[i]) for i in range(len(encabezado))) + " |")
-
-    # Línea divisoria
-    print("+" + "+".join("-" * (anchos[i] + 2) for i in range(len(anchos))) + "+")
-
-    # Fila
-    for fila in tabla:
-        print("| " + " | ".join(str(fila[i]).ljust(anchos[i]) for i in range(len(fila))) + " |")
-
-    # Línea inferior
-    print("+" + "+".join("-" * (anchos[i] + 2) for i in range(len(anchos))) + "+")
-
-    #Mensaje si no tuvo rutas 
-    if cantidadRutas == 0:
-        print("Este vehículo no realizó rutas este mes.")
-
+    print("-" * 150)
 
 def informeResumenMensualCostosVehiculos(rutas, vehiculos):
     """
