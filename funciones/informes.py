@@ -128,88 +128,61 @@ def informeResumenMensualKmVehiculo(patente, rutas, vehiculos):
 
 def informeResumenMensualCostosVehiculos(rutas, vehiculos):
     """
-    Muestra un informe resumen mensual de rutas por vehículo,
-    con el total de kilómetros y el costo total (Km * costoKm).
-    Ordena por costo total de mayor a menor.
+    Listado de resumen de monto en pesos de las operaciones por año y por mes.
+    Entidad: vehículos activos.
     """
 
-    resumen = {}
+    if not rutas:
+        print("No hay rutas registradas.")
+        return
 
-    #Calcular rutas, km y costo total por vehículo 
-    for cod in rutas:
-        datos = rutas[cod]
+    # Tomar automáticamente el año del primer registro
+    primera_clave = next(iter(rutas))
+    año = int(primera_clave[0:4])
+
+    # Meses abreviados
+    meses = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN",
+             "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"]
+
+    # Crear base: patente -> 12 valores
+    matriz = {}
+    for patente, v in vehiculos.items():
+        if v["activo"]:
+            matriz[patente] = [0] * 12
+
+    # Completar matriz
+    for clave, datos in rutas.items():
+        fechaSalida = datos["horaSalida"] 
+        añoRuta = int(fechaSalida[0:4])
+        mesRuta = int(fechaSalida[5:7])
         patente = datos["idPatente"]
-        km = datos["totalKm"]
 
-        if patente in vehiculos and vehiculos[patente]["activo"]:
+        if añoRuta == año and patente in matriz:
+            km = datos["totalKm"]
             costoKm = vehiculos[patente]["costoKm"]
+            monto = km * costoKm
+            matriz[patente][mesRuta - 1] += monto
 
-            if patente not in resumen:
-                resumen[patente] = {"rutas": 0, "km": 0, "costo": 0.0}
+    # Encabezado visual
+    print("\n" + "-" * 150)
+    print(f"{'PESOS TOTALES POR MES':^150}")
+    print("-" * 150)
 
-            resumen[patente]["rutas"] += 1
-            resumen[patente]["km"] += km
-            resumen[patente]["costo"] += km * costoKm  
+    # Títulos de columnas
+    print(f"{'Vehículo':<20}", end="")
+    for m in meses:
+        print(f"{m}.{str(año)[2:]}".rjust(10), end="")
+    print()
+    print("-" * 150)
 
-    #Convertir a lista para mostrar 
-    lista = []
-    for patente, datos in resumen.items():
-        modelo = vehiculos[patente]["modelo"]
-        fila = [patente, modelo, datos["rutas"], datos["km"], datos["costo"]]
-        lista.append(fila)
+    # Filas con montos
+    for patente, valores in matriz.items():
+        print(f"{patente:<20}", end="")
+        for monto in valores:
+            print(f"{monto:10.0f}", end="")   # sin decimales
+        print()
 
-    #Ordenar por costo total (posición 4) usando lista temporal 
-    lista_temp = [[fila[4]] + fila for fila in lista]  
-    lista_temp.sort(reverse=True)                      
-    lista_ordenada = [fila[1:] for fila in lista_temp] 
-
-    #Preparar encabezado y datos finales para la tabla
-    encabezado = ["Pos.", "Patente", "Modelo", "Rutas", "Km Totales", "Total $"]
-    tabla = []
-    pos = 1
-    total_general = 0.0
-
-    for fila in lista_ordenada:
-        total_general += fila[4]
-        tabla.append([
-            pos,
-            fila[0],
-            fila[1],
-            fila[2],
-            fila[3],
-            f"${fila[4]:.2f}"
-        ])
-        pos += 1
-
-    #Calcular anchos automáticos 
-    anchos = [max(len(str(fila[i])) for fila in ([encabezado] + tabla)) for i in range(len(encabezado))]
-
-    #Imprimir encabezado general
-    ancho_total = sum(anchos) + len(anchos) * 3 + 1
-    print("\n" + "-" * ancho_total)
-    print(f"| {'RESUMEN MENSUAL DE COSTOS POR VEHÍCULO':^{ancho_total - 2}} |")
-    print("-" * ancho_total)
-
-    #Imprimir línea superior de la tabla
-    print("+" + "+".join("-" * (anchos[i] + 2) for i in range(len(anchos))) + "+")
-
-    #Imprimir encabezado
-    print("| " + " | ".join(str(encabezado[i]).ljust(anchos[i]) for i in range(len(encabezado))) + " |")
-
-    #Imprimir línea divisoria
-    print("+" + "+".join("-" * (anchos[i] + 2) for i in range(len(anchos))) + "+")
-
-    # Imprimir filas de la tabla
-    for fila in tabla:
-        print("| " + " | ".join(str(fila[i]).ljust(anchos[i]) for i in range(len(fila))) + " |")
-
-    #Línea final de la tabla
-    print("+" + "+".join("-" * (anchos[i] + 2) for i in range(len(anchos))) + "+")
-
-    # Mostrar total general
-    print(f"\nTOTAL GENERAL MENSUAL: ${total_general:.2f}\n")
-
-
+    print("-" * 150)
 
 
 def informeRankingChoferes(choferes, rutas):

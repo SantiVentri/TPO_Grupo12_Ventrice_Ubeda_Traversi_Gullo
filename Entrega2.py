@@ -351,7 +351,7 @@ def main():
         }
     }
     """
-
+    
     # Rutas de archivos de los diccionarios
     rutaChoferes = "diccionarios/choferes.json"
     rutaVehiculos = "diccionarios/vehiculos.json"
@@ -1044,6 +1044,30 @@ def main():
                 print("\n\n")
         
         elif opcionMenuPrincipal == "4":   # Opción 4 del menú principal
+            # Cargar datos de choferes
+            archivo = abrirArchivo(rutaChoferes, "r")
+            if archivo is not None:
+                choferes = json.load(archivo)
+                cerrarArchivo(archivo)
+            else:
+                choferes = {}
+
+            # Cargar datos de vehículos
+            archivo = abrirArchivo(rutaVehiculos, "r")
+            if archivo is not None:
+                vehiculos = json.load(archivo)
+                cerrarArchivo(archivo)
+            else:
+                vehiculos = {}
+
+            # Cargar datos de rutas
+            archivo = abrirArchivo(rutaRutas, "r")
+            if archivo is not None:
+                rutas = json.load(archivo)
+                cerrarArchivo(archivo)
+            else:
+                rutas = {}
+
             while True:
                 while True:
                     opciones = 5
@@ -1072,13 +1096,12 @@ def main():
                     break # No sale del programa, sino que vuelve al menú anterior
                 
                 elif opcionSubmenu == "1":   # Opción 1 del submenú
-                    informeViajesDelMes(rutas, choferes, vehiculos)
+                    informeViajesDelMes(rutas, vehiculos)
                     
                 elif opcionSubmenu == "2":   # Opción 2 del submenú
                     patenteBuscar = input("Ingrese la patente del vehículo: ").upper()
                     informeResumenMensualKmVehiculo(patenteBuscar, rutas, vehiculos)
 
-                
                 elif opcionSubmenu == "3":   # Opción 3 del submenú
                     informeResumenMensualCostosVehiculos(rutas, vehiculos)
                 
