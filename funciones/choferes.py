@@ -178,7 +178,7 @@ def validarTelefono(telefono):
 def solicitarKm():
     kmValidos = False
     while not kmValidos:
-        cantidadKm = input("Ingrese la cantidad de km recorridos por el chofer (Presione Enter para 0): ")
+        cantidadKm = input("Ingrese la cantidad de km (Presione Enter para 0): ")
         if cantidadKm.strip() == "":
             cantidadKm = "0"
         kmValidos = validarKm(cantidadKm)
