@@ -354,6 +354,7 @@ def main():
 
     # Rutas de archivos de los diccionarios
     rutaChoferes = "diccionarios/choferes.json"
+    rutaVehiculos = "diccionarios/vehiculos.json"
 
     #-------------------------------------------------
     # Bloque de menú
@@ -686,6 +687,14 @@ def main():
                         print("MENÚ DE VEHÍCULOS > Agregar vehículos")
                         print("--------------------------------------\n")
                         
+                        # Cargar datos de vehículos
+                        archivo = abrirArchivo(rutaVehiculos, "r")
+                        if archivo is not None:
+                            vehiculos = json.load(archivo)
+                            cerrarArchivo(archivo)
+                        else:
+                            vehiculos = {}
+                        
                         # Solicitar patente
                         patente = solicitarPatente(vehiculos)
                        
@@ -710,18 +719,33 @@ def main():
                             "infracciones": {}  # VACÍO AL INICIO
                         }
 
-                        print("Se ingreso el vehiculo correctamente! ")
+                        # Guardar vehículo en archivo
+                        archivo = abrirArchivo(rutaVehiculos, "w")
+                        if archivo is not None:
+                            json.dump(vehiculos, archivo, indent=4, ensure_ascii=False)
+                            cerrarArchivo(archivo)
+                            print("Se ingresó el vehículo correctamente!")
+                        else:
+                            print("Se ingresó el vehículo en memoria pero no se pudo guardar en el archivo.")
                     
                 elif opcionSubmenu == "2":   # Opción 2 del submenú
                     print("--------------------------------------")
                     print("MENÚ DE VEHÍCULOS > Modificar vehículos")
                     print("--------------------------------------\n")
                     
+                    # Cargar datos actuales de vehiculos desde archivo antes de modificar
+                    archivo = abrirArchivo(rutaVehiculos, "r")
+                    if archivo is not None:
+                        vehiculos = json.load(archivo)
+                        cerrarArchivo(archivo)
+                    else:
+                        vehiculos = {}
+
                     patente = input("Ingrese la patente del vehiculo a modificar: ").upper()
 
                     if patente not in vehiculos:
-                        print("Error la patente no se encuentra registrada") 
-                    else: 
+                        print("Error: la patente no se encuentra registrada")
+                    else:
                         vehiculo = vehiculos[patente]
 
                         print("Datos actuales del vehiculo: ")
@@ -731,7 +755,7 @@ def main():
 
                         print()
                         print("¿Que datos deseas modificar?")
-                        print("1.Patente")
+                        print("1. Patente")
                         print("2. Modelo")
                         print("3. Año de compra")
                         print("4. Kilometro")
@@ -739,38 +763,46 @@ def main():
                         print("6. Infracciones")
                         opcionMod = input("Seleccione una opcion: ")
 
+                        guardado = False
+
                         if opcionMod == "1":
                             nuevaPatenteValida = False
                             while not nuevaPatenteValida:
-                                nuevaPatente= input("Ingrese la nueva patente: ").upper()
-                                nuevaPatenteValida= validarPatente(nuevaPatente, vehiculos)
-                            
+                                nuevaPatente = input("Ingrese la nueva patente: ").upper()
+                                nuevaPatenteValida = validarPatente(nuevaPatente, vehiculos)
+
+                            # reasignar y eliminar la entrada antigua
                             vehiculos[nuevaPatente] = vehiculo
                             del vehiculos[patente]
-                            print("Patente modificada corretamente")
+                            guardado = True
+                            print("Patente modificada correctamente")
 
                         elif opcionMod == "2":
                             # Modificar modelo
                             nuevoModelo = input("Ingrese el nuevo modelo: ")
                             vehiculo["modelo"] = nuevoModelo
+                            guardado = True
                             print("Modelo modificado correctamente.")
-                        
+
                         elif opcionMod == "3":
                             # Modificar año de compra
                             nuevoAño = solicitarAñoCompra()
                             vehiculo["añoCompra"] = int(nuevoAño)
+                            guardado = True
                             print("Año de compra modificado correctamente")
 
                         elif opcionMod == "4":
                             # Modificar cantidad de Km
                             nuevoKm = solicitarKm()
                             vehiculo["cantidadKm"] = nuevoKm
-                            print("cantidad de Km modifcado correctamente")
+                            guardado = True
+                            print("Cantidad de Km modificado correctamente")
                             
                         elif opcionMod == "5":
                             # Modificar costo por Km 
                             nuevoCosto = solicitarCostoKm()
                             vehiculo["costoKm"] = nuevoCosto
+                            guardado = True
                             print ("Costo del Km actualizado")
                         
                         elif opcionMod == "6":
@@ -784,11 +816,13 @@ def main():
                             if opcionInf == "1":
                                 descripcion = input("Ingrese la descripción de la infracción: ")
                                 agregarInfraccion(vehiculo, descripcion)
+                                guardado = True
 
                             elif opcionInf == "2":
                                 mostrarInfracciones(vehiculo)
                                 claveEliminar = input("Ingrese el nombre exacto de la infracción a eliminar (ej: infraccion1): ")
                                 eliminarInfraccion(vehiculo, claveEliminar)
+                                guardado = True
 
                             elif opcionInf == "3":
                                 mostrarInfracciones(vehiculo)
@@ -797,32 +831,65 @@ def main():
                                 print("Opción inválida en el menú de infracciones.")
                                                         
                         else:
-                             print("Opcion invalida.")
+                            print("Opcion invalida.")
+
+                        # Si hubo cambios, guardar el diccionario completo en el archivo JSON
+                        if guardado:
+                            archivo = abrirArchivo(rutaVehiculos, "w")
+                            if archivo is not None:
+                                json.dump(vehiculos, archivo, indent=4, ensure_ascii=False)
+                                cerrarArchivo(archivo)
+                                print("Cambios guardados en el archivo de vehículos.")
+                            else:
+                                print("No se pudo guardar los cambios en el archivo.")
                                         
                 elif opcionSubmenu == "3":   # Opción 3 del submenú
                     print("--------------------------------------")
                     print("MENÚ DE VEHÍCULOS > Desactivar vehículos")
                     print("--------------------------------------\n")
 
-                    patente = input("Ingrese la pantente del vehiculo a desactivar: ").upper()
+                    # Cargar datos de vehículos
+                    archivo = abrirArchivo(rutaVehiculos, "r")
+                    if archivo is not None:
+                        vehiculos = json.load(archivo)
+                        cerrarArchivo(archivo)
+                    else:
+                        vehiculos = {}
+
+                    patente = input("Ingrese la patente del vehiculo a desactivar: ").upper()
                     if patente not in vehiculos:
                         print("No existe un vehículo con esa patente.")
                     else:
                         if not vehiculos[patente]["activo"]:
-                         print("Ese vehículo ya está inactivo.")
+                            print("Ese vehículo ya está inactivo.")
                         else:
                             confirm = input(f"¿Deseas desactivar el vehículo {patente}? (si/no): ").upper()
-                        if confirm == "SI":
-                            vehiculos[patente]["activo"] = False
-                            print("Vehículo desactivado con éxito.")
-                        else:
-                            print("Operación cancelada.")
+                            if confirm == "SI":
+                                vehiculos[patente]["activo"] = False
+                                
+                                # Guardar cambios en archivo
+                                archivo = abrirArchivo(rutaVehiculos, "w")
+                                if archivo is not None:
+                                    json.dump(vehiculos, archivo, indent=4, ensure_ascii=False)
+                                    cerrarArchivo(archivo)
+                                    print("Vehículo desactivado con éxito.")
+                                else:
+                                    print("No se pudo guardar los cambios.")
+                            else:
+                                print("Operación cancelada.")
 
                 elif opcionSubmenu == "4":   # Opción 4 del submenú
                     print("--------------------------------------")
                     print("MENÚ DE VEHÍCULOS > Listar vehículos")
                     print("--------------------------------------\n")
 
+                    # Cargar datos actualizados de vehículos antes de listar
+                    archivo = abrirArchivo(rutaVehiculos, "r")
+                    if archivo is not None:
+                        vehiculos = json.load(archivo)
+                        cerrarArchivo(archivo)
+                    else:
+                        vehiculos = {}
                     listarVehiculos(vehiculos)
 
                 input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
