@@ -351,12 +351,7 @@ def main():
         }
     }
     """
-    
-    # Rutas de archivos de los diccionarios
-    rutaChoferes = "diccionarios/choferes.json"
-    rutaVehiculos = "diccionarios/vehiculos.json"
-    rutaRutas = "diccionarios/rutas.json"
-
+ 
     #-------------------------------------------------
     # Bloque de menú
     #----------------------------------------------------------------------------------------------
@@ -419,237 +414,27 @@ def main():
                     print("MENÚ DE CHOFERES > Ingresar choferes")
                     print("------------------------------------\n")
 
-                    while True:
-                        # Solicitar nombre
-                        nombre = solicitarNombre()
-                        
-                        # Solicitar apellido
-                        apellido = solicitarApellido()
-
-                        # Solicitar email
-                        email = solicitarEmail()
-
-                        # Solicitar teléfono
-                        telefono = solicitarTelefono()
-
-                        # Solicitar cantidad de km recorridos
-                        cantidadKm = solicitarKm()
-
-                        # Agregar turnos
-                        turnos = solicitarTurnos()
-
-                        # Cargar datos de choferes
-                        archivo = abrirArchivo(rutaChoferes, "r")
-                        if archivo is not None:
-                            choferes = json.load(archivo)
-                            cerrarArchivo(archivo)
-                        else:
-                            choferes = {}  # Si no existe, iniciar vacío
-
-                        # Crear legajo
-                        legajo = crearLegajo(choferes)
-
-                        # Crear diccionario con los datos del chofer
-                        datosChoferes = {
-                            "activo": True,
-                            "nombre": nombre,
-                            "apellido": apellido,
-                            "email": email,
-                            "telefono": telefono,
-                            "cantidadKm": cantidadKm,
-                            "turnos": turnos
-                        }
-
-                        # Asignar los datos del chofer al chofer
-                        choferes[legajo] = datosChoferes
-
-                        # Abrir archivo en modo escritura
-                        archivo = abrirArchivo(rutaChoferes, "w")
-                        if archivo is not None:
-                            json.dump(choferes, archivo, indent=4, ensure_ascii=False)
-                            cerrarArchivo(archivo)
-
-                            # Mensaje de éxito
-                            print(f"\nSe agregó al chofer {nombre} {apellido}, LU{legajo} exitosamente.\n")
-
-                            # Preguntar si desea agregar otro chofer
-                            agregarOtro = input("¿Desea agregar otro chofer? (s/n): ").lower()
-                            if agregarOtro != "s" and agregarOtro != "si":
-                                break
-                        else:
-                            print("No se pudo guardar el chofer. Verifique el archivo.")
+                    registrarChofer()
 
                 elif opcionSubmenu == "2":   # Opción 2 del submenú
                     print("----------------------------------------")
                     print("MENÚ DE CHOFERES > Modificar de choferes")
                     print("----------------------------------------\n")
 
-                    # Cargar datos de choferes
-                    archivo = abrirArchivo(rutaChoferes, "r")
-                    if archivo is not None:
-                        choferes = json.load(archivo)
-                        cerrarArchivo(archivo)
-                    else:
-                        choferes = {}  # Si no existe, iniciar vacío
-
-                    while True:
-                        # Preguntar legajo de chofer a modificar
-                        legajo = input("Ingrese el legajo del chofer a modificar (o '0' para salir): ")
-
-                        # Si el número ingresado es 0, se sale del bucle
-                        if legajo == "0":
-                            print("Saliendo de la modificación de choferes.\n")
-                            break
-                        elif not legajo.isdigit() or legajo not in choferes:
-                            print("Legajo inválido. Intente nuevamente.")
-                            break
-
-                        # Formatear celda de teléfono
-                        telefonoFormateado = f"+54 11 {str(choferes[legajo]['telefono'])[4:]}-{str(choferes[legajo]['telefono'])[:4]}"
-
-                        # Seleccionar dato a modificar
-                        print("\nDatos actuales del chofer:")
-                        print(f"1. Nombre: {choferes[legajo]['nombre']}")
-                        print(f"2. Apellido: {choferes[legajo]['apellido']}")
-                        print(f"3. Email: {choferes[legajo]['email']}")
-                        print(f"4. Teléfono: {telefonoFormateado}")
-                        print(f"5. Cantidad de km: {choferes[legajo]['cantidadKm']}")
-                        print("6. Ver turnos")
-                        print("\n¿Qué dato desea modificar?")
-                        
-                        opcion = input("Ingrese el número de la opción (1-5): ")
-                        
-                        if opcion == "1":
-                            # Ingresar nuevo nombre
-                            nuevoNombre = solicitarNombre("nombre")
-
-                            # Guardar nuevo nombre
-                            choferes[legajo]['nombre'] = nuevoNombre
-
-                            print("\nDato modificado exitosamente.")
-                            
-                        elif opcion == "2":
-                            # Ingresar nuevo apellido
-                            nuevoApellido = solicitarApellido()
-
-                            # Guardar nuevo apellido
-                            choferes[legajo]['apellido'] = nuevoApellido
-
-                            print("\nDato modificado exitosamente.")
-
-                        elif opcion == "3":
-                            # Ingresar nuevo email
-                            nuevoEmail = solicitarEmail()
-
-                            # Guardar nuevo email
-                            choferes[legajo]['email'] = nuevoEmail
-
-                            print("\nDato modificado exitosamente.")
-
-                        elif opcion == "4":
-                            # Solicitar teléfono
-                            nuevoTelefono = solicitarTelefono()
-
-                            # Guardar nuevo teléfono
-                            choferes[legajo]['telefono'] = nuevoTelefono
-
-                            print("\nDato modificado exitosamente.")
-
-                        elif opcion == "5":
-                            # Ingresar nueva cantidad de km recorridos
-                            nuevosKm = solicitarKm()
-
-                            # Guardar nueva cantidad de km
-                            choferes[legajo]['cantidadKm'] = nuevosKm
-
-                            print("\nDato modificado exitosamente.")
-                                    
-                        elif opcion == "6":
-                            # Ver turnos
-                            print("\nTurnos actuales del chofer:")
-                            for i in range(1, 4):
-                                if f"turno{i}" in choferes[legajo]['turnos']:
-                                    print(f"{i}. {choferes[legajo]['turnos'][f'turno{i}']}")
-                                else:
-                                    print(f"{i}. Sin turno asignado")
-
-                            # Seleccionar turno a modificar
-                            turnoModificar = input("\nIngrese el número del turno a modificar (1-3) o '0' para salir: ")
-
-                            if turnoModificar == "0":
-                                print("Saliendo de la modificación de turnos.\n")
-                                break
-                            elif turnoModificar not in ["1", "2", "3"]:
-                                print("Opción inválida. Intente nuevamente.")
-                            else:
-                                turnosExistentes = list(choferes[legajo]['turnos'].values())
-                                nuevoTurno = solicitarUnTurno(int(turnoModificar), turnosExistentes)
-
-                                if nuevoTurno:
-                                    choferes[legajo]['turnos'][f'turno{turnoModificar}'] = nuevoTurno
-                                else:
-                                    if f'turno{turnoModificar}' in choferes[legajo]['turnos']:
-                                        del choferes[legajo]['turnos'][f'turno{turnoModificar}']
-
-                        else:
-                            print("Opción inválida.")
-                            
-                        # Abrir archivo en modo escritura
-                        archivo = abrirArchivo(rutaChoferes, "w")
-                        if archivo is not None:
-                            json.dump(choferes, archivo, indent=4, ensure_ascii=False)
-                            cerrarArchivo(archivo)
-                        else:
-                            print("No se pudo guardar el chofer. Verifique el archivo.")
+                    modificarChofer()
                 
                 elif opcionSubmenu == "3":   # Opción 3 del submenú
                     print("------------------------------------")
                     print("MENÚ DE CHOFERES > Desactivar choferes")
                     print("------------------------------------\n")
 
-                    # Cargar datos de choferes
-                    archivo = abrirArchivo(rutaChoferes, "r")
-                    if archivo is not None:
-                        choferes = json.load(archivo)
-                        cerrarArchivo(archivo)
-                    else:
-                        choferes = {}  # Si no existe, iniciar vacío
-
-                    while True:
-                        # Se pide el número de legajo a eliminar
-                        legajo = input("Ingrese el legajo del chofer a desactivar (o '0' para salir): ")
-
-                        # Si el número ingresado es 0, se sale del bucle
-                        if legajo == "0":
-                            break
-                        # Validar legajo
-                        elif not legajo.isdigit() or legajo not in choferes:
-                            print("Legajo inválido. Intente nuevamente.")
-                        else:
-                            chofer = choferes[legajo] # Obtener datos del chofer
-
-                            # Mensaje de confirmación
-                            confirmar = input(f"¿Está seguro que desea desactivar al chofer {chofer['nombre']} {chofer['apellido']} (LU{legajo})? (s/n): ").lower()
+                    desactivarChofer()
                             
-                            # Si el usuario confirma la acción, se desactiva el chofer. Sino, se cancela la operación
-                            if confirmar == "s" or confirmar == "si":
-                                choferes[legajo]["activo"] = False
-
-                                # Abrir archivo en modo escritura usando tu función
-                                archivo = abrirArchivo(rutaChoferes, "w")
-                                if archivo is not None:
-                                    json.dump(choferes, archivo, indent=4, ensure_ascii=False)
-                                    cerrarArchivo(archivo)
-
-                                    # Mensaje de éxito
-                                    print(f"\nSe desactivó al chofer {chofer['nombre']} {chofer['apellido']}, LU{legajo} exitosamente.\n")
-                                else:
-                                    print("No se pudo guardar el chofer. Verifique el archivo.")
-                            else:
-                                print("Desactivación cancelada.\n")
-                            
-                
                 elif opcionSubmenu == "4":   # Opción 4 del submenú
+                    print("--------------------------------------")
+                    print("MENÚ DE CHOFERES > Listado de choferes")
+                    print("--------------------------------------\n")
+
                     listarChoferes()
 
                 input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
@@ -684,214 +469,32 @@ def main():
                     break # No sale del programa, sino que vuelve al menú anterior
                 
                 elif opcionSubmenu == "1":   # Opción 1 del submenú
-                        print("--------------------------------------")
-                        print("MENÚ DE VEHÍCULOS > Agregar vehículos")
-                        print("--------------------------------------\n")
-                        
-                        # Cargar datos de vehículos
-                        archivo = abrirArchivo(rutaVehiculos, "r")
-                        if archivo is not None:
-                            vehiculos = json.load(archivo)
-                            cerrarArchivo(archivo)
-                        else:
-                            vehiculos = {}
-                        
-                        # Solicitar patente
-                        patente = solicitarPatente(vehiculos)
-                       
-                        #modelo del vehiculo 
-                        modelo = input("Ingrese el modelo del vehiculo: ")
-                        
-                        #Agregar y validar año de compra 
-                        añoCompra = solicitarAñoCompra()
+                    print("--------------------------------------")
+                    print("MENÚ DE VEHÍCULOS > Ingresar vehículos")
+                    print("--------------------------------------\n")
 
-                        #Agregar y validar cantidad de Km
-                        cantidadKm = solicitarKm()
-
-                        #Agregar y modificar costo de Km
-                        costoKm = solicitarCostoKm()
-
-                        vehiculos[patente] = {
-                            "activo": True,  # Siempre TRUE al cargar
-                            "modelo": modelo,
-                            "añoCompra": añoCompra,
-                            "cantidadKm": cantidadKm,
-                            "costoKm": costoKm,
-                            "infracciones": {}  # VACÍO AL INICIO
-                        }
-
-                        # Guardar vehículo en archivo
-                        archivo = abrirArchivo(rutaVehiculos, "w")
-                        if archivo is not None:
-                            json.dump(vehiculos, archivo, indent=4, ensure_ascii=False)
-                            cerrarArchivo(archivo)
-                            print("Se ingresó el vehículo correctamente!")
-                        else:
-                            print("Se ingresó el vehículo en memoria pero no se pudo guardar en el archivo.")
+                    ingresarVehiculo()
                     
                 elif opcionSubmenu == "2":   # Opción 2 del submenú
                     print("--------------------------------------")
                     print("MENÚ DE VEHÍCULOS > Modificar vehículos")
                     print("--------------------------------------\n")
-                    
-                    # Cargar datos actuales de vehiculos desde archivo antes de modificar
-                    archivo = abrirArchivo(rutaVehiculos, "r")
-                    if archivo is not None:
-                        vehiculos = json.load(archivo)
-                        cerrarArchivo(archivo)
-                    else:
-                        vehiculos = {}
 
-                    patente = input("Ingrese la patente del vehiculo a modificar: ").upper()
-
-                    if patente not in vehiculos:
-                        print("Error: la patente no se encuentra registrada")
-                    else:
-                        vehiculo = vehiculos[patente]
-
-                        print("Datos actuales del vehiculo: ")
-                        for campo, valor in vehiculo.items():
-                            if campo != "infracciones":
-                                print(f"  {campo}: {valor}")
-
-                        print()
-                        print("¿Que datos deseas modificar?")
-                        print("1. Patente")
-                        print("2. Modelo")
-                        print("3. Año de compra")
-                        print("4. Kilometro")
-                        print("5. Costo por Km")
-                        print("6. Infracciones")
-                        opcionMod = input("Seleccione una opcion: ")
-
-                        guardado = False
-
-                        if opcionMod == "1":
-                            nuevaPatenteValida = False
-                            while not nuevaPatenteValida:
-                                nuevaPatente = input("Ingrese la nueva patente: ").upper()
-                                nuevaPatenteValida = validarPatente(nuevaPatente, vehiculos)
-
-                            # reasignar y eliminar la entrada antigua
-                            vehiculos[nuevaPatente] = vehiculo
-                            del vehiculos[patente]
-                            guardado = True
-                            print("Patente modificada correctamente")
-
-                        elif opcionMod == "2":
-                            # Modificar modelo
-                            nuevoModelo = input("Ingrese el nuevo modelo: ")
-                            vehiculo["modelo"] = nuevoModelo
-                            guardado = True
-                            print("Modelo modificado correctamente.")
-
-                        elif opcionMod == "3":
-                            # Modificar año de compra
-                            nuevoAño = solicitarAñoCompra()
-                            vehiculo["añoCompra"] = int(nuevoAño)
-                            guardado = True
-                            print("Año de compra modificado correctamente")
-
-                        elif opcionMod == "4":
-                            # Modificar cantidad de Km
-                            nuevoKm = solicitarKm()
-                            vehiculo["cantidadKm"] = nuevoKm
-                            guardado = True
-                            print("Cantidad de Km modificado correctamente")
-                            
-                        elif opcionMod == "5":
-                            # Modificar costo por Km 
-                            nuevoCosto = solicitarCostoKm()
-                            vehiculo["costoKm"] = nuevoCosto
-                            guardado = True
-                            print ("Costo del Km actualizado")
-                        
-                        elif opcionMod == "6":
-                            print("\n------ MODIFICAR INFRACCIONES ------")
-                            print("1. Agregar infracción")
-                            print("2. Eliminar infracción")
-                            print("3. Ver infracciones actuales")
-
-                            opcionInf = input("Seleccione una opción: ")
-
-                            if opcionInf == "1":
-                                descripcion = input("Ingrese la descripción de la infracción: ")
-                                agregarInfraccion(vehiculo, descripcion)
-                                guardado = True
-
-                            elif opcionInf == "2":
-                                mostrarInfracciones(vehiculo)
-                                claveEliminar = input("Ingrese el nombre exacto de la infracción a eliminar (ej: infraccion1): ")
-                                eliminarInfraccion(vehiculo, claveEliminar)
-                                guardado = True
-
-                            elif opcionInf == "3":
-                                mostrarInfracciones(vehiculo)
-
-                            else:
-                                print("Opción inválida en el menú de infracciones.")
-                                                        
-                        else:
-                            print("Opcion invalida.")
-
-                        # Si hubo cambios, guardar el diccionario completo en el archivo JSON
-                        if guardado:
-                            archivo = abrirArchivo(rutaVehiculos, "w")
-                            if archivo is not None:
-                                json.dump(vehiculos, archivo, indent=4, ensure_ascii=False)
-                                cerrarArchivo(archivo)
-                                print("Cambios guardados en el archivo de vehículos.")
-                            else:
-                                print("No se pudo guardar los cambios en el archivo.")
+                    modificarVehiculo()
                                         
                 elif opcionSubmenu == "3":   # Opción 3 del submenú
                     print("--------------------------------------")
                     print("MENÚ DE VEHÍCULOS > Desactivar vehículos")
                     print("--------------------------------------\n")
 
-                    # Cargar datos de vehículos
-                    archivo = abrirArchivo(rutaVehiculos, "r")
-                    if archivo is not None:
-                        vehiculos = json.load(archivo)
-                        cerrarArchivo(archivo)
-                    else:
-                        vehiculos = {}
-
-                    patente = input("Ingrese la patente del vehiculo a desactivar: ").upper()
-                    if patente not in vehiculos:
-                        print("No existe un vehículo con esa patente.")
-                    else:
-                        if not vehiculos[patente]["activo"]:
-                            print("Ese vehículo ya está inactivo.")
-                        else:
-                            confirm = input(f"¿Deseas desactivar el vehículo {patente}? (si/no): ").upper()
-                            if confirm == "SI":
-                                vehiculos[patente]["activo"] = False
-                                
-                                # Guardar cambios en archivo
-                                archivo = abrirArchivo(rutaVehiculos, "w")
-                                if archivo is not None:
-                                    json.dump(vehiculos, archivo, indent=4, ensure_ascii=False)
-                                    cerrarArchivo(archivo)
-                                    print("Vehículo desactivado con éxito.")
-                                else:
-                                    print("No se pudo guardar los cambios.")
-                            else:
-                                print("Operación cancelada.")
+                    desactivarVehiculo()
 
                 elif opcionSubmenu == "4":   # Opción 4 del submenú
                     print("--------------------------------------")
                     print("MENÚ DE VEHÍCULOS > Listar vehículos")
                     print("--------------------------------------\n")
 
-                    # Cargar datos actualizados de vehículos antes de listar
-                    archivo = abrirArchivo(rutaVehiculos, "r")
-                    if archivo is not None:
-                        vehiculos = json.load(archivo)
-                        cerrarArchivo(archivo)
-                    else:
-                        vehiculos = {}
-                    listarVehiculos(vehiculos)
+                    listarVehiculos()
 
                 input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
                 print("\n\n")
@@ -921,153 +524,16 @@ def main():
                     break # No sale del programa, sino que vuelve al menú anterior
                 
                 elif opcionSubmenu == "1":   # Opción 1 del submenú
-
-                    # Cargar datos de choferes
-                    archivo = abrirArchivo(rutaChoferes, "r")
-                    if archivo is not None:
-                        choferes = json.load(archivo)
-                        cerrarArchivo(archivo)
-                    else:
-                        choferes = {}
-
-                    # Cargar datos de vehículos
-                    archivo = abrirArchivo(rutaVehiculos, "r")
-                    if archivo is not None:
-                        vehiculos = json.load(archivo)
-                        cerrarArchivo(archivo)
-                    else:
-                        vehiculos = {}
-
-                    # Cargar datos de rutas
-                    archivo = abrirArchivo(rutaRutas, "r")
-                    if archivo is not None:
-                        rutas = json.load(archivo)
-                        cerrarArchivo(archivo)
-                    else:
-                        rutas = {}
-
-                    # Ingresar legajo
-                    while True:
-                        legajo = input("Ingrese el legajo del chofer (o '0' para salir): ")
-
-                        # Si el número ingresado es 0, se sale del bucle
-                        if legajo == "0":
-                            print("Saliendo de la modificación de choferes.\n")
-                        elif not legajo.isdigit() or legajo not in choferes or not choferes[legajo]["activo"]:
-                            print("Legajo inválido. Intente nuevamente.")
-                        else:
-                            break
-
-                    # Ingresar patente
-                    patente = solicitarPatente(vehiculos, "existente")
-
-                    # Ingresar kms
-                    totalKm = solicitarKm()
-
-                    # Ingresar salida
-                    fechaSalida = solicitarFechaHora()
-
-                    # Ingresar llegada
-                    fechaLlegada = solicitarFechaHora()
-
-                    # Confirmación
-                    print("\nResumen de la ruta a registrar:")
-                    print(f"Chofer: LU{legajo} - {choferes[legajo]['nombre']} {choferes[legajo]['apellido']}")
-                    print(f"Vehículo: {patente} - {vehiculos[patente]['modelo']}")
-                    print(f"Km recorridos: {totalKm} km")
-                    print(f"Fecha y hora de salida: {fechaSalida}")
-                    print(f"Fecha y hora de llegada: {fechaLlegada}")
-                    confirmar = input("¿Desea registrar esta ruta? (s/n): ").lower()
-
-                    if confirmar == "s" or confirmar == "si":
-                        # Obtener la fecha y hora actual para la clave
-                        fechaHora = obtenerFechaHora()
-
-                        # Calcular costo de la ruta
-                        costoKm = vehiculos[patente]['costoKm']
-                        costoRuta = totalKm * costoKm
-
-                        # Convertir fechas al formato YYYY.MM.DD HH.MM
-                        # Para la hora de salida
-                        partes_salida = fechaSalida.split()
-                        fecha_salida = partes_salida[0]  # Ya está en formato YYYY.MM.DD
-                        hora_salida = ".".join(partes_salida[1].split(".")[:2])  # Solo tomamos hora y minutos
-                        horaSalida = f"{fecha_salida} {hora_salida}"
-
-                        # Para la hora de llegada
-                        partes_llegada = fechaLlegada.split()
-                        fecha_llegada = partes_llegada[0]  # Ya está en formato YYYY.MM.DD
-                        hora_llegada = ".".join(partes_llegada[1].split(".")[:2])  # Solo tomamos hora y minutos
-                        horaLlegada = f"{fecha_llegada} {hora_llegada}"
-
-                        # Guardar ruta
-                        rutas[fechaHora] = {
-                            "idLegajo": legajo,
-                            "idPatente": patente,
-                            "totalKm": totalKm,
-                            "costoRuta": costoRuta,
-                            "horaSalida": horaSalida,
-                            "horaLlegada": horaLlegada
-                        }
-
-                        # Actualizar km del chofer y vehículo
-                        choferes[legajo]['cantidadKm'] += totalKm
-                        vehiculos[patente]['cantidadKm'] += totalKm
-
-                        # Abrir archivo de choferes en modo escritura
-                        archivo = abrirArchivo(rutaChoferes, "w")
-                        if archivo is not None:
-                            json.dump(choferes, archivo, indent=4, ensure_ascii=False)
-                            cerrarArchivo(archivo)
-                        else:
-                            print("No se pudo guardar el chofer. Verifique el archivo.")
-
-                        # Abrir archivo de vehiculos en modo escritura
-                        archivo = abrirArchivo(rutaVehiculos, "w")
-                        if archivo is not None:
-                            json.dump(vehiculos, archivo, indent=4, ensure_ascii=False)
-                            cerrarArchivo(archivo)
-                        else:
-                            print("No se pudo guardar el chofer. Verifique el archivo.")
-
-                        # Abrir archivo de rutas en modo escritura
-                        archivo = abrirArchivo(rutaRutas, "w")
-                        if archivo is not None:
-                            json.dump(rutas, archivo, indent=4, ensure_ascii=False)
-                            cerrarArchivo(archivo)
-
-                            print(f"\nRuta registrada exitosamente.\n")
-                        else:
-                            print("No se pudo guardar el chofer. Verifique el archivo.")
+                    print("--------------------------------")
+                    print("MENÚ DE RUTAS > Registro de rutas")
+                    print("--------------------------------\n")
+                    
+                    registrarRuta()
 
                 input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
                 print("\n\n")
         
         elif opcionMenuPrincipal == "4":   # Opción 4 del menú principal
-            # Cargar datos de choferes
-            archivo = abrirArchivo(rutaChoferes, "r")
-            if archivo is not None:
-                choferes = json.load(archivo)
-                cerrarArchivo(archivo)
-            else:
-                choferes = {}
-
-            # Cargar datos de vehículos
-            archivo = abrirArchivo(rutaVehiculos, "r")
-            if archivo is not None:
-                vehiculos = json.load(archivo)
-                cerrarArchivo(archivo)
-            else:
-                vehiculos = {}
-
-            # Cargar datos de rutas
-            archivo = abrirArchivo(rutaRutas, "r")
-            if archivo is not None:
-                rutas = json.load(archivo)
-                cerrarArchivo(archivo)
-            else:
-                rutas = {}
-
             while True:
                 while True:
                     opciones = 5
@@ -1096,19 +562,39 @@ def main():
                     break # No sale del programa, sino que vuelve al menú anterior
                 
                 elif opcionSubmenu == "1":   # Opción 1 del submenú
-                    informeViajesDelMes(rutas, vehiculos)
+                    print("-----------------------------------")
+                    print("MENÚ DE INFORMES > Informe viajes del mes")
+                    print("-----------------------------------\n")
+
+                    informeViajesDelMes()
                     
                 elif opcionSubmenu == "2":   # Opción 2 del submenú
-                    informeResumenMensualKmVehiculo(rutas, vehiculos)
+                    print("-----------------------------------")
+                    print("MENÚ DE INFORMES > Informe resumen mensual de rutas por vehículo")
+                    print("-----------------------------------\n")
+
+                    informeResumenMensualKmVehiculo()
 
                 elif opcionSubmenu == "3":   # Opción 3 del submenú
-                    informeResumenMensualCostosVehiculos(rutas, vehiculos)
+                    print("-----------------------------------")
+                    print("MENÚ DE INFORMES > Informe resumen mensual de costos por vehículo")
+                    print("-----------------------------------\n")
+
+                    informeResumenMensualCostosVehiculos()
                 
                 elif opcionSubmenu == "4":   # Opción 4 del submenú
-                    informeRankingChoferes(choferes, rutas)
+                    print("-----------------------------------")
+                    print("MENÚ DE INFORMES > Informe ranking de choferes")
+                    print("-----------------------------------\n")
+
+                    informeRankingChoferes()
 
                 elif opcionSubmenu == "5":   # Opción 4 del submenú
-                    informeRankingVehiculos(vehiculos, rutas)
+                    print("-----------------------------------")
+                    print("MENÚ DE INFORMES > Informe ranking de vehículos")
+                    print("-----------------------------------\n")
+
+                    informeRankingVehiculos()
 
                 input("\nPresione ENTER para volver al menú.") # Pausa entre opciones
                 print("\n\n")

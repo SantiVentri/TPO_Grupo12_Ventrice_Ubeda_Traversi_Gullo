@@ -9,338 +9,236 @@ Descripción: Funciones relacionadas a la gestión de vehiculos.
 Pendientes:
 -----------------------------------------------------------------------------------------------
 """
-#----------------------------------------------------------------------------------------------
-# MÓDULOS
-#----------------------------------------------------------------------------------------------
+import json
+from funciones.archivos import abrirArchivo, cerrarArchivo
+from funciones.choferes import solicitarKm
 
 
 #----------------------------------------------------------------------------------------------
 # FUNCIONES
 #----------------------------------------------------------------------------------------------
+# ------------------ Funciones de vehículos ------------------
+def ingresarVehiculo():
+    """
+    Registra un nuevo vehículo en el sistema.
+    """
 
-# ------------------ Solicitar y validar patentes ------------------
-# ------------------ Solicitar y validar patentes ------------------
-def solicitarPatente(vehiculos, tipo="nueva"):
+    # Inicializar ruta del archivo de vehículos
+    rutaVehiculos = "diccionarios/vehiculos.json"
+    
+    # Cargar datos de vehículos
+    archivo = abrirArchivo(rutaVehiculos, "r")
+    if archivo is not None:
+        vehiculos = json.load(archivo)
+        cerrarArchivo(archivo)
+    else:
+        vehiculos = {}
+    
+    # Solicitar patente
+    patente = solicitarPatente(vehiculos)
+    
+    #modelo del vehiculo 
+    modelo = input("Ingrese el modelo del vehiculo: ")
+    
+    #Agregar y validar año de compra 
+    añoCompra = solicitarAñoCompra()
+
+    #Agregar y validar cantidad de Km
+    cantidadKm = solicitarKm()
+
+    #Agregar y modificar costo de Km
+    costoKm = solicitarCostoKm()
+
+    vehiculos[patente] = {
+        "activo": True,  # Siempre TRUE al cargar
+        "modelo": modelo,
+        "añoCompra": añoCompra,
+        "cantidadKm": cantidadKm,
+        "costoKm": costoKm,
+        "infracciones": {}  # VACÍO AL INICIO
+    }
+
+    # Guardar vehículo en archivo
+    archivo = abrirArchivo(rutaVehiculos, "w")
+    if archivo is not None:
+        json.dump(vehiculos, archivo, indent=4, ensure_ascii=False)
+        cerrarArchivo(archivo)
+        print("Se ingresó el vehículo correctamente!")
+    else:
+        print("Se ingresó el vehículo en memoria pero no se pudo guardar en el archivo.")
+
+def modificarVehiculo():
     """
-    Esta función solicita y valida la patente del vehículo.
-    Parámetros:
-    - vehiculos (dict): Diccionario de vehículos para verificar existencia.
-    - tipo (str): "nueva" para patentes nuevas, "existente" para patentes ya registradas.
-    Salida:
-    - patente (str): La patente validada.
+    Modifica los datos de un vehículo existente.
     """
-    patenteValida = False
-    while not patenteValida:
-        try:
-            patente = input("Ingrese la patente del vehículo (ej. AE456GH): ").upper()
+    
+    # Inicializar ruta del archivo de vehículos
+    rutaVehiculos = "diccionarios/vehiculos.json"
+    
+    # Cargar datos actuales de vehiculos desde archivo antes de modificar
+    archivo = abrirArchivo(rutaVehiculos, "r")
+    if archivo is not None:
+        vehiculos = json.load(archivo)
+        cerrarArchivo(archivo)
+    else:
+        vehiculos = {}
+
+    patente = input("Ingrese la patente del vehiculo a modificar: ").upper()
+
+    if patente not in vehiculos:
+        print("Error: la patente no se encuentra registrada")
+    else:
+        vehiculo = vehiculos[patente]
+
+        print("Datos actuales del vehiculo: ")
+        for campo, valor in vehiculo.items():
+            if campo != "infracciones":
+                print(f"  {campo}: {valor}")
+
+        print()
+        print("¿Que datos deseas modificar?")
+        print("1. Patente")
+        print("2. Modelo")
+        print("3. Año de compra")
+        print("4. Kilometro")
+        print("5. Costo por Km")
+        print("6. Infracciones")
+        opcionMod = input("Seleccione una opcion: ")
+
+        guardado = False
+
+        if opcionMod == "1":
+            nuevaPatenteValida = False
+            while not nuevaPatenteValida:
+                nuevaPatente = input("Ingrese la nueva patente: ").upper()
+                nuevaPatenteValida = validarPatente(nuevaPatente, vehiculos)
+
+            # reasignar y eliminar la entrada antigua
+            vehiculos[nuevaPatente] = vehiculo
+            del vehiculos[patente]
+            guardado = True
+            print("Patente modificada correctamente")
+
+        elif opcionMod == "2":
+            # Modificar modelo
+            nuevoModelo = input("Ingrese el nuevo modelo: ")
+            vehiculo["modelo"] = nuevoModelo
+            guardado = True
+            print("Modelo modificado correctamente.")
+
+        elif opcionMod == "3":
+            # Modificar año de compra
+            nuevoAño = solicitarAñoCompra()
+            vehiculo["añoCompra"] = int(nuevoAño)
+            guardado = True
+            print("Año de compra modificado correctamente")
+
+        elif opcionMod == "4":
+            # Modificar cantidad de Km
+            nuevoKm = solicitarKm()
+            vehiculo["cantidadKm"] = nuevoKm
+            guardado = True
+            print("Cantidad de Km modificado correctamente")
             
-            if tipo == "nueva":
-                patenteValida = validarPatente(patente, vehiculos)
-            elif tipo == "existente":
-                patenteValida = validarPatenteExistente(patente, vehiculos)
+        elif opcionMod == "5":
+            # Modificar costo por Km 
+            nuevoCosto = solicitarCostoKm()
+            vehiculo["costoKm"] = nuevoCosto
+            guardado = True
+            print ("Costo del Km actualizado")
+        
+        elif opcionMod == "6":
+            print("\n------ MODIFICAR INFRACCIONES ------")
+            print("1. Agregar infracción")
+            print("2. Eliminar infracción")
+            print("3. Ver infracciones actuales")
+
+            opcionInf = input("Seleccione una opción: ")
+
+            if opcionInf == "1":
+                descripcion = input("Ingrese la descripción de la infracción: ")
+                agregarInfraccion(vehiculo, descripcion)
+                guardado = True
+
+            elif opcionInf == "2":
+                mostrarInfracciones(vehiculo)
+                claveEliminar = input("Ingrese el nombre exacto de la infracción a eliminar (ej: infraccion1): ")
+                eliminarInfraccion(vehiculo, claveEliminar)
+                guardado = True
+
+            elif opcionInf == "3":
+                mostrarInfracciones(vehiculo)
+
             else:
-                print("Tipo de validación de patente desconocido.")
-                patenteValida = False
-
-        except Exception as e:
-            # Cualquier error inesperado en el proceso de lectura/validación
-            print(f"Ocurrió un error al procesar la patente: {e}")
-            patenteValida = False
-
-    return patente
-
-
-def validarPatente(patente, vehiculos):
-    """
-    Valida una patente argentina (formato viejo AAA123 o nuevo AB123CD).
-    Muestra los mensajes de error o confirmación y devuelve True/False.
-    """
-    try:
-        patente = patente.upper().strip()
-        patenteValida = True
-
-        # --- Verifico largo correcto ---
-        if len(patente) == 6:  # Formato viejo: AAA123
-            if not (patente[:3].isalpha() and patente[3:].isdigit()):
-                print(" La patente es incorrecta. Formato esperado: AAA123")
-                patenteValida = False
-
-        elif len(patente) == 7:  # Formato nuevo: AB123CD
-            if not (patente[:2].isalpha() and patente[2:5].isdigit() and patente[5:].isalpha()):
-                print(" La patente es incorrecta. Formato esperado: AB123CD")
-                patenteValida = False
-
+                print("Opción inválida en el menú de infracciones.")
+                                        
         else:
-            print(" La patente debe tener 6 o 7 caracteres.")
-            patenteValida = False
+            print("Opcion invalida.")
 
-        # --- Verificar si ya existe ---
-        if patenteValida:
-            if patente in vehiculos:
-                print(" Ya existe un vehículo con esa patente.")
-                patenteValida = False
+        # Si hubo cambios, guardar el diccionario completo en el archivo JSON
+        if guardado:
+            archivo = abrirArchivo(rutaVehiculos, "w")
+            if archivo is not None:
+                json.dump(vehiculos, archivo, indent=4, ensure_ascii=False)
+                cerrarArchivo(archivo)
+                print("Cambios guardados en el archivo de vehículos.")
             else:
-                print(" Patente válida y disponible.")
+                print("No se pudo guardar los cambios en el archivo.")
 
-        return patenteValida
-
-    except Exception as e:
-        print(f"Ocurrió un error inesperado al validar la patente: {e}")
-        return False
-
-
-def validarPatenteExistente(patente, vehiculos):
+def desactivarVehiculo():
     """
-    Valida una patente argentina (formato viejo AAA123 o nuevo AB123CD).
-    Muestra los mensajes de error o confirmación y devuelve True/False.
+    Desactiva un vehículo existente.
     """
-    try:
-        patente = patente.upper().strip()
-        patenteValida = True
 
-        # --- Verifico largo correcto ---
-        if len(patente) == 6:  # Formato viejo: AAA123
-            if not (patente[:3].isalpha() and patente[3:].isdigit()):
-                print(" La patente es incorrecta. Formato esperado: AAA123")
-                patenteValida = False
+    # Inicializar ruta del archivo de vehículos
+    rutaVehiculos = "diccionarios/vehiculos.json"
 
-        elif len(patente) == 7:  # Formato nuevo: AB123CD
-            if not (patente[:2].isalpha() and patente[2:5].isdigit() and patente[5:].isalpha()):
-                print(" La patente es incorrecta. Formato esperado: AB123CD")
-                patenteValida = False
-
-        else:
-            print(" La patente debe tener 6 o 7 caracteres.")
-            patenteValida = False
-
-        # --- Verificar si ya existe ---
-        if patenteValida:
-            if not (patente in vehiculos):
-                print("No existe un vehículo con esa patente.")
-                patenteValida = False
-
-        return patenteValida
-
-    except Exception as e:
-        print(f"Ocurrió un error inesperado al validar la patente existente: {e}")
-        return False
-
-
-# ------------------ Solicitar y validar año de compra de vehículo ------------------
-def solicitarAñoCompra():
-    """
-    Esta función solicita y valida el año de compra del vehículo.
-    Salida:
-    - añoCompra (int): El año de compra validado.
-    """
-    añoValido = False
-    añoCompra = None
-
-    while not añoValido:
-        añoCompra = input("Ingrese el año de compra del vehículo: ")
-        try:
-            añoValido = validarAñoCompra(añoCompra)
-        except Exception as e:
-            print(f"Ocurrió un error inesperado al validar el año: {e}")
-            añoValido = False
-
-    # Conversión final a int con manejo de errores por si algo raro se coló
-    try:
-        return int(añoCompra)
-    except ValueError:
-        print("Error al convertir el año a número. Se devolverá 0 por defecto.")
-        return 0
-
-
-def validarAñoCompra(añoCompra):
-    """
-    Valida que el año de compra del vehículo sea correcto. Muestra mensajes de error o confirmación.
-    Parámetros:
-    - añoCompra (str): El año a validar.
-    Salida:
-    - añoValido (bool): Indica si el año es válido (True) o no (False).
-    """
-    añoCompra = añoCompra.strip()
-
-    try:
-        # Verificar que sean solo números
-        if not añoCompra.isdigit():
-            raise ValueError(" El año de compra debe contener solo números.")
-
-        # Verificar longitud (4 dígitos)
-        if len(añoCompra) != 4:
-            raise ValueError(" El año debe tener exactamente 4 dígitos (ej. 2022).")
-
-        # Verificar rango lógico (ejemplo: entre 1980 y año actual)
-        from datetime import datetime
-        añoNum = int(añoCompra)
-        añoActual = datetime.now().year
-
-        if añoNum < 1980 or añoNum > añoActual:
-            raise ValueError(f" El año debe estar entre 1980 y {añoActual}.")
-
-    except ValueError as e:
-        # Errores esperados de validación
-        print(e)
-        return False
-
-    except Exception as e:
-        # Cualquier error inesperado
-        print(f"Ocurrió un error inesperado al validar el año: {e}")
-        return False
-
+    # Cargar datos de vehículos
+    archivo = abrirArchivo(rutaVehiculos, "r")
+    if archivo is not None:
+        vehiculos = json.load(archivo)
+        cerrarArchivo(archivo)
     else:
-        # Solo entra si no hubo ninguna excepción
-        print(" Año de compra válido.")
-        return True
+        vehiculos = {}
 
-    finally:
-        # Bloque que se ejecuta siempre
-        print(" Fin de la validación del año de compra.")
-
-
-# ------------------ Solicitar y validar costo x km ------------------
-def solicitarCostoKm():
-    """
-    Esta función solicita y valida el costo por kilómetro del vehículo.
-    Salida:
-    - costoKm (float): El costo por kilómetro validado.
-    """
-    costoValido = False
-    costoKm = None
-
-    while not costoValido:
-        costoKm = input("Ingrese el costo por Km: ")
-        try:
-            costoValido = validarCostoKm(costoKm)
-        except Exception as e:
-            print(f"Ocurrió un error inesperado al validar el costo: {e}")
-            costoValido = False
-
-    # Conversión final a float con try/except por seguridad
-    try:
-        return float(costoKm)
-    except ValueError:
-        print("Error al convertir el costo a número. Se devolverá 0.0 por defecto.")
-        return 0.0
-
-
-def validarCostoKm(costoKm):
-    """
-    Valida que el costo por kilómetro sea un número positivo (entero o decimal).
-    Muestra mensajes de error o confirmación.
-    Parámetros:
-    - costoKm (str): el costo por kilómetro a validar.
-    Salida:
-    - valido (bool): Indica si el costo es válido (True) o no (False).
-    """
-    costoKm = costoKm.strip()
-
-    try:
-        if costoKm == "":
-            raise ValueError("El costo no puede ser vacío.")
-
-        if costoKm.count(".") > 1:
-            raise ValueError("Solo se permite un punto decimal en el valor.")
-
-        # Intentamos convertir a float
-        valor = float(costoKm)
-
-        if valor <= 0:
-            raise ValueError("El costo no puede ser cero o negativo.")
-
-    except ValueError as e:
-        # Errores esperados de validación
-        print(e)
-        return False
-
-    except Exception as e:
-        # Cualquier error inesperado
-        print(f"Ocurrió un error inesperado al validar el costo por Km: {e}")
-        return False
-
+    patente = input("Ingrese la patente del vehiculo a desactivar: ").upper()
+    if patente not in vehiculos:
+        print("No existe un vehículo con esa patente.")
     else:
-        print("Costo por Km válido.")
-        return True
-
-
-# ------------------ Agregar y modificar infracciones ------------------
-def agregarInfraccion(vehiculo, descripcion):
-    """
-    Agrega una nueva infracción al vehículo.
-    """
-    try:
-        descripcion = descripcion.strip()
-
-        if descripcion == "":
-            print("La descripción no puede estar vacía.")
-            return
-
-        clave = f"infraccion{len(vehiculo['infracciones']) + 1}"
-        vehiculo["infracciones"][clave] = descripcion
-        print(f"Se agregó la infracción '{descripcion}' correctamente.")
-
-    except KeyError:
-        print("Error: el vehículo no tiene la estructura esperada (falta 'infracciones').")
-    except Exception as e:
-        print(f"Ocurrió un error al agregar la infracción: {e}")
-
-
-def eliminarInfraccion(vehiculo, claveEliminar):
-    """
-    Elimina una infracción existente por su clave (ej: infraccion1).
-    """
-    try:
-        infracciones = vehiculo["infracciones"]
-
-        if len(infracciones) == 0:
-            print("Este vehículo no tiene infracciones registradas.")
-            return
-
-        if claveEliminar in infracciones:
-            del infracciones[claveEliminar]
-            print("Infracción eliminada correctamente.")
-
-            # Reordenar nombres (para mantener infraccion1, infraccion2, ...)
-            nuevas = {}
-            for i, desc in enumerate(infracciones.values(), start=1):
-                nuevas[f"infraccion{i}"] = desc
-            vehiculo["infracciones"] = nuevas
-
+        if not vehiculos[patente]["activo"]:
+            print("Ese vehículo ya está inactivo.")
         else:
-            print("No existe una infracción con ese nombre.")
+            confirm = input(f"¿Deseas desactivar el vehículo {patente}? (si/no): ").upper()
+            if confirm == "SI":
+                vehiculos[patente]["activo"] = False
+                
+                # Guardar cambios en archivo
+                archivo = abrirArchivo(rutaVehiculos, "w")
+                if archivo is not None:
+                    json.dump(vehiculos, archivo, indent=4, ensure_ascii=False)
+                    cerrarArchivo(archivo)
+                    print("Vehículo desactivado con éxito.")
+                else:
+                    print("No se pudo guardar los cambios.")
+            else:
+                print("Operación cancelada.")
 
-    except KeyError:
-        print("Error: el vehículo no tiene la estructura esperada (falta 'infracciones').")
-    except Exception as e:
-        print(f"Ocurrió un error al eliminar la infracción: {e}")
-
-
-def mostrarInfracciones(vehiculo):
-    """
-    Muestra todas las infracciones actuales del vehículo.
-    """
-    try:
-        infracciones = vehiculo["infracciones"]
-
-        if len(infracciones) == 0:
-            print("Este vehículo no tiene infracciones registradas.")
-        else:
-            print("\nInfracciones actuales del vehículo:")
-            for clave, desc in infracciones.items():
-                print(f"  {clave}: {desc}")
-
-    except KeyError:
-        print("Error: el vehículo no tiene la estructura esperada (falta 'infracciones').")
-    except Exception as e:
-        print(f"Ocurrió un error al mostrar las infracciones: {e}")
-
-
-# ------------------ Listado de vehículos ------------------
-def listarVehiculos(vehiculos):
+def listarVehiculos():
     """
     Muestra una lista de todos los vehículos registrados.
     """
+
+    # Inicializar ruta del archivo de vehículos
+    rutaVehiculos = "diccionarios/vehiculos.json"
+
+    # Cargar datos actualizados de vehículos antes de listar
+    archivo = abrirArchivo(rutaVehiculos, "r")
+    if archivo is not None:
+        vehiculos = json.load(archivo)
+        cerrarArchivo(archivo)
+    else:
+        vehiculos = {}
+    
     try:
         if len(vehiculos) == 0:
             print("No hay vehiculos cargados.")
@@ -390,3 +288,310 @@ def listarVehiculos(vehiculos):
         print(f"Error en la estructura de datos de un vehículo: falta la clave {e}.")
     except Exception as e:
         print(f"Ocurrió un error al listar los vehículos: {e}")
+
+# ------------------ Solicitar y validar patentes ------------------
+def solicitarPatente(vehiculos, tipo="nueva"):
+    """
+    Esta función solicita y valida la patente del vehículo.
+    Parámetros:
+    - vehiculos (dict): Diccionario de vehículos para verificar existencia.
+    - tipo (str): "nueva" para patentes nuevas, "existente" para patentes ya registradas.
+    Salida:
+    - patente (str): La patente validada.
+    """
+    patenteValida = False
+    while not patenteValida:
+        try:
+            patente = input("Ingrese la patente del vehículo (ej. AE456GH): ").upper()
+            
+            if tipo == "nueva":
+                patenteValida = validarPatente(patente, vehiculos)
+            elif tipo == "existente":
+                patenteValida = validarPatenteExistente(patente, vehiculos)
+            else:
+                print("Tipo de validación de patente desconocido.")
+                patenteValida = False
+
+        except Exception as e:
+            # Cualquier error inesperado en el proceso de lectura/validación
+            print(f"Ocurrió un error al procesar la patente: {e}")
+            patenteValida = False
+
+    return patente
+
+def validarPatente(patente, vehiculos):
+    """
+    Valida una patente argentina (formato viejo AAA123 o nuevo AB123CD).
+    Muestra los mensajes de error o confirmación y devuelve True/False.
+    """
+    try:
+        patente = patente.upper().strip()
+        patenteValida = True
+
+        # --- Verifico largo correcto ---
+        if len(patente) == 6:  # Formato viejo: AAA123
+            if not (patente[:3].isalpha() and patente[3:].isdigit()):
+                print(" La patente es incorrecta. Formato esperado: AAA123")
+                patenteValida = False
+
+        elif len(patente) == 7:  # Formato nuevo: AB123CD
+            if not (patente[:2].isalpha() and patente[2:5].isdigit() and patente[5:].isalpha()):
+                print(" La patente es incorrecta. Formato esperado: AB123CD")
+                patenteValida = False
+
+        else:
+            print(" La patente debe tener 6 o 7 caracteres.")
+            patenteValida = False
+
+        # --- Verificar si ya existe ---
+        if patenteValida:
+            if patente in vehiculos:
+                print(" Ya existe un vehículo con esa patente.")
+                patenteValida = False
+            else:
+                print(" Patente válida y disponible.")
+
+        return patenteValida
+
+    except Exception as e:
+        print(f"Ocurrió un error inesperado al validar la patente: {e}")
+        return False
+
+def validarPatenteExistente(patente, vehiculos):
+    """
+    Valida una patente argentina (formato viejo AAA123 o nuevo AB123CD).
+    Muestra los mensajes de error o confirmación y devuelve True/False.
+    """
+    try:
+        patente = patente.upper().strip()
+        patenteValida = True
+
+        # --- Verifico largo correcto ---
+        if len(patente) == 6:  # Formato viejo: AAA123
+            if not (patente[:3].isalpha() and patente[3:].isdigit()):
+                print(" La patente es incorrecta. Formato esperado: AAA123")
+                patenteValida = False
+
+        elif len(patente) == 7:  # Formato nuevo: AB123CD
+            if not (patente[:2].isalpha() and patente[2:5].isdigit() and patente[5:].isalpha()):
+                print(" La patente es incorrecta. Formato esperado: AB123CD")
+                patenteValida = False
+
+        else:
+            print(" La patente debe tener 6 o 7 caracteres.")
+            patenteValida = False
+
+        # --- Verificar si ya existe ---
+        if patenteValida:
+            if not (patente in vehiculos):
+                print("No existe un vehículo con esa patente.")
+                patenteValida = False
+
+        return patenteValida
+
+    except Exception as e:
+        print(f"Ocurrió un error inesperado al validar la patente existente: {e}")
+        return False
+
+# ------------------ Solicitar y validar año de compra de vehículo ------------------
+def solicitarAñoCompra():
+    """
+    Esta función solicita y valida el año de compra del vehículo.
+    Salida:
+    - añoCompra (int): El año de compra validado.
+    """
+    añoValido = False
+    añoCompra = None
+
+    while not añoValido:
+        añoCompra = input("Ingrese el año de compra del vehículo: ")
+        try:
+            añoValido = validarAñoCompra(añoCompra)
+        except Exception as e:
+            print(f"Ocurrió un error inesperado al validar el año: {e}")
+            añoValido = False
+
+    # Conversión final a int con manejo de errores por si algo raro se coló
+    try:
+        return int(añoCompra)
+    except ValueError:
+        print("Error al convertir el año a número. Se devolverá 0 por defecto.")
+        return 0
+
+def validarAñoCompra(añoCompra):
+    """
+    Valida que el año de compra del vehículo sea correcto. Muestra mensajes de error o confirmación.
+    Parámetros:
+    - añoCompra (str): El año a validar.
+    Salida:
+    - añoValido (bool): Indica si el año es válido (True) o no (False).
+    """
+    añoCompra = añoCompra.strip()
+
+    try:
+        # Verificar que sean solo números
+        if not añoCompra.isdigit():
+            raise ValueError(" El año de compra debe contener solo números.")
+
+        # Verificar longitud (4 dígitos)
+        if len(añoCompra) != 4:
+            raise ValueError(" El año debe tener exactamente 4 dígitos (ej. 2022).")
+
+        # Verificar rango lógico (ejemplo: entre 1980 y año actual)
+        from datetime import datetime
+        añoNum = int(añoCompra)
+        añoActual = datetime.now().year
+
+        if añoNum < 1980 or añoNum > añoActual:
+            raise ValueError(f" El año debe estar entre 1980 y {añoActual}.")
+
+    except ValueError as e:
+        # Errores esperados de validación
+        print(e)
+        return False
+
+    except Exception as e:
+        # Cualquier error inesperado
+        print(f"Ocurrió un error inesperado al validar el año: {e}")
+        return False
+
+    else:
+        # Solo entra si no hubo ninguna excepción
+        print(" Año de compra válido.")
+        return True
+
+    finally:
+        # Bloque que se ejecuta siempre
+        print(" Fin de la validación del año de compra.")
+
+# ------------------ Solicitar y validar costo x km ------------------
+def solicitarCostoKm():
+    """
+    Esta función solicita y valida el costo por kilómetro del vehículo.
+    Salida:
+    - costoKm (float): El costo por kilómetro validado.
+    """
+    costoValido = False
+    costoKm = None
+
+    while not costoValido:
+        costoKm = input("Ingrese el costo por Km: ")
+        try:
+            costoValido = validarCostoKm(costoKm)
+        except Exception as e:
+            print(f"Ocurrió un error inesperado al validar el costo: {e}")
+            costoValido = False
+
+    # Conversión final a float con try/except por seguridad
+    try:
+        return float(costoKm)
+    except ValueError:
+        print("Error al convertir el costo a número. Se devolverá 0.0 por defecto.")
+        return 0.0
+
+def validarCostoKm(costoKm):
+    """
+    Valida que el costo por kilómetro sea un número positivo (entero o decimal).
+    Muestra mensajes de error o confirmación.
+    Parámetros:
+    - costoKm (str): el costo por kilómetro a validar.
+    Salida:
+    - valido (bool): Indica si el costo es válido (True) o no (False).
+    """
+    costoKm = costoKm.strip()
+
+    try:
+        if costoKm == "":
+            raise ValueError("El costo no puede ser vacío.")
+
+        if costoKm.count(".") > 1:
+            raise ValueError("Solo se permite un punto decimal en el valor.")
+
+        # Intentamos convertir a float
+        valor = float(costoKm)
+
+        if valor <= 0:
+            raise ValueError("El costo no puede ser cero o negativo.")
+
+    except ValueError as e:
+        # Errores esperados de validación
+        print(e)
+        return False
+
+    except Exception as e:
+        # Cualquier error inesperado
+        print(f"Ocurrió un error inesperado al validar el costo por Km: {e}")
+        return False
+
+    else:
+        print("Costo por Km válido.")
+        return True
+
+# ------------------ Agregar y modificar infracciones ------------------
+def agregarInfraccion(vehiculo, descripcion):
+    """
+    Agrega una nueva infracción al vehículo.
+    """
+    try:
+        descripcion = descripcion.strip()
+
+        if descripcion == "":
+            print("La descripción no puede estar vacía.")
+            return
+
+        clave = f"infraccion{len(vehiculo['infracciones']) + 1}"
+        vehiculo["infracciones"][clave] = descripcion
+        print(f"Se agregó la infracción '{descripcion}' correctamente.")
+
+    except KeyError:
+        print("Error: el vehículo no tiene la estructura esperada (falta 'infracciones').")
+    except Exception as e:
+        print(f"Ocurrió un error al agregar la infracción: {e}")
+
+def eliminarInfraccion(vehiculo, claveEliminar):
+    """
+    Elimina una infracción existente por su clave (ej: infraccion1).
+    """
+    try:
+        infracciones = vehiculo["infracciones"]
+
+        if len(infracciones) == 0:
+            print("Este vehículo no tiene infracciones registradas.")
+            return
+
+        if claveEliminar in infracciones:
+            del infracciones[claveEliminar]
+            print("Infracción eliminada correctamente.")
+
+            # Reordenar nombres (para mantener infraccion1, infraccion2, ...)
+            nuevas = {}
+            for i, desc in enumerate(infracciones.values(), start=1):
+                nuevas[f"infraccion{i}"] = desc
+            vehiculo["infracciones"] = nuevas
+
+        else:
+            print("No existe una infracción con ese nombre.")
+
+    except KeyError:
+        print("Error: el vehículo no tiene la estructura esperada (falta 'infracciones').")
+    except Exception as e:
+        print(f"Ocurrió un error al eliminar la infracción: {e}")
+
+def mostrarInfracciones(vehiculo):
+    """
+    Muestra todas las infracciones actuales del vehículo.
+    """
+    try:
+        infracciones = vehiculo["infracciones"]
+
+        if len(infracciones) == 0:
+            print("Este vehículo no tiene infracciones registradas.")
+        else:
+            print("\nInfracciones actuales del vehículo:")
+            for clave, desc in infracciones.items():
+                print(f"  {clave}: {desc}")
+
+    except KeyError:
+        print("Error: el vehículo no tiene la estructura esperada (falta 'infracciones').")
+    except Exception as e:
+        print(f"Ocurrió un error al mostrar las infracciones: {e}")

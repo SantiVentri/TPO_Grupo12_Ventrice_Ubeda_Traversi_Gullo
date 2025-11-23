@@ -13,27 +13,368 @@ Pendientes:
 # MÓDULOS
 #----------------------------------------------------------------------------------------------
 import random, json, re
-from funciones.archivos import *
+from funciones.archivos import abrirArchivo, cerrarArchivo
 
 #----------------------------------------------------------------------------------------------
 # FUNCIONES
 #----------------------------------------------------------------------------------------------
+# ------------------ Funciones de choferes ------------------
+def registrarChofer():
+    """
+    Registra nuevos choferes en el sistema.
+    """
+
+    # Ruta de archivo del diccionario de choferes
+    rutaChoferes = "diccionarios/choferes.json"
+
+    while True:
+        # Solicitar nombre
+        nombre = solicitarNombre()
+        
+        # Solicitar apellido
+        apellido = solicitarApellido()
+
+        # Solicitar email
+        email = solicitarEmail()
+
+        # Solicitar teléfono
+        telefono = solicitarTelefono()
+
+        # Solicitar cantidad de km recorridos
+        cantidadKm = solicitarKm()
+
+        # Agregar turnos
+        turnos = solicitarTurnos()
+
+        # Cargar datos de choferes
+        archivo = abrirArchivo(rutaChoferes, "r")
+        if archivo is not None:
+            choferes = json.load(archivo)
+            cerrarArchivo(archivo)
+        else:
+            choferes = {}  # Si no existe, iniciar vacío
+
+        # Crear legajo
+        legajo = crearLegajo()
+
+        # Crear diccionario con los datos del chofer
+        datosChoferes = {
+            "activo": True,
+            "nombre": nombre,
+            "apellido": apellido,
+            "email": email,
+            "telefono": telefono,
+            "cantidadKm": cantidadKm,
+            "turnos": turnos
+        }
+
+        # Asignar los datos del chofer al chofer
+        choferes[legajo] = datosChoferes
+
+        # Abrir archivo en modo escritura
+        archivo = abrirArchivo(rutaChoferes, "w")
+        if archivo is not None:
+            json.dump(choferes, archivo, indent=4, ensure_ascii=False)
+            cerrarArchivo(archivo)
+
+            # Mensaje de éxito
+            print(f"\nSe agregó al chofer {nombre} {apellido}, LU{legajo} exitosamente.\n")
+
+            # Preguntar si desea agregar otro chofer
+            agregarOtro = input("¿Desea agregar otro chofer? (s/n): ").lower()
+            if agregarOtro != "s" and agregarOtro != "si":
+                break
+        else:
+            print("No se pudo guardar el chofer. Verifique el archivo.")
+
+def modificarChofer():
+    """
+    Permite modificar los datos de un chofer existente.
+    """
+    
+    # Ruta de archivo del diccionario de choferes
+    rutaChoferes = "diccionarios/choferes.json"
+
+    # Cargar datos de choferes
+    archivo = abrirArchivo(rutaChoferes, "r")
+    if archivo is not None:
+        choferes = json.load(archivo)
+        cerrarArchivo(archivo)
+    else:
+        choferes = {}  # Si no existe, iniciar vacío
+
+    while True:
+        # Preguntar legajo de chofer a modificar
+        legajo = input("Ingrese el legajo del chofer a modificar (o '0' para salir): ")
+
+        # Si el número ingresado es 0, se sale del bucle
+        if legajo == "0":
+            print("Saliendo de la modificación de choferes.\n")
+            break
+        elif not legajo.isdigit() or legajo not in choferes:
+            print("Legajo inválido. Intente nuevamente.")
+            break
+
+        # Formatear celda de teléfono
+        telefonoFormateado = f"+54 11 {str(choferes[legajo]['telefono'])[4:]}-{str(choferes[legajo]['telefono'])[:4]}"
+
+        # Seleccionar dato a modificar
+        print("\nDatos actuales del chofer:")
+        print(f"1. Nombre: {choferes[legajo]['nombre']}")
+        print(f"2. Apellido: {choferes[legajo]['apellido']}")
+        print(f"3. Email: {choferes[legajo]['email']}")
+        print(f"4. Teléfono: {telefonoFormateado}")
+        print(f"5. Cantidad de km: {choferes[legajo]['cantidadKm']}")
+        print("6. Ver turnos")
+        print("\n¿Qué dato desea modificar?")
+        
+        opcion = input("Ingrese el número de la opción (1-5): ")
+        
+        if opcion == "1":
+            # Ingresar nuevo nombre
+            nuevoNombre = solicitarNombre()
+
+            # Guardar nuevo nombre
+            choferes[legajo]['nombre'] = nuevoNombre
+
+            print("\nDato modificado exitosamente.")
+            
+        elif opcion == "2":
+            # Ingresar nuevo apellido
+            nuevoApellido = solicitarApellido()
+
+            # Guardar nuevo apellido
+            choferes[legajo]['apellido'] = nuevoApellido
+
+            print("\nDato modificado exitosamente.")
+
+        elif opcion == "3":
+            # Ingresar nuevo email
+            nuevoEmail = solicitarEmail()
+
+            # Guardar nuevo email
+            choferes[legajo]['email'] = nuevoEmail
+
+            print("\nDato modificado exitosamente.")
+
+        elif opcion == "4":
+            # Solicitar teléfono
+            nuevoTelefono = solicitarTelefono()
+
+            # Guardar nuevo teléfono
+            choferes[legajo]['telefono'] = nuevoTelefono
+
+            print("\nDato modificado exitosamente.")
+
+        elif opcion == "5":
+            # Ingresar nueva cantidad de km recorridos
+            nuevosKm = solicitarKm()
+
+            # Guardar nueva cantidad de km
+            choferes[legajo]['cantidadKm'] = nuevosKm
+
+            print("\nDato modificado exitosamente.")
+                    
+        elif opcion == "6":
+            # Ver turnos
+            print("\nTurnos actuales del chofer:")
+            for i in range(1, 4):
+                if f"turno{i}" in choferes[legajo]['turnos']:
+                    print(f"{i}. {choferes[legajo]['turnos'][f'turno{i}']}")
+                else:
+                    print(f"{i}. Sin turno asignado")
+
+            # Seleccionar turno a modificar
+            turnoModificar = input("\nIngrese el número del turno a modificar (1-3) o '0' para salir: ")
+
+            if turnoModificar == "0":
+                print("Saliendo de la modificación de turnos.\n")
+                break
+            elif turnoModificar not in ["1", "2", "3"]:
+                print("Opción inválida. Intente nuevamente.")
+            else:
+                turnosExistentes = list(choferes[legajo]['turnos'].values())
+                nuevoTurno = solicitarUnTurno(int(turnoModificar), turnosExistentes)
+
+                if nuevoTurno:
+                    choferes[legajo]['turnos'][f'turno{turnoModificar}'] = nuevoTurno
+                else:
+                    if f'turno{turnoModificar}' in choferes[legajo]['turnos']:
+                        del choferes[legajo]['turnos'][f'turno{turnoModificar}']
+
+        else:
+            print("Opción inválida.")
+            
+        # Abrir archivo en modo escritura
+        archivo = abrirArchivo(rutaChoferes, "w")
+        if archivo is not None:
+            json.dump(choferes, archivo, indent=4, ensure_ascii=False)
+            cerrarArchivo(archivo)
+        else:
+            print("No se pudo guardar el chofer. Verifique el archivo.")
+
+def desactivarChofer():
+    """
+    Permite desactivar (dar de baja lógica) a un chofer.
+    """
+    
+    # Ruta de archivo del diccionario de choferes
+    rutaChoferes = "diccionarios/choferes.json"
+    
+    # Cargar datos de choferes
+    archivo = abrirArchivo(rutaChoferes, "r")
+    if archivo is not None:
+        choferes = json.load(archivo)
+        cerrarArchivo(archivo)
+    else:
+        choferes = {}  # Si no existe, iniciar vacío
+
+    while True:
+        # Se pide el número de legajo a eliminar
+        legajo = input("Ingrese el legajo del chofer a desactivar (o '0' para salir): ")
+
+        # Si el número ingresado es 0, se sale del bucle
+        if legajo == "0":
+            break
+        # Validar legajo
+        elif not legajo.isdigit() or legajo not in choferes:
+            print("Legajo inválido. Intente nuevamente.")
+        else:
+            chofer = choferes[legajo] # Obtener datos del chofer
+
+            # Mensaje de confirmación
+            confirmar = input(f"¿Está seguro que desea desactivar al chofer {chofer['nombre']} {chofer['apellido']} (LU{legajo})? (s/n): ").lower()
+            
+            # Si el usuario confirma la acción, se desactiva el chofer. Sino, se cancela la operación
+            if confirmar == "s" or confirmar == "si":
+                choferes[legajo]["activo"] = False
+
+                # Abrir archivo en modo escritura usando tu función
+                archivo = abrirArchivo(rutaChoferes, "w")
+                if archivo is not None:
+                    json.dump(choferes, archivo, indent=4, ensure_ascii=False)
+                    cerrarArchivo(archivo)
+
+                    # Mensaje de éxito
+                    print(f"\nSe desactivó al chofer {chofer['nombre']} {chofer['apellido']}, LU{legajo} exitosamente.\n")
+                else:
+                    print("No se pudo guardar el chofer. Verifique el archivo.")
+            else:
+                print("Desactivación cancelada.\n")
+
+def listarChoferes():
+    """
+    Esta función se encarga de mostrar un listado de choferes activos con sus datos formateados.
+    Parámetros:
+    - choferes (dict): Diccionario de choferes con sus datos.
+    """
+    try:
+        # Crear variable con dirección de archivo del diccionario de choferes
+        rutaChoferes = "diccionarios/choferes.json"
+
+        # Cargar datos de choferes
+        archivo = abrirArchivo(rutaChoferes, "r")
+        if archivo is not None:
+            choferes = json.load(archivo)
+            cerrarArchivo(archivo)
+        else:
+            choferes = {}  # Si no existe, iniciar vacío
+        
+        # Crear matriz con los datos de los choferes
+        matriz = []
+        for legajo, datos in choferes.items():
+            if datos["activo"] == True:
+                # Si hay turnos asignados, mostrarlos. Sino, mostrar mensaje.
+                turnos = ", ".join(datos["turnos"].values()) or "Sin turnos asignado"
+                
+                fila = [
+                    legajo,
+                    f"{datos['nombre']} {datos['apellido']}",
+                    f"{datos['email']}",
+                    f"+54 11 {str(datos['telefono'])[:4]}-{str(datos['telefono'])[4:]}",
+                    f"{datos['cantidadKm']}",
+                    turnos
+                ]
+                matriz.append(fila)
+
+        if choferes != {}:
+            print("SE LISTAN LOS CHOFERES ACTIVOS:\n")
+            
+            # Imprimir los títulos de la tabla
+            print("-" * 152)
+            print(f"|{"Legajo":^11}|{"Nombre":^18}|{"Email":^27}|{"Teléfono":^18}|{"Km Recorridos":^15}|{"Turnos":^56}|")
+            print("-" * 152)
+            # Recorrer matriz con for i / for j e imprimir tabla
+            for i in range(len(matriz)):
+                print("|", end="")
+                for j in range(len(matriz[i])):
+                    if j == 0:
+                        # Imprimir legajo
+                        print(f" LU{matriz[i][j]:^8}|", end="")
+                    elif j == 1:
+                        # Reemplazar los ultimos 3 caracteres del nombre por "..." si es muy largo
+                        nombre = matriz[i][j]
+                        if len(nombre) > 16:
+                            nombre = nombre[:13] + "..."
+                        print(f" {nombre:<17}|", end="")
+                    elif j == 2:
+                        # Reemplazar los ultimos 3 caracteres del email por "..." si es muy largo
+                        email = matriz[i][j]
+                        if len(email) > 25:
+                            email = email[:22] + "..."
+                        print(f" {email:<26}|", end="")
+                    elif j == 3:
+                        # Imprimir teléfono
+                        print(f" {matriz[i][j]:^17}|", end="")
+                    elif j == 4:
+                        # Imprimir km recorridos
+                        print(f"{matriz[i][j]:>14} |", end="")
+                    elif j == 5:
+                        # Imprimir turnos
+                        print(f" {matriz[i][j]:<55}|", end="")
+                print()  # salto de línea entre filas
+
+            # Cerrar tabla
+            print("-" * 152)
+
+    except Exception as e:
+        print("Error al listar choferes.")
+        print(f"Detalles: {e}")
 
 # ------------------ Creación de legajos ------------------
-def crearLegajo(choferes):
+def crearLegajo():
     """
     Esta función genera un legajo único para un nuevo chofer.
-    Parámetros:
-    - choferes (dict): Diccionario de choferes existentes con sus legajos como claves.
     Salida:
     - legajo (int): Legajo único generado para el nuevo chofer.
     """
-
+    
     # Generar el legajo de 5 dígitos del chofer
     while True:
         legajo = random.randint(10000, 99999)
-        if legajo not in choferes:
+        if existeLegajo(legajo) == False:
             return legajo
+        
+def existeLegajo(legajo):
+    """
+    Esta función valida si un legajo de chofer existe en el sistema.
+    """
+
+    # Inicializar ruta del archivo de choferes
+    rutaChoferes = "diccionarios/choferes.json"
+
+    # Cargar datos de choferes
+    archivo = abrirArchivo(rutaChoferes, "r")
+    if archivo is not None:
+        choferes = json.load(archivo)
+        cerrarArchivo(archivo)
+    else:
+        choferes = {}
+
+    if legajo not in choferes:
+        return False # El legajo no existe
+    else:
+        return True # El legajo existe
 
 # ------------------ Solicitar y validar nombre y apellido ------------------
 def solicitarNombre():
@@ -290,87 +631,3 @@ def validarTurno(turnos, turno):
 
     finally:
         return turnoValido
-
-# ------------------ Listado de choferes ------------------
-def listarChoferes():
-    """
-    Esta función se encarga de mostrar un listado de choferes activos con sus datos formateados.
-    Parámetros:
-    - choferes (dict): Diccionario de choferes con sus datos.
-    """
-    print("--------------------------------------")
-    print("MENÚ DE CHOFERES > Listado de choferes")
-    print("--------------------------------------\n")
-
-    try:
-        # Crear variable con dirección de archivo del diccionario de choferes
-        rutaChoferes = "diccionarios/choferes.json"
-
-        # Cargar datos de choferes
-        archivo = abrirArchivo(rutaChoferes, "r")
-        if archivo is not None:
-            choferes = json.load(archivo)
-            cerrarArchivo(archivo)
-        else:
-            choferes = {}  # Si no existe, iniciar vacío
-        
-        # Crear matriz con los datos de los choferes
-        matriz = []
-        for legajo, datos in choferes.items():
-            if datos["activo"] == True:
-                # Si hay turnos asignados, mostrarlos. Sino, mostrar mensaje.
-                turnos = ", ".join(datos["turnos"].values()) or "Sin turnos asignado"
-                
-                fila = [
-                    legajo,
-                    f"{datos['nombre']} {datos['apellido']}",
-                    f"{datos['email']}",
-                    f"+54 11 {str(datos['telefono'])[:4]}-{str(datos['telefono'])[4:]}",
-                    f"{datos['cantidadKm']}",
-                    turnos
-                ]
-                matriz.append(fila)
-
-        if choferes != {}:
-            print("SE LISTAN LOS CHOFERES ACTIVOS:\n")
-            
-            # Imprimir los títulos de la tabla
-            print("-" * 152)
-            print(f"|{"Legajo":^11}|{"Nombre":^18}|{"Email":^27}|{"Teléfono":^18}|{"Km Recorridos":^15}|{"Turnos":^56}|")
-            print("-" * 152)
-            # Recorrer matriz con for i / for j e imprimir tabla
-            for i in range(len(matriz)):
-                print("|", end="")
-                for j in range(len(matriz[i])):
-                    if j == 0:
-                        # Imprimir legajo
-                        print(f" LU{matriz[i][j]:^8}|", end="")
-                    elif j == 1:
-                        # Reemplazar los ultimos 3 caracteres del nombre por "..." si es muy largo
-                        nombre = matriz[i][j]
-                        if len(nombre) > 16:
-                            nombre = nombre[:13] + "..."
-                        print(f" {nombre:<17}|", end="")
-                    elif j == 2:
-                        # Reemplazar los ultimos 3 caracteres del email por "..." si es muy largo
-                        email = matriz[i][j]
-                        if len(email) > 25:
-                            email = email[:22] + "..."
-                        print(f" {email:<26}|", end="")
-                    elif j == 3:
-                        # Imprimir teléfono
-                        print(f" {matriz[i][j]:^17}|", end="")
-                    elif j == 4:
-                        # Imprimir km recorridos
-                        print(f"{matriz[i][j]:>14} |", end="")
-                    elif j == 5:
-                        # Imprimir turnos
-                        print(f" {matriz[i][j]:<55}|", end="")
-                print()  # salto de línea entre filas
-
-            # Cerrar tabla
-            print("-" * 152)
-
-    except Exception as e:
-        print("Error al listar choferes.")
-        print(f"Detalles: {e}")

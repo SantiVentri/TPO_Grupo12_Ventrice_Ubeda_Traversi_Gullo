@@ -10,19 +10,37 @@ Descripción: Funciones relacionadas a los informes.
 #----------------------------------------------------------------------------------------------
 # MÓDULOS
 #----------------------------------------------------------------------------------------------
-...
+import json
+from funciones.archivos import abrirArchivo, cerrarArchivo
 
 #----------------------------------------------------------------------------------------------
 # FUNCIONES
 #----------------------------------------------------------------------------------------------
-def informeViajesDelMes(rutas, vehiculos):
+def informeViajesDelMes():
     """
     Muestra un listado con todos los viajes del mes.
-    Parámetros:
-    - rutas (dict): diccionario con datos de las rutas
-    - choferes (dict): diccionario con datos de los choferes
-    - vehiculos (dict): diccionario con datos de los vehículos
     """
+    
+    # Rutas de archivos
+    rutaVehiculos = "diccionarios/vehiculos.json"
+    rutaRutas = "diccionarios/rutas.json"
+
+    # Cargar datos de vehículos
+    archivo = abrirArchivo(rutaVehiculos, "r")
+    if archivo is not None:
+        vehiculos = json.load(archivo)
+        cerrarArchivo(archivo)
+    else:
+        vehiculos = {}
+
+    # Cargar datos de rutas
+    archivo = abrirArchivo(rutaRutas, "r")
+    if archivo is not None:
+        rutas = json.load(archivo)
+        cerrarArchivo(archivo)
+    else:
+        rutas = {}
+    
     # Crear lista con los datos de cada viaje
     lista = []
     for fecha, datos in rutas.items():
@@ -62,11 +80,31 @@ def informeViajesDelMes(rutas, vehiculos):
 
     print("-"*105)
 
-def informeResumenMensualKmVehiculo(rutas, vehiculos):
+def informeResumenMensualKmVehiculo():
     """
     Muestra un resumen mensual de rutas por vehículo (CANTIDADES KM),
     en formato matricial (filas: vehículos, columnas: meses).
     """
+
+    # Rutas de archivos
+    rutaVehiculos = "diccionarios/vehiculos.json"
+    rutaRutas = "diccionarios/rutas.json"
+
+    # Cargar datos de vehículos
+    archivo = abrirArchivo(rutaVehiculos, "r")
+    if archivo is not None:
+        vehiculos = json.load(archivo)
+        cerrarArchivo(archivo)
+    else:
+        vehiculos = {}
+
+    # Cargar datos de rutas
+    archivo = abrirArchivo(rutaRutas, "r")
+    if archivo is not None:
+        rutas = json.load(archivo)
+        cerrarArchivo(archivo)
+    else:
+        rutas = {}
 
     if not rutas:
         print("No hay rutas registradas.")
@@ -130,11 +168,31 @@ def informeResumenMensualKmVehiculo(rutas, vehiculos):
 
     print("-" * 150)
 
-def informeResumenMensualCostosVehiculos(rutas, vehiculos):
+def informeResumenMensualCostosVehiculos():
     """
     Listado de resumen de monto en pesos de las operaciones por año y por mes.
     Entidad: vehículos activos.
     """
+
+    # Rutas de archivos
+    rutaVehiculos = "diccionarios/vehiculos.json"
+    rutaRutas = "diccionarios/rutas.json"
+
+    # Cargar datos de vehículos
+    archivo = abrirArchivo(rutaVehiculos, "r")
+    if archivo is not None:
+        vehiculos = json.load(archivo)
+        cerrarArchivo(archivo)
+    else:
+        vehiculos = {}
+
+    # Cargar datos de rutas
+    archivo = abrirArchivo(rutaRutas, "r")
+    if archivo is not None:
+        rutas = json.load(archivo)
+        cerrarArchivo(archivo)
+    else:
+        rutas = {}
 
     if not rutas:
         print("No hay rutas registradas.")
@@ -188,14 +246,31 @@ def informeResumenMensualCostosVehiculos(rutas, vehiculos):
 
     print("-" * 150)
 
-
-def informeRankingChoferes(choferes, rutas):
+def informeRankingChoferes():
     """
     Muestra el ranking de choferes activos por km recorridos.
-    Parámetros:
-    - choferes (dict): diccionario con datos de los choferes.
-    - rutas (dict): diccionario con datos de las rutas.
     """
+
+    # Rutas de archivos
+    rutaChoferes = "diccionarios/choferes.json"
+    rutaRutas = "diccionarios/rutas.json"
+
+    # Cargar datos de choferes
+    archivo = abrirArchivo(rutaChoferes, "r")
+    if archivo is not None:
+        choferes = json.load(archivo)
+        cerrarArchivo(archivo)
+    else:
+        choferes = {}
+
+    # Cargar datos de rutas
+    archivo = abrirArchivo(rutaRutas, "r")
+    if archivo is not None:
+        rutas = json.load(archivo)
+        cerrarArchivo(archivo)
+    else:
+        rutas = {}
+
     ranking = {}
     for cod in rutas:
         datos = rutas[cod]
@@ -233,14 +308,31 @@ def informeRankingChoferes(choferes, rutas):
 
     print("-" * 60)
 
-
-def informeRankingVehiculos(vehiculos, rutas):
+def informeRankingVehiculos():
     """
     Muestra el ranking de vehículos activos por km recorridos.
-    Parámetros:
-    - vehiculos (dict): diccionario con datos de los vehículos.
-    - rutas (dict): diccionario con datos de las rutas.
     """
+
+    # Rutas de archivos
+    rutaVehiculos = "diccionarios/vehiculos.json"
+    rutaRutas = "diccionarios/rutas.json"
+
+    # Cargar datos de vehículos
+    archivo = abrirArchivo(rutaVehiculos, "r")
+    if archivo is not None:
+        vehiculos = json.load(archivo)
+        cerrarArchivo(archivo)
+    else:
+        vehiculos = {}
+
+    # Cargar datos de rutas
+    archivo = abrirArchivo(rutaRutas, "r")
+    if archivo is not None:
+        rutas = json.load(archivo)
+        cerrarArchivo(archivo)
+    else:
+        rutas = {}
+
     ranking = {}
     for cod in rutas:
         datos = rutas[cod]

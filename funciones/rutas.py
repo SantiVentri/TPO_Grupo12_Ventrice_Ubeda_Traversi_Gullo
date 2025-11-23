@@ -12,11 +12,126 @@ Descripción: Funciones relacionadas a la gestión de rutas.
 # MÓDULOS
 #----------------------------------------------------------------------------------------------
 import time
+import json
+from funciones.archivos import abrirArchivo, cerrarArchivo
+from funciones.choferes import existeLegajo, solicitarKm
+from funciones.vehiculos import solicitarPatente
 
 #----------------------------------------------------------------------------------------------
 # FUNCIONES
 #----------------------------------------------------------------------------------------------
+# ------------------ Funciones de rutas ------------------
+def registrarRuta():
+    """
+    Registra una nueva ruta en el sistema.
+    """
 
+    # Rutas de archivos de los diccionarios
+    rutaChoferes = "diccionarios/choferes.json"
+    rutaVehiculos = "diccionarios/vehiculos.json"
+    rutaRutas = "diccionarios/rutas.json"
+
+    # Cargar datos de choferes
+    archivo = abrirArchivo(rutaChoferes, "r")
+    if archivo is not None:
+        choferes = json.load(archivo)
+        cerrarArchivo(archivo)
+    else:
+        choferes = {}
+
+    # Cargar datos de vehículos
+    archivo = abrirArchivo(rutaVehiculos, "r")
+    if archivo is not None:
+        vehiculos = json.load(archivo)
+        cerrarArchivo(archivo)
+    else:
+        vehiculos = {}
+
+    # Cargar datos de rutas
+    archivo = abrirArchivo(rutaRutas, "r")
+    if archivo is not None:
+        rutas = json.load(archivo)
+        cerrarArchivo(archivo)
+    else:
+        rutas = {}
+
+    # Ingresar legajo
+    while True:
+        legajo = input("Ingrese el legajo del chofer (o '0' para salir): ")
+
+        if existeLegajo(legajo) == False: # Si el legajo no existe, se sale del bucle
+            break
+
+    # Ingresar patente
+    patente = solicitarPatente(vehiculos, "existente")
+
+    # Ingresar kms
+    totalKm = solicitarKm()
+
+    # Ingresar salida
+    fechaSalida = solicitarFechaHora()
+
+    # Ingresar llegada
+    fechaLlegada = solicitarFechaHora()
+
+    # Confirmación
+    print("\nResumen de la ruta a registrar:")
+    print(f"Chofer: LU{legajo} - {choferes[legajo]['nombre']} {choferes[legajo]['apellido']}")
+    print(f"Vehículo: {patente} - {vehiculos[patente]['modelo']}")
+    print(f"Km recorridos: {totalKm} km")
+    print(f"Fecha y hora de salida: {fechaSalida}")
+    print(f"Fecha y hora de llegada: {fechaLlegada}")
+    confirmar = input("¿Desea registrar esta ruta? (s/n): ").lower()
+
+    if confirmar == "s" or confirmar == "si":
+        # Obtener la fecha y hora actual para la clave
+        fechaHora = obtenerFechaHora()
+
+        # Calcular costo de la ruta
+        costoKm = vehiculos[patente]['costoKm']
+        costoRuta = totalKm * costoKm
+
+        # Guardar ruta
+        rutas[fechaHora] = {
+            "idLegajo": legajo,
+            "idPatente": patente,
+            "totalKm": totalKm,
+            "costoRuta": costoRuta,
+            "horaSalida": fechaSalida,
+            "horaLlegada": fechaLlegada
+        }
+
+        # Actualizar km del chofer y vehículo
+        choferes[legajo]['cantidadKm'] += totalKm
+        vehiculos[patente]['cantidadKm'] += totalKm
+
+        # Abrir archivo de choferes en modo escritura
+        archivo = abrirArchivo(rutaChoferes, "w")
+        if archivo is not None:
+            json.dump(choferes, archivo, indent=4, ensure_ascii=False)
+            cerrarArchivo(archivo)
+        else:
+            print("No se pudo guardar el chofer. Verifique el archivo.")
+
+        # Abrir archivo de vehiculos en modo escritura
+        archivo = abrirArchivo(rutaVehiculos, "w")
+        if archivo is not None:
+            json.dump(vehiculos, archivo, indent=4, ensure_ascii=False)
+            cerrarArchivo(archivo)
+        else:
+            print("No se pudo guardar el chofer. Verifique el archivo.")
+
+        # Abrir archivo de rutas en modo escritura
+        archivo = abrirArchivo(rutaRutas, "w")
+        if archivo is not None:
+            json.dump(rutas, archivo, indent=4, ensure_ascii=False)
+            cerrarArchivo(archivo)
+
+            print(f"\nRuta registrada exitosamente.\n")
+        else:
+            print("No se pudo guardar el chofer. Verifique el archivo.")
+
+# ------------------ Funciones individuales de rutas ------------------
 def obtenerFechaHora():
     """
     Obtiene la fecha y hora actual en formato YYYY.MM.DD HH.MM.SS
@@ -27,8 +142,6 @@ def obtenerFechaHora():
     except Exception as e:
         print(f"Error al obtener la fecha y hora actual: {e}")
         return "0000.00.00 00.00.00"   # Valor de emergencia
-
-
 
 def solicitarFechaHora():
     """
@@ -50,8 +163,6 @@ def solicitarFechaHora():
             fechaHoraValida = False
 
     return fechaHora
-
-
 
 def validarFechaHora(fechaHora):
     """
@@ -156,7 +267,6 @@ def codigoRuta():
     """
     codigo = input("Ingrese el código de la ruta: ").strip()
     return codigo
-
 
 def datosRuta():
     """
