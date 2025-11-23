@@ -635,19 +635,19 @@ def main():
                             if confirmar == "s" or confirmar == "si":
                                 choferes[legajo]["activo"] = False
 
+                                # Abrir archivo en modo escritura usando tu función
+                                archivo = abrirArchivo(rutaChoferes, "w")
+                                if archivo is not None:
+                                    json.dump(choferes, archivo, indent=4, ensure_ascii=False)
+                                    cerrarArchivo(archivo)
+
+                                    # Mensaje de éxito
+                                    print(f"\nSe desactivó al chofer {chofer['nombre']} {chofer['apellido']}, LU{legajo} exitosamente.\n")
+                                else:
+                                    print("No se pudo guardar el chofer. Verifique el archivo.")
                             else:
                                 print("Desactivación cancelada.\n")
                             
-                            # Abrir archivo en modo escritura
-                            archivo = abrirArchivo(rutaChoferes, "w")
-                            if archivo is not None:
-                                json.dump(choferes, archivo, indent=4, ensure_ascii=False)
-                                cerrarArchivo(archivo)
-
-                                # Mensaje de éxito
-                                print(f"\nSe desactivó al chofer {chofer['nombre']} {chofer['apellido']}, LU{legajo} exitosamente.\n")
-                            else:
-                                print("No se pudo guardar el chofer. Verifique el archivo.")
                 
                 elif opcionSubmenu == "4":   # Opción 4 del submenú
                     listarChoferes()
