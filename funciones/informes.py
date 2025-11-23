@@ -28,23 +28,26 @@ def informeViajesDelMes(rutas, vehiculos):
     for fecha, datos in rutas.items():
         # Calcular costo multiplicando km por costo/km del vehículo
         patente = datos['idPatente']
-        totalKm = datos['totalKm']
-        costoKm = vehiculos[patente]['costoKm']
-        costoRuta = totalKm * costoKm
 
-        # Formatear hora de llegada sin segundos
-        horaLlegada = datos['horaLlegada']
+        # Filtrar vehículos inactivos
+        if vehiculos[patente]['activo']:
+            totalKm = datos['totalKm']
+            costoKm = vehiculos[patente]['costoKm']
+            costoRuta = totalKm * costoKm
 
-        fila = [
-            fecha,                    # fecha y hora
-            f"LU{datos['idLegajo']}", # legajo
-            patente,                  # patente
-            totalKm,                  # total km
-            costoRuta,                # costo calculado
-            datos['horaSalida'],      # hora salida  
-            horaLlegada               # hora llegada (sin segundos)
-        ]
-        lista.append(fila)
+            # Formatear hora de llegada sin segundos
+            horaLlegada = datos['horaLlegada']
+
+            fila = [
+                fecha,                    # fecha y hora
+                f"LU{datos['idLegajo']}", # legajo
+                patente,                  # patente
+                totalKm,                  # total km
+                costoRuta,                # costo calculado
+                datos['horaSalida'],      # hora salida  
+                horaLlegada               # hora llegada (sin segundos)
+            ]
+            lista.append(fila)
 
     # Imprimir encabezado
     print("-"*105)
