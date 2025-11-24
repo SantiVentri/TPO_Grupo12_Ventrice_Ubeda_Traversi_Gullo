@@ -4,15 +4,16 @@ En este archivo se documentan los cambios más importantes de la segunda versió
 ---
 
 ## [2.0] - 24-11-2025
-### Nuevo
-- Gestión de archivos JSON para todas las entidades.
-- Control de exepciones para gestión de archivos y para validación de campos para todas las entidades.
-- Incorporación de campo de email para choferes.
-- Validación de email con expresiones regulares y el módulo re.
 
-### Cambios:
-- Se comentaron con triple comillas los diccionarios inicializados en el programa principal.
-- Se simplificó la lógica de ingreso y validación de datos. Ahora el CRUD de cada entidad está dentro de cada módulo.
+### Nuevo
+- **Gestión de archivos JSON:** Lectura y escritura de archivos JSON para Choferes, Vehículos y Rutas.
+- **Expresiones regulares:** - Incorporación de campo `email` en Choferes y validación con módulo `re`.
+- **Manejo de Errores:** Se incorporó `try-except` para gestionar entrada de datos y errores de archivos.
+
+### Cambios
+- **Modularización del CRUD:** Se movió toda la lógica de Ingreso, Desactivación y Modificación (incluyendo la apertura y cierre de archivos) desde el programa principal hacia sus respectivos módulos (`funciones/*.py`).
+- **Diccionarios precargados:** Se comentaron con triples comillas los diccionarios de la versión 1.0.
 
 ### Arreglos
-- Los informes [2] y [3] ahora responden a lo solictado en la consigna.
+- **Informes Matriciales:** Se corrigieron los informes [2] y [3].
+- **Limpieza del Main:** El archivo `Entrega2.py` ahora funciona exclusivamente como menú de navegación, y delega todas las operaciones a las funciones importadas.
