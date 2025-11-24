@@ -14,7 +14,7 @@ Descripción: Funciones relacionadas a la gestión de rutas.
 import time
 import json
 from funciones.archivos import abrirArchivo, cerrarArchivo
-from funciones.choferes import existeLegajo, solicitarKm
+from funciones.choferes import existeLegajo, legajoActivo, solicitarKm
 from funciones.vehiculos import solicitarPatente
 
 #----------------------------------------------------------------------------------------------
@@ -59,8 +59,13 @@ def registrarRuta():
     while True:
         legajo = input("Ingrese el legajo del chofer (o '0' para salir): ")
 
-        if existeLegajo(legajo) == False: # Si el legajo no existe, se sale del bucle
+        if legajo == "0":
+            return
+
+        if existeLegajo(legajo) and legajoActivo(legajo):
             break
+        else:
+            print("El legajo ingresado no existe. Por favor, intente nuevamente.")
 
     # Ingresar patente
     patente = solicitarPatente(vehiculos, "existente")

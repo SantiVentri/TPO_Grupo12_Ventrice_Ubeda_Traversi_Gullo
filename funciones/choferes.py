@@ -375,6 +375,27 @@ def existeLegajo(legajo):
         return False # El legajo no existe
     else:
         return True # El legajo existe
+    
+def legajoActivo(legajo):
+    """
+    Esta función valida si un legajo de chofer está activo en el sistema.
+    """
+
+    # Inicializar ruta del archivo de choferes
+    rutaChoferes = "diccionarios/choferes.json"
+
+    # Cargar datos de choferes
+    archivo = abrirArchivo(rutaChoferes, "r")
+    if archivo is not None:
+        choferes = json.load(archivo)
+        cerrarArchivo(archivo)
+    else:
+        choferes = {}
+
+    if choferes[legajo]["activo"] == True:
+        return True # El legajo está activo
+    else:
+        return False # El legajo está inactivo
 
 # ------------------ Solicitar y validar nombre y apellido ------------------
 def solicitarNombre():
